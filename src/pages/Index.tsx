@@ -1,13 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navigation from "@/components/Navigation";
+import HeroSection from "@/components/HeroSection";
+import MarketArchitecture from "@/components/MarketArchitecture";
+import ProtocolLayers from "@/components/ProtocolLayers";
+import LiveTerminal from "@/components/LiveTerminal";
+import GeometricTeam from "@/components/GeometricTeam";
+import AccessArchitecture from "@/components/AccessArchitecture";
+import TerminalFooter from "@/components/TerminalFooter";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main className="min-h-screen bg-deep-black">
+      {/* Navigation */}
+      <Navigation />
+      
+      {/* Hero Section with Spline Animation Space */}
+      <HeroSection />
+      
+      {/* Market Infrastructure */}
+      <MarketArchitecture />
+      
+      {/* Protocol Architecture */}
+      <ProtocolLayers />
+      
+      {/* Live Terminal */}
+      <LiveTerminal />
+      
+      {/* Team Section */}
+      <GeometricTeam />
+      
+      {/* Access Flow */}
+      <AccessArchitecture />
+      
+      {/* Footer */}
+      <TerminalFooter />
+    </main>
   );
 };
 

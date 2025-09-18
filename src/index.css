@@ -2,41 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Credit Markets Neo-Geometric Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    /* Foundation Colors */
+    --deep-black: 0 0% 4%;           /* #090909 */
+    --dimensional-gray: 0 0% 22%;    /* #393939 */
+    --clean-white: 0 0% 97%;         /* #f8f8f8 */
+    --depth-gray: 0 0% 71%;          /* #b4b4b4 */
+    
+    /* Strategic Colors */
+    --strategic-blue: 204 100% 74%;   /* #79c2ff */
+    --navy-accent: 215 96% 15%;       /* #01184e */
+    
+    /* Terminal Colors */
+    --terminal-green: 120 100% 50%;
+    --terminal-amber: 45 100% 50%;
+    
+    /* Isometric System */
+    --isometric-angle: 30deg;
+    --depth-offset: 8px;
+    --shadow-color: 0 0% 0% / 0.15;
+    --grid-color: 0 0% 0% / 0.05;
+    
+    /* Gradients */
+    --gradient-depth: linear-gradient(135deg, hsl(var(--dimensional-gray)), hsl(var(--deep-black)));
+    --gradient-terminal: linear-gradient(180deg, hsl(var(--deep-black)), hsl(0 0% 2%));
+    --gradient-data: linear-gradient(90deg, hsl(var(--strategic-blue) / 0.1), hsl(var(--strategic-blue) / 0));
+    
+    /* Shadows */
+    --shadow-isometric: var(--depth-offset) var(--depth-offset) 0 hsl(var(--shadow-color));
+    --shadow-lifted: calc(var(--depth-offset) * 1.5) calc(var(--depth-offset) * 1.5) 0 hsl(var(--shadow-color));
+    --shadow-terminal: 0 0 20px hsl(var(--strategic-blue) / 0.3);
+    
+    /* Typography Scale */
+    --font-size-hero: clamp(3rem, 8vw, 6rem);
+    --font-size-section: clamp(2rem, 5vw, 3.5rem);
+    --font-size-data: clamp(1.5rem, 3vw, 2.5rem);
+    --font-size-terminal: clamp(0.875rem, 2vw, 1rem);
+    
+    /* Standard Semantic Tokens */
+    --background: var(--deep-black);
+    --foreground: var(--clean-white);
+    --card: var(--dimensional-gray);
+    --card-foreground: var(--clean-white);
+    --primary: var(--strategic-blue);
+    --primary-foreground: var(--deep-black);
+    --secondary: var(--dimensional-gray);
+    --secondary-foreground: var(--clean-white);
+    --muted: var(--depth-gray);
+    --muted-foreground: var(--depth-gray);
+    --accent: var(--navy-accent);
+    --accent-foreground: var(--clean-white);
+    --border: var(--depth-gray);
+    --ring: var(--strategic-blue);
+    --radius: 0;
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +122,84 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+  
+  /* Typography System */
+  .font-mono {
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+  
+  /* Isometric Components */
+  .isometric-card {
+    transform: perspective(1000px) rotateX(10deg) rotateY(-10deg);
+    box-shadow: var(--shadow-isometric);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .isometric-card:hover {
+    transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) translateZ(20px);
+    box-shadow: var(--shadow-lifted);
+  }
+  
+  .terminal-scanlines {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .terminal-scanlines::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 98%,
+      hsl(var(--strategic-blue) / 0.03) 100%
+    );
+    background-size: 3px 100%;
+    pointer-events: none;
+    animation: scanlines 2s linear infinite;
+  }
+  
+  @keyframes scanlines {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(3px); }
+  }
+  
+  /* Terminal Cursor */
+  .terminal-cursor::after {
+    content: '_';
+    animation: cursor-blink 1s infinite;
+    color: hsl(var(--strategic-blue));
+  }
+  
+  @keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+  /* Isometric Grid Background */
+  .isometric-grid {
+    background-image: 
+      linear-gradient(30deg, hsl(var(--grid-color)) 12%, transparent 12.5%, transparent 87%, hsl(var(--grid-color)) 87.5%, hsl(var(--grid-color))),
+      linear-gradient(150deg, hsl(var(--grid-color)) 12%, transparent 12.5%, transparent 87%, hsl(var(--grid-color)) 87.5%, hsl(var(--grid-color))),
+      linear-gradient(30deg, hsl(var(--grid-color)) 12%, transparent 12.5%, transparent 87%, hsl(var(--grid-color)) 87.5%, hsl(var(--grid-color))),
+      linear-gradient(150deg, hsl(var(--grid-color)) 12%, transparent 12.5%, transparent 87%, hsl(var(--grid-color)) 87.5%, hsl(var(--grid-color)));
+    background-size: 80px 140px;
+    background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+  }
+  
+  /* 3D Layer Perspective */
+  .protocol-layer {
+    transform: perspective(1000px) rotateX(5deg);
+    transform-style: preserve-3d;
+  }
+  
+  .protocol-layer + .protocol-layer {
+    transform: perspective(1000px) rotateX(5deg) translateZ(20px);
   }
 }

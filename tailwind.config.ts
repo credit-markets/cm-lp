@@ -14,6 +14,17 @@ export default {
     },
     extend: {
       colors: {
+        // Foundation System
+        'deep-black': "hsl(var(--deep-black))",
+        'dimensional-gray': "hsl(var(--dimensional-gray))",
+        'clean-white': "hsl(var(--clean-white))",
+        'depth-gray': "hsl(var(--depth-gray))",
+        'strategic-blue': "hsl(var(--strategic-blue))",
+        'navy-accent': "hsl(var(--navy-accent))",
+        'terminal-green': "hsl(var(--terminal-green))",
+        'terminal-amber': "hsl(var(--terminal-amber))",
+        
+        // Standard Semantic Tokens
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -47,43 +58,65 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontSize: {
+        'hero': 'var(--font-size-hero)',
+        'section': 'var(--font-size-section)',
+        'data': 'var(--font-size-data)',
+        'terminal': 'var(--font-size-terminal)',
+      },
+      fontFamily: {
+        'mono': ['IBM Plex Mono', 'Courier New', 'monospace'],
+        'sans': ['Inter', 'system-ui', 'sans-serif'],
+      },
+      backgroundImage: {
+        'gradient-depth': 'var(--gradient-depth)',
+        'gradient-terminal': 'var(--gradient-terminal)',
+        'gradient-data': 'var(--gradient-data)',
+      },
+      boxShadow: {
+        'isometric': 'var(--shadow-isometric)',
+        'lifted': 'var(--shadow-lifted)',
+        'terminal': 'var(--shadow-terminal)',
+      },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" }
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" }
         },
+        "cursor-blink": {
+          "0%, 50%": { opacity: "1" },
+          "51%, 100%": { opacity: "0" }
+        },
+        "scanlines": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(3px)" }
+        },
+        "data-flow": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" }
+        },
+        "terminal-type": {
+          "0%": { width: "0" },
+          "100%": { width: "100%" }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "cursor-blink": "cursor-blink 1s infinite",
+        "scanlines": "scanlines 2s linear infinite",
+        "data-flow": "data-flow 3s ease-in-out infinite",
+        "terminal-type": "terminal-type 2s steps(20) infinite",
       },
     },
   },
