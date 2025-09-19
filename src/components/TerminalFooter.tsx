@@ -1,3 +1,5 @@
+import cmLogoWhite from "@/assets/cm-logo-white.png";
+
 const TerminalFooter = () => {
   return (
     <footer className="bg-deep-black border-t border-strategic-blue/30 py-8">
@@ -9,7 +11,11 @@ const TerminalFooter = () => {
         <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
           {/* Left: Logo + Location */}
           <div className="flex items-center space-x-4">
-            <span className="text-navy-accent font-bold text-xl tracking-wider">CM</span>
+            <img 
+              src={cmLogoWhite} 
+              alt="Credit Markets" 
+              className="h-6 w-6 object-contain"
+            />
             <span className="text-depth-gray font-mono text-sm">
               São Paulo / New York
             </span>
@@ -23,13 +29,13 @@ const TerminalFooter = () => {
           {/* Right: Legal */}
           <div className="flex items-center space-x-6">
             <a 
-              href="#terms" 
+              href="/terms" 
               className="text-depth-gray hover:text-strategic-blue transition-colors font-mono text-sm tracking-wider"
             >
               TERMS
             </a>
             <a 
-              href="#privacy" 
+              href="/privacy" 
               className="text-depth-gray hover:text-strategic-blue transition-colors font-mono text-sm tracking-wider"
             >
               PRIVACY

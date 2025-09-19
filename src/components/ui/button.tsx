@@ -16,7 +16,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         
         // Neo-Geometric Variants
-        hero: "bg-strategic-blue text-deep-black border-0 shadow-isometric hover:shadow-lifted transform hover:-translate-y-1 active:translate-y-0",
+        hero: "bg-strategic-blue text-deep-black border-0 shadow-isometric hover:shadow-lifted hover:bg-clean-white transform hover:-translate-y-1 active:translate-y-0",
         outline: "border-2 border-clean-white bg-transparent text-clean-white hover:bg-clean-white hover:text-deep-black shadow-isometric hover:shadow-lifted transform hover:-translate-y-1",
         terminal: "bg-deep-black text-strategic-blue border border-strategic-blue font-mono hover:bg-strategic-blue hover:text-deep-black shadow-terminal",
         access: "bg-navy-accent text-clean-white border-0 shadow-isometric hover:shadow-lifted transform hover:-translate-y-1 hover:bg-strategic-blue",

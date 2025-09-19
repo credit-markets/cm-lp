@@ -60,7 +60,7 @@ const GeometricTeam = () => {
             {teamMembers.slice(0, 2).map((member, index) => (
               <div
                 key={member.name}
-                className="isometric-card bg-deep-black border-2 border-strategic-blue p-6 text-center group relative overflow-hidden"
+                className="isometric-card bg-dimensional-gray border-2 border-depth-gray/50 hover:bg-deep-black hover:border-strategic-blue p-6 text-center group relative overflow-hidden transition-all duration-300"
                 style={{
                   width: '280px',
                   height: '320px',
@@ -68,11 +68,11 @@ const GeometricTeam = () => {
                 }}
               >
                 {/* Portrait */}
-                <div className="w-24 h-24 mx-auto mb-4 overflow-hidden border-2 border-strategic-blue bg-dimensional-gray">
+                <div className="w-24 h-24 mx-auto mb-4 overflow-hidden border border-clean-white bg-deep-black">
                   <img 
                     src={member.image} 
                     alt={member.name}
-                    className="w-full h-full object-cover filter grayscale"
+                    className="w-full h-full object-cover filter grayscale group-hover:filter-none transition-all duration-300"
                   />
                 </div>
                 
@@ -87,12 +87,12 @@ const GeometricTeam = () => {
                 </p>
                 
                 {/* Credential */}
-                <p className="text-strategic-blue font-mono text-xs tracking-wider">
+                <p className="text-clean-white group-hover:text-strategic-blue font-mono text-xs tracking-wider opacity-80 group-hover:opacity-100 transition-all duration-300">
                   {member.credential}
                 </p>
 
                 {/* Isometric corner */}
-                <div className="absolute top-0 right-0 w-8 h-8 bg-strategic-blue transform rotate-45 translate-x-4 -translate-y-4"></div>
+                <div className="absolute top-0 right-0 w-8 h-8 bg-strategic-blue/30 group-hover:bg-strategic-blue transform rotate-45 translate-x-4 -translate-y-4 transition-colors duration-300"></div>
               </div>
             ))}
           </div>

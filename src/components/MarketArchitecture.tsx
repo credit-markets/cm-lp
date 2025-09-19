@@ -23,17 +23,13 @@ const MarketArchitecture = () => {
           {marketData.map((market, index) => (
             <div
               key={market.country}
-              className={`isometric-card bg-deep-black border-2 p-8 text-center relative overflow-hidden ${
-                market.priority ? 'border-strategic-blue' : 'border-depth-gray/30'
-              }`}
+              className="isometric-card bg-deep-black border-2 border-depth-gray/30 hover:border-strategic-blue p-8 text-center relative overflow-hidden transition-colors duration-300 group"
               style={{
                 animationDelay: `${index * 0.1}s`
               }}
             >
-              {/* Priority indicator */}
-              {market.priority && (
-                <div className="absolute top-0 left-0 w-full h-1 bg-strategic-blue"></div>
-              )}
+              {/* Hover indicator */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-strategic-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               {/* Country */}
               <h3 className="text-clean-white font-bold text-lg tracking-wider mb-4">
