@@ -14,7 +14,7 @@ const MarketArchitecture = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-section font-bold text-clean-white tracking-[0.2em] uppercase">
-            MARKET INFRASTRUCTURE
+            ON-CHAIN RWA
           </h2>
         </div>
 

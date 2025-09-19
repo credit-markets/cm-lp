@@ -8,36 +8,36 @@ const GeometricTeam = () => {
   const teamMembers = [
     {
       name: "LUCAS",
-      role: "CEO & Founder",
+      role: "CEO",
       credential: "Ex-Goldman Sachs LATAM",
       image: teamLucas,
       position: "top-left"
     },
     {
-      name: "OREN", 
-      role: "CTO & Co-Founder",
-      credential: "MIT Computer Science",
+      name: "AUBREY", 
+      role: "COO",
+      credential: "Ex-Centrifuge CFO",
       image: teamOren,
       position: "top-right"
     },
     {
       name: "RODRIGO",
-      role: "Head of Product",
-      credential: "Stanford MBA",
+      role: "CSO",
+      credential: "Iporanga Ventures",
       image: teamRodrigo,
       position: "bottom-left"
     },
     {
       name: "KAUE",
-      role: "Lead Engineer", 
-      credential: "Blockchain Specialist",
+      role: "CTO", 
+      credential: "Ex-MakerDAO RWA/CES",
       image: teamKaue,
       position: "bottom-center"
     },
     {
       name: "GABRIEL",
-      role: "Risk Management",
-      credential: "Quantitative Finance",
+      role: "CPO",
+      credential: "Ex-BTG Pactual",
       image: teamGabriel,
       position: "bottom-right"
     }
@@ -49,7 +49,7 @@ const GeometricTeam = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-section font-bold text-deep-black tracking-[0.2em] uppercase">
-            FINANCIAL ARCHITECTS
+            CORE TEAM
           </h2>
         </div>
 

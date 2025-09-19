@@ -29,7 +29,7 @@ const HeroSection = () => {
             EMPOWERING EDGE MARKETS
           </h1>
           <h2 className="text-section text-depth-gray font-light tracking-[0.3em] uppercase">
-            CREDIT ON-CHAIN
+            WITH TOKENIZED CREDIT
           </h2>
         </div>
 
