@@ -5,10 +5,9 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-deep-black overflow-hidden">
       {/* Space for Spline 3D Animation - 70% of viewport */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-full h-full max-w-5xl max-h-screen flex items-center justify-center">
-          {/* Placeholder for Spline animation */}
-          <div className="w-full h-[70vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/10 rounded-lg border border-strategic-blue/20 relative overflow-hidden">
+      <div className="absolute inset-0 flex items-center justify-center transform -translate-y-8 sm:-translate-y-10 lg:-translate-y-14">
+        <div className="w-full h-full max-w-6xl max-h-screen flex items-center justify-center">
+          <div className="w-full h-[80vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/10 rounded-lg border border-strategic-blue/20 relative overflow-hidden">
             <div className="absolute inset-0">
               <div className="w-full h-full scale-[1.3] origin-center">
                 <Spline
@@ -22,7 +21,7 @@ const HeroSection = () => {
       </div>
 
       {/* Content Overlay */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-6 transform -translate-y-8 sm:-translate-y-10 lg:-translate-y-14">
         {/* Main Headlines */}
         <div className="mb-16">
           <h1 className="text-hero font-bold text-clean-white mb-6 leading-tight tracking-wider">
@@ -49,7 +48,7 @@ const HeroSection = () => {
       <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-navy-accent/10 to-transparent transform -rotate-12 translate-x-24 -translate-y-24"></div>
       
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+      <div className="absolute bottom-11 left-1/2 transform -translate-x-1/2">
         <div className="w-px h-24 bg-gradient-to-b from-strategic-blue to-transparent"></div>
       </div>
     </section>
