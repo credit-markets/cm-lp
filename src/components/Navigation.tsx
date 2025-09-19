@@ -1,6 +1,7 @@
 import { Button } from "./ui/button";
 import cmLogoSvg from "@/assets/cm-logo.svg";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const navRef = useRef<HTMLElement | null>(null);
@@ -67,30 +68,32 @@ const Navigation = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div ref={logoWrapperRef} className="h-8 w-8">
-            <img
-              src={cmLogoSvg}
-              alt="Credit Markets"
-              className={`h-full w-full object-contain transition-all duration-150 ${useDarkLogo ? "brightness-0" : "brightness-0 invert"}`}
-            />
+            <Link to="/" aria-label="Home">
+              <img
+                src={cmLogoSvg}
+                alt="Credit Markets"
+                className={`h-full w-full object-contain transition-all duration-150 ${useDarkLogo ? "brightness-0" : "brightness-0 invert"}`}
+              />
+            </Link>
           </div>
           
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-12">
             <a 
               href="#protocol" 
-              className="text-clean-white hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase"
+              className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
               PROTOCOL
             </a>
             <a 
               href="#markets" 
-              className="text-clean-white hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase"
+              className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
               MARKETS
             </a>
             <a 
               href="#access" 
-              className="text-clean-white hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase"
+              className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
               ACCESS
             </a>
