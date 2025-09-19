@@ -9,7 +9,7 @@ const HeroSection = () => {
         <div className="w-full h-full max-w-6xl max-h-screen flex items-center justify-center">
           <div className="w-full h-[80vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/10 rounded-lg border border-strategic-blue/20 relative overflow-hidden">
             <div className="absolute inset-0">
-              <div className="w-full h-full scale-[1.3] origin-center">
+              <div className="w-full h-full scale-[1.3] origin-center opacity-80">
                 <Spline
                   className="w-full h-full"
                   scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"

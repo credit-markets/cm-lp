@@ -49,7 +49,7 @@ const GeometricTeam = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-section font-bold text-deep-black tracking-[0.2em] uppercase">
-            CORE TEAM
+            LEADERSHIP
           </h2>
         </div>
 
