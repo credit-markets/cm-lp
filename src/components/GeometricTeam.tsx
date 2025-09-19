@@ -98,7 +98,7 @@ const GeometricTeam = () => {
           </div>
 
           {/* Bottom Row */}
-          <div className="flex justify-center items-start space-x-8">
+          <div className="flex flex-wrap justify-center items-start gap-4 md:space-x-8 md:gap-0">
             {teamMembers.slice(2).map((member, index) => (
               <div
                 key={member.name}
