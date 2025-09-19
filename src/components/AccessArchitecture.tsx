@@ -23,7 +23,7 @@ const AccessArchitecture = () => {
   ];
 
   return (
-    <section id="access" className="py-24 bg-gradient-depth">
+    <section id="access" className="relative overflow-hidden py-24 bg-gradient-depth">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16">

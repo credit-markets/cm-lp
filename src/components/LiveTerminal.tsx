@@ -21,7 +21,7 @@ const LiveTerminal = () => {
   }, []);
 
   return (
-    <section className="py-24 bg-deep-black terminal-scanlines">
+    <section className="relative overflow-hidden py-24 bg-deep-black terminal-scanlines">
       <div className="container mx-auto px-6">
         {/* Terminal Header */}
         <div className="mb-12">

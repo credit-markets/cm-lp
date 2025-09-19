@@ -17,7 +17,7 @@ const Terms = () => {
           </div>
 
           {/* Content */}
-          <div className="isometric-card bg-dimensional-gray border border-depth-gray/30 p-8 space-y-8">
+          <div className="isometric-card--subtle bg-dimensional-gray border border-depth-gray/30 p-8 space-y-8">
             
             <section>
               <h2 className="text-xl font-bold text-clean-white tracking-wider mb-4 uppercase">
@@ -90,7 +90,7 @@ const Terms = () => {
 
             <div className="pt-8 border-t border-depth-gray/20">
               <p className="text-strategic-blue font-mono text-sm text-center">
-                LAST UPDATED: SEPTEMBER 2024 | VERSION 2.1
+                LAST UPDATED: SEPTEMBER 2025 | VERSION 2.1
               </p>
             </div>
           </div>

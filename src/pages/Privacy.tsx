@@ -17,7 +17,7 @@ const Privacy = () => {
           </div>
 
           {/* Content */}
-          <div className="isometric-card bg-dimensional-gray border border-depth-gray/30 p-8 space-y-8">
+          <div className="isometric-card--subtle bg-dimensional-gray border border-depth-gray/30 p-8 space-y-8">
             
             <section>
               <h2 className="text-xl font-bold text-clean-white tracking-wider mb-4 uppercase">
