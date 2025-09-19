@@ -1,4 +1,5 @@
 import { Button } from "./ui/button";
+import Spline from "@splinetool/react-spline";
 
 const HeroSection = () => {
   return (
@@ -7,14 +8,14 @@ const HeroSection = () => {
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="w-full h-full max-w-5xl max-h-screen flex items-center justify-center">
           {/* Placeholder for Spline animation */}
-          <div className="w-full h-[70vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/10 flex items-center justify-center rounded-lg border border-strategic-blue/20">
-            <div className="text-center">
-              <div className="w-24 h-24 mx-auto mb-4 bg-strategic-blue/20 rounded border border-strategic-blue/40 flex items-center justify-center">
-                <div className="w-12 h-12 bg-strategic-blue/30 rounded transform rotate-12"></div>
+          <div className="w-full h-[70vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/10 rounded-lg border border-strategic-blue/20 relative overflow-hidden">
+            <div className="absolute inset-0">
+              <div className="w-full h-full scale-[1.3] origin-center">
+                <Spline
+                  className="w-full h-full"
+                  scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"
+                />
               </div>
-              <p className="text-strategic-blue font-mono text-sm">
-                [SPLINE 3D ANIMATION PLACEHOLDER]
-              </p>
             </div>
           </div>
         </div>

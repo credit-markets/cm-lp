@@ -56,16 +56,11 @@ const GeometricTeam = () => {
         {/* Isometric Team Grid */}
         <div className="max-w-6xl mx-auto">
           {/* Top Row */}
-          <div className="flex justify-center items-center mb-12 space-x-16">
+          <div className="grid grid-cols-2 gap-4 md:flex md:justify-center md:items-center md:mb-12 md:space-x-16">
             {teamMembers.slice(0, 2).map((member, index) => (
               <div
                 key={member.name}
-                className="isometric-card bg-dimensional-gray border-2 border-depth-gray/50 hover:bg-deep-black hover:border-strategic-blue p-6 text-center group relative overflow-hidden transition-all duration-300"
-                style={{
-                  width: '280px',
-                  height: '320px',
-                  marginTop: index === 1 ? '2rem' : '0'
-                }}
+                className={`isometric-card bg-dimensional-gray border-2 border-depth-gray/50 hover:bg-deep-black hover:border-strategic-blue p-6 text-center group relative overflow-hidden transition-all duration-300 w-full h-[260px] md:w-[280px] md:h-[320px] ${index === 1 ? 'md:mt-8' : ''}`}
               >
                 {/* Portrait */}
                 <div className="w-24 h-24 mx-auto mb-4 overflow-hidden border border-clean-white bg-deep-black">
@@ -98,16 +93,11 @@ const GeometricTeam = () => {
           </div>
 
           {/* Bottom Row */}
-          <div className="flex flex-wrap justify-center items-start gap-4 md:space-x-8 md:gap-0">
+          <div className="grid grid-cols-2 gap-4 md:flex md:flex-nowrap md:justify-center md:items-start md:space-x-8 md:gap-0">
             {teamMembers.slice(2).map((member, index) => (
               <div
                 key={member.name}
-                className="isometric-card bg-dimensional-gray border-2 border-depth-gray/50 hover:bg-deep-black hover:border-strategic-blue p-6 text-center group relative overflow-hidden transition-all duration-300"
-                style={{
-                  width: '240px',
-                  height: '280px',
-                  marginTop: index === 1 ? '1rem' : index === 2 ? '2rem' : '0'
-                }}
+                className={`isometric-card bg-dimensional-gray border-2 border-depth-gray/50 hover:bg-deep-black hover:border-strategic-blue p-6 text-center group relative overflow-hidden transition-all duration-300 w-full h-[270px] md:w-[240px] md:h-[260px] ${index === 1 ? 'md:mt-4' : index === 2 ? 'md:mt-8' : ''}`}
               >
                 {/* Portrait */}
                 <div className="w-20 h-20 mx-auto mb-3 overflow-hidden border border-clean-white bg-deep-black">
