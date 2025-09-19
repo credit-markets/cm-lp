@@ -1,12 +1,16 @@
 import { Button } from "./ui/button";
 import cmLogoSvg from "@/assets/cm-logo.svg";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navigation = () => {
   const navRef = useRef<HTMLElement | null>(null);
   const logoWrapperRef = useRef<HTMLDivElement | null>(null);
   const [useDarkLogo, setUseDarkLogo] = useState(false);
+  const location = useLocation();
+  
+  // Check if we're on the main page
+  const isMainPage = location.pathname === '/';
 
   useEffect(() => {
     const navEl = navRef.current;
@@ -80,19 +84,19 @@ const Navigation = () => {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-12">
             <a 
-              href="#protocol" 
+              href={isMainPage ? "#protocol" : "/#protocol"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
               PROTOCOL
             </a>
             <a 
-              href="#markets" 
+              href={isMainPage ? "#markets" : "/#markets"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
               MARKETS
             </a>
             <a 
-              href="#access" 
+              href={isMainPage ? "#access" : "/#access"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
               ACCESS

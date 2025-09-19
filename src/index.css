@@ -133,26 +133,38 @@
   
   /* Isometric Components */
   .isometric-card {
-    transform: perspective(1000px) rotateX(10deg) rotateY(-10deg);
     box-shadow: var(--shadow-isometric);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  .isometric-card:hover {
-    transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) translateZ(20px);
-    box-shadow: var(--shadow-lifted);
+  /* Apply isometric effect only on medium screens and up */
+  @media (min-width: 768px) {
+    .isometric-card {
+      transform: perspective(1000px) rotateX(10deg) rotateY(-10deg);
+    }
+    
+    .isometric-card:hover {
+      transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) translateZ(20px);
+      box-shadow: var(--shadow-lifted);
+    }
   }
   
   /* Subtle isometric variant for improved readability */
   .isometric-card--subtle {
-    transform: perspective(10000px) rotateX(1deg) rotateY(-1deg);
     box-shadow: var(--shadow-isometric);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  .isometric-card--subtle:hover {
-    transform: perspective(7000px) rotateX(1deg) rotateY(-1deg) translateZ(3px);
-    box-shadow: var(--shadow-lifted);
+  /* Only apply isometric effect on medium screens and up */
+  @media (min-width: 768px) {
+    .isometric-card--subtle {
+      transform: perspective(10000px) rotateX(1deg) rotateY(-1deg);
+    }
+    
+    .isometric-card--subtle:hover {
+      transform: perspective(7000px) rotateX(1deg) rotateY(-1deg) translateZ(3px);
+      box-shadow: var(--shadow-lifted);
+    }
   }
   
   .terminal-scanlines {

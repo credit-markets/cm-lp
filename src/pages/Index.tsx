@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import MarketArchitecture from "@/components/MarketArchitecture";
@@ -8,6 +10,20 @@ import AccessArchitecture from "@/components/AccessArchitecture";
 import TerminalFooter from "@/components/TerminalFooter";
 
 const Index = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Handle hash navigation when component mounts or location changes
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        // Small delay to ensure the page has rendered
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [location.hash]);
   return (
     <main className="min-h-screen bg-deep-black">
       {/* Navigation */}
