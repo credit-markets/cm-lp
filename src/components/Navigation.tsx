@@ -1,6 +1,5 @@
 import { Button } from "./ui/button";
-import cmLogoWhite from "@/assets/cm-logo-white.png";
-import cmLogoBlue from "@/assets/cm-logo-blue.png";
+import cmLogoSvg from "@/assets/cm-logo.svg";
 
 const Navigation = () => {
   return (
@@ -8,16 +7,12 @@ const Navigation = () => {
       <div className="container mx-auto px-6 py-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="h-8 w-8 transition-all duration-300 group">
+          <div className="h-8 w-8">
             <img 
-              src={cmLogoWhite} 
+              src={cmLogoSvg} 
               alt="Credit Markets" 
-              className="h-full w-full object-contain opacity-100 group-hover:opacity-0 transition-opacity duration-300"
-            />
-            <img 
-              src={cmLogoBlue} 
-              alt="Credit Markets" 
-              className="h-full w-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute top-0 left-0"
+              className="h-full w-full object-contain invert transition-all duration-300 hover:invert-0 hover:brightness-0 hover:saturate-100"
+              style={{ filter: 'invert(1) brightness(100) saturate(0)' }}
             />
           </div>
           

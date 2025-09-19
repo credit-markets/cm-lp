@@ -95,7 +95,7 @@ const ProtocolLayers = () => {
 
           {/* Data Flow Indicators */}
           <div className="mt-16 flex justify-center">
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col items-center space-y-4">
               <div className="text-deep-black font-mono text-sm tracking-wider">
                 DATA ARCHITECTURE
               </div>
@@ -108,6 +108,9 @@ const ProtocolLayers = () => {
                   ></div>
                 ))}
               </div>
+              <button className="px-6 py-2 border border-deep-black text-deep-black font-mono text-sm tracking-wider uppercase hover:bg-deep-black hover:text-clean-white transition-all duration-300">
+                READ MORE
+              </button>
             </div>
           </div>
         </div>

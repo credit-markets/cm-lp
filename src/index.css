@@ -182,6 +182,11 @@
     51%, 100% { opacity: 0; }
   }
   
+  @keyframes orbit {
+    0% { transform: rotate(0deg) translateX(160px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
+  }
+  
   /* Isometric Grid Background */
   .isometric-grid {
     background-image: 

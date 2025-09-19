@@ -98,9 +98,15 @@ const AccessArchitecture = () => {
               </div>
             </div>
             
-            <Button variant="access" size="hero" className="min-w-[300px]">
-              INITIATE ACCESS
-            </Button>
+            <div className="relative">
+              <Button variant="access" size="hero" className="min-w-[300px] relative z-10">
+                INITIATE ACCESS
+              </Button>
+              {/* Animated orbital highlight */}
+              <div className="absolute inset-0 rounded-lg">
+                <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-strategic-blue rounded-full animate-orbit -translate-x-1/2 -translate-y-1/2"></div>
+              </div>
+            </div>
 
             {/* Requirements */}
             <div className="mt-8 text-depth-gray font-mono text-sm">

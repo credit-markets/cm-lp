@@ -108,6 +108,10 @@ export default {
         "terminal-type": {
           "0%": { width: "0" },
           "100%": { width: "100%" }
+        },
+        "orbit": {
+          "0%": { transform: "rotate(0deg) translateX(160px) rotate(0deg)" },
+          "100%": { transform: "rotate(360deg) translateX(160px) rotate(-360deg)" }
         }
       },
       animation: {
@@ -117,6 +121,7 @@ export default {
         "scanlines": "scanlines 2s linear infinite",
         "data-flow": "data-flow 3s ease-in-out infinite",
         "terminal-type": "terminal-type 2s steps(20) infinite",
+        "orbit": "orbit 3s linear infinite",
       },
     },
   },
