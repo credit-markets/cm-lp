@@ -1,5 +1,5 @@
 import teamLucas from "@/assets/team-lucas.jpg";
-import teamOren from "@/assets/team-oren.jpg";
+import teamAubry from "@/assets/team-aubry.jpg";
 import teamRodrigo from "@/assets/team-rodrigo.jpg";
 import teamKaue from "@/assets/team-kaue.jpg";
 import teamGabriel from "@/assets/team-gabriel.jpg";
@@ -17,7 +17,7 @@ const GeometricTeam = () => {
       name: "AUBREY", 
       role: "COO",
       credential: "Ex-Centrifuge CFO",
-      image: teamOren,
+      image: teamAubry,
       position: "top-right"
     },
     {
