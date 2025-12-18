@@ -39,8 +39,11 @@ const MarketArchitecture = () => {
                    </p>
                 </div>
                 <div className="bg-deep-black/30 p-4 rounded-sm border-l-2 border-depth-gray/30">
-                   <p className="text-depth-gray italic">
+                   <p className="text-depth-gray italic mb-3">
                      "Local credit originators lack access to a broader investor base, while global investors struggle to deploy capital efficiently."
+                   </p>
+                   <p className="text-strategic-blue font-mono text-xs uppercase tracking-wider">
+                     — Lucas Brito, CEO
                    </p>
                 </div>
               </div>
