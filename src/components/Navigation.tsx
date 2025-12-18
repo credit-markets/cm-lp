@@ -84,16 +84,16 @@ const Navigation = () => {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-12">
             <a 
-              href={isMainPage ? "#protocol" : "/#protocol"}
+              href={isMainPage ? "#vision" : "/#vision"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
-              PROTOCOL
+              VISION
             </a>
             <a 
-              href={isMainPage ? "#markets" : "/#markets"}
+              href={isMainPage ? "#solution" : "/#solution"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
-              MARKETS
+              SOLUTION
             </a>
             <a 
               href={isMainPage ? "#access" : "/#access"}

@@ -9,21 +9,21 @@ const GeometricTeam = () => {
     {
       name: "LUCAS",
       role: "CEO",
-      credential: "Ex-Goldman Sachs LATAM",
+      credential: "Ex-Moore",
       image: teamLucas,
       position: "top-left"
     },
     {
       name: "AUBREY", 
       role: "COO",
-      credential: "Ex-Centrifuge CFO",
+      credential: "Ex-Centrifuge VP of Finance and Operations",
       image: teamAubry,
       position: "top-right"
     },
     {
       name: "RODRIGO",
       role: "CSO",
-      credential: "Iporanga Ventures",
+      credential: "Ex-Iporanga Ventures Associate",
       image: teamRodrigo,
       position: "bottom-left"
     },
@@ -130,33 +130,7 @@ const GeometricTeam = () => {
           </div>
         </div>
 
-        {/* Team Stats */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="text-center">
-            <div className="text-data font-mono text-deep-black mb-2">
-              50+
-            </div>
-            <div className="text-depth-gray text-sm tracking-wider uppercase">
-              YEARS COMBINED EXP
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-data font-mono text-deep-black mb-2">
-              $2B+
-            </div>
-            <div className="text-depth-gray text-sm tracking-wider uppercase">
-              ASSETS MANAGED
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-data font-mono text-deep-black mb-2">
-              15+
-            </div>
-            <div className="text-depth-gray text-sm tracking-wider uppercase">
-              COUNTRIES SERVED
-            </div>
-          </div>
-        </div>
+
       </div>
     </section>
   );

@@ -30,16 +30,21 @@ const HeroSection = () => {
           <h2 className="text-section text-depth-gray font-light tracking-[0.3em] uppercase">
             WITH TOKENIZED CREDIT
           </h2>
+          <p className="text-muted-foreground text-lg sm:text-xl font-medium max-w-2xl mx-auto mt-6 leading-relaxed">
+            Institutional access to asset-backed private credit in emerging markets
+          </p>
         </div>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
           <Button variant="hero" size="hero" className="min-w-[200px]">
-            APP
+            Request Access
           </Button>
-          <Button variant="outline" size="hero" className="min-w-[200px]">
-            MORE
-          </Button>
+          <a href="https://t.me/lucastobritto" target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" size="hero" className="min-w-[200px]">
+              Speak with the Team
+            </Button>
+          </a>
         </div>
       </div>
 
