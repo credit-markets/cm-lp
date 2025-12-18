@@ -5,9 +5,19 @@ export const config = {
 };
 
 export default async function handler(request: Request) {
-    // CORS headers
+    // Get request origin
+    const origin = request.headers.get('origin') || '';
+    const allowedOrigins = [
+        'https://credit.markets',
+        'https://www.credit.markets',
+        'https://dev.credit.markets',
+        'http://localhost:8080',
+        'http://localhost:3000'
+    ];
+
+    // Set CORS headers
     const headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : 'https://credit.markets',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json',
