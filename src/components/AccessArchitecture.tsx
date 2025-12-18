@@ -67,13 +67,6 @@ const AccessArchitecture = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-clean-white mb-2">Request Received</h3>
                 <p className="text-depth-gray">We'll be in touch shortly.</p>
-                <Button 
-                  onClick={() => setIsSuccess(false)}
-                  variant="outline" 
-                  className="mt-8 border-depth-gray/30 hover:bg-white/5"
-                >
-                  Send another request
-                </Button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
