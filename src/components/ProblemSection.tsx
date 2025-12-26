@@ -1,86 +1,116 @@
+import { motion } from "framer-motion";
+
 const ProblemSection = () => {
   return (
-    <section className="py-24 bg-deep-black relative overflow-hidden">
-      <div className="container mx-auto px-6">
-        {/* Section Header */}
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <h2 className="text-section font-bold text-clean-white tracking-[0.2em] uppercase mb-6">
-            THE PROBLEM
-          </h2>
-          <h3 className="text-3xl md:text-5xl font-bold text-clean-white leading-tight max-w-4xl mx-auto">
-            Capital is abundant, but market infrastructure is broken
-          </h3>
-        </div>
+    <section id="problem" className="py-24 bg-deep-black relative overflow-hidden">
+      {/* Tech Grid Background (Subtle) */}
+      <div className="absolute inset-0 opacity-[0.05]" 
+           style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+      </div>
 
-        {/* Split Content with Tech Cards */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+      {/* Red Ambient Glow (Subtle Warning) */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-red-900/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
           
-          {/* Connector Line (Desktop) */}
-          <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-            <div className="w-10 h-10 bg-deep-black border border-depth-gray rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-depth-gray"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          {/* Left Column: Narrative (Restored Copy) */}
+          <div className="flex-1 space-y-12 z-10">
+             <div>
+              <h2 className="text-section font-bold text-depth-gray tracking-[0.2em] uppercase mb-4">
+                THE PROBLEM
+              </h2>
+              <h3 className="text-3xl md:text-5xl font-bold text-clean-white leading-tight mb-6">
+                A paradox of liquidity.
+              </h3>
+              <p className="text-xl text-depth-gray leading-relaxed font-light mb-12">
+                Useable capital is abundant, yet the infrastructure to deploy it safely is missing.
+              </p>
+              
+              {/* Borrowers Block */}
+              <div className="mb-8 group">
+                <div className="flex items-center gap-4 mb-3">
+                   <div className="w-10 h-10 rounded-full bg-deep-black border border-red-500/30 flex items-center justify-center text-red-500">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                   </div>
+                   <h3 className="text-2xl md:text-3xl font-bold text-clean-white leading-tight group-hover:text-red-500 transition-colors duration-300">
+                    Local Borrowers
+                   </h3>
+                </div>
+                <p className="text-lg text-depth-gray leading-relaxed font-light pl-[3.5rem] mb-4">
+                  Restrained by prohibitive costs and reliance on domestic banking monopolies.
+                </p>
+                <div className="pl-[3.5rem] flex gap-4">
+                   <span className="text-xs font-mono text-red-400 py-1 px-2 bg-red-900/10 border border-red-900/20 rounded-sm">Limited Global Access</span>
+                   <span className="text-xs font-mono text-red-400 py-1 px-2 bg-red-900/10 border border-red-900/20 rounded-sm">High Duration Risk</span>
+                </div>
+              </div>
+
+              {/* Investors Block */}
+              <div className="group">
+                <div className="flex items-center gap-4 mb-3">
+                   <div className="w-10 h-10 rounded-full bg-deep-black border border-red-500/30 flex items-center justify-center text-red-500">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                   </div>
+                   <h3 className="text-2xl md:text-3xl font-bold text-clean-white leading-tight group-hover:text-red-500 transition-colors duration-300">
+                    Global Investors
+                   </h3>
+                </div>
+                <p className="text-lg text-depth-gray leading-relaxed font-light pl-[3.5rem] mb-4">
+                  Blocked by operational opacity and jurisdictional uncertainty.
+                </p>
+                <div className="pl-[3.5rem] flex flex-wrap gap-2">
+                   <span className="text-xs font-mono text-red-400 py-1 px-2 bg-red-900/10 border border-red-900/20 rounded-sm">Credit Quality Opacity</span>
+                   <span className="text-xs font-mono text-red-400 py-1 px-2 bg-red-900/10 border border-red-900/20 rounded-sm">Collateral Enforceability</span>
+                </div>
+              </div>
+
             </div>
           </div>
 
-          {/* Borrowers Side */}
-          <div className="group bg-dimensional-gray/30 backdrop-blur-md p-10 rounded-sm border border-depth-gray/20 hover:border-strategic-blue/30 transition-all duration-500 relative overflow-hidden">
-            {/* Hover Glow */}
-            <div className="absolute inset-0 bg-strategic-blue/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-            
-            <div className="w-12 h-12 bg-deep-black rounded-sm border border-depth-gray/30 flex items-center justify-center mb-8 group-hover:border-strategic-blue/50 transition-colors relative z-10">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-strategic-blue"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
-            </div>
-            <h4 className="text-2xl font-bold text-clean-white mb-4 tracking-wide relative z-10">
-              Local Borrowers
-            </h4>
-            <p className="text-lg text-depth-gray leading-relaxed mb-6 relative z-10">
-              Restrained by <span className="text-clean-white font-medium border-b border-strategic-blue/50">prohibitive costs</span> and short-term structures.
-            </p>
-            <ul className="space-y-3 text-depth-gray/80 relative z-10">
-              <li className="flex items-center"><span className="w-1.5 h-1.5 bg-red-500/50 rounded-full mr-3"></span>Limited access to global liquidity</li>
-              <li className="flex items-center"><span className="w-1.5 h-1.5 bg-red-500/50 rounded-full mr-3"></span>Reliance on domestic banking monopolies</li>
-            </ul>
+          {/* Right Column: The "Friction" Visual */}
+          <div className="flex-1 relative w-full aspect-square md:aspect-auto md:h-[600px] flex items-center justify-center">
+             
+             {/* The Rift (Barrier) */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-[300px] bg-gradient-to-b from-transparent via-red-500/50 to-transparent blur-sm animate-pulse z-20"></div>
+
+             {/* Orbital Ring 1 (Capital - Left) */}
+             <div className="absolute top-1/2 left-[35%] -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] border border-depth-gray/20 rounded-full animate-[spin_40s_linear_infinite]">
+                {/* Node on Ring */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-3 h-3 bg-clean-white rounded-full shadow-[0_0_10px_white]"></div>
+             </div>
+
+             {/* Orbital Ring 2 (Originators - Right) */}
+             <div className="absolute top-1/2 right-[35%] translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] border border-depth-gray/20 rounded-full animate-[spin_50s_linear_infinite_reverse]">
+                {/* Node on Ring */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-2 w-3 h-3 bg-clean-white rounded-full shadow-[0_0_10px_white]"></div>
+             </div>
+
+             {/* Friction Particles (Failing to connect) */}
+             <motion.div 
+               animate={{ opacity: [0, 1, 0], x: [0, 40, 60] }}
+               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+               className="absolute top-1/2 left-[35%] w-2 h-[1px] bg-red-400"
+             ></motion.div>
+              <motion.div 
+               animate={{ opacity: [0, 1, 0], x: [0, -40, -60] }}
+               transition={{ duration: 2.5, repeat: Infinity, ease: "linear", delay: 0.5 }}
+               className="absolute top-[45%] right-[35%] w-2 h-[1px] bg-red-400"
+             ></motion.div>
+
+             {/* Label: Capital */}
+             <div className="absolute top-[30%] left-[20%] text-right">
+                <div className="text-xs font-mono text-depth-gray mb-1">GLOBAL CAPITAL</div>
+                <div className="h-[1px] w-12 bg-depth-gray/30 ml-auto"></div>
+             </div>
+
+             {/* Label: Originators */}
+             <div className="absolute bottom-[30%] right-[20%] text-left">
+                <div className="text-xs font-mono text-depth-gray mb-1">LOCAL ORIGINATORS</div>
+                <div className="h-[1px] w-12 bg-depth-gray/30 mr-auto"></div>
+             </div>
           </div>
 
-          {/* Investors Side */}
-          <div className="group bg-dimensional-gray/30 backdrop-blur-md p-10 rounded-sm border border-depth-gray/20 hover:border-strategic-blue/30 transition-all duration-500 relative overflow-hidden">
-             {/* Hover Glow */}
-            <div className="absolute inset-0 bg-strategic-blue/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
-             <div className="w-12 h-12 bg-deep-black rounded-sm border border-depth-gray/30 flex items-center justify-center mb-8 group-hover:border-strategic-blue/50 transition-colors relative z-10">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-strategic-blue"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            </div>
-            <h4 className="text-2xl font-bold text-clean-white mb-4 tracking-wide relative z-10">
-              Global Investors
-            </h4>
-            <p className="text-lg text-depth-gray leading-relaxed mb-6 relative z-10">
-              Blocked by <span className="text-clean-white font-medium border-b border-strategic-blue/50">operational opacity</span> and risk uncertainty.
-            </p>
-            <ul className="space-y-3 relative z-10">
-              {[
-                "Credit quality & underwriting standards",
-                "Collateral enforceability",
-                "FX exposure & cross-border friction"
-              ].map((item, i) => (
-                <li key={i} className="flex items-start text-depth-gray/80">
-                  <span className="w-1.5 h-1.5 bg-strategic-blue rounded-full mr-3 mt-2"></span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-        </div>
-
-        {/* Closing Thesis */}
-        <div className="mt-24 text-center max-w-3xl mx-auto">
-           <h3 className="text-2xl md:text-3xl font-light text-clean-white mb-4">
-             A paradox of liquidity.
-           </h3>
-           <p className="text-xl text-depth-gray">
-             Useable capital is abundant, yet the <span className="text-clean-white">infrastructure to deploy it safely</span> is missing.
-           </p>
         </div>
       </div>
     </section>
@@ -88,3 +118,4 @@ const ProblemSection = () => {
 };
 
 export default ProblemSection;
+
