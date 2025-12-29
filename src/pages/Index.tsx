@@ -1,16 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import VisionSection from "@/components/VisionSection";
-import MarketArchitecture from "@/components/MarketArchitecture";
-import ProblemSection from "@/components/ProblemSection";
-import SolutionSection from "@/components/SolutionSection";
-import ValueFlowSection from "@/components/ValueFlowSection";
-import LegalStructureSection from "@/components/LegalStructureSection";
-import GeometricTeam from "@/components/GeometricTeam";
-import AccessArchitecture from "@/components/AccessArchitecture";
-import TerminalFooter from "@/components/TerminalFooter";
+
+// Lazy load below-the-fold components
+const MarketArchitecture = lazy(() => import("@/components/MarketArchitecture"));
+const ProblemSection = lazy(() => import("@/components/ProblemSection"));
+const SolutionSection = lazy(() => import("@/components/SolutionSection"));
+const ValueFlowSection = lazy(() => import("@/components/ValueFlowSection"));
+const LegalStructureSection = lazy(() => import("@/components/LegalStructureSection"));
+const GeometricTeam = lazy(() => import("@/components/GeometricTeam"));
+const AccessArchitecture = lazy(() => import("@/components/AccessArchitecture"));
+const TerminalFooter = lazy(() => import("@/components/TerminalFooter"));
 
 const Index = () => {
   const location = useLocation();
@@ -38,29 +40,31 @@ const Index = () => {
       {/* 2. Our Vision */}
       <VisionSection />
       
-      {/* 3. The Opportunity (Market) */}
-      <MarketArchitecture />
+      <Suspense fallback={<div className="min-h-[50vh]" />}>
+        {/* 3. The Opportunity (Market) */}
+        <MarketArchitecture />
 
-      {/* 4. The Problem */}
-      <ProblemSection />
-      
-      {/* 5. Our Approach (Solution) */}
-      <SolutionSection />
+        {/* 4. The Problem */}
+        <ProblemSection />
+        
+        {/* 5. Our Approach (Solution) */}
+        <SolutionSection />
 
-      {/* 6. How Value Is Created */}
-      <ValueFlowSection />
+        {/* 6. How Value Is Created */}
+        <ValueFlowSection />
 
-      {/* 8. Structure & Compliance */}
-      <LegalStructureSection />
-      
-      {/* Team Section (Kept as extra) */}
-      <GeometricTeam />
-      
-      {/* Access Flow (Kept as extra) */}
-      <AccessArchitecture />
-      
-      {/* Footer */}
-      <TerminalFooter />
+        {/* 8. Structure & Compliance */}
+        <LegalStructureSection />
+        
+        {/* Team Section (Kept as extra) */}
+        <GeometricTeam />
+        
+        {/* Access Flow (Kept as extra) */}
+        <AccessArchitecture />
+        
+        {/* Footer */}
+        <TerminalFooter />
+      </Suspense>
     </main>
   );
 };

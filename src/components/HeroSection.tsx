@@ -1,5 +1,7 @@
 import { Button } from "./ui/button";
-import Spline from "@splinetool/react-spline";
+import { lazy, Suspense } from "react";
+
+const Spline = lazy(() => import("@splinetool/react-spline"));
 
 const HeroSection = () => {
   return (
@@ -10,10 +12,12 @@ const HeroSection = () => {
           <div className="w-full h-[80vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/10 rounded-lg border border-strategic-blue/20 relative overflow-hidden">
             <div className="absolute inset-0">
               <div className="w-full h-full scale-[1.3] origin-center opacity-80">
-                <Spline
-                  className="w-full h-full"
-                  scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"
-                />
+                <Suspense fallback={<div className="w-full h-full bg-deep-black/50" />}>
+                  <Spline
+                    className="w-full h-full"
+                    scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"
+                  />
+                </Suspense>
               </div>
             </div>
           </div>

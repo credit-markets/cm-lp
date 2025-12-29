@@ -103,6 +103,7 @@ const GeometricTeam = () => {
                       <img 
                         src={member.image} 
                         alt={member.name} 
+                        loading="lazy"
                         className="w-full h-full object-cover filter grayscale group-hover:filter-none transition-all duration-300" 
                       />
                     </div>
