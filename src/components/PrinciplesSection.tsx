@@ -328,8 +328,8 @@ const PrincipleNode = ({
             <div
               className={`relative w-3.5 h-3.5 md:w-5 md:h-5 rounded-full transition-all duration-300 ${
                 isActive
-                  ? 'bg-strategic-blue shadow-[0_0_25px_rgba(59,130,246,1),0_0_40px_rgba(59,130,246,0.5)]'
-                  : 'bg-clean-white shadow-[0_0_12px_white]'
+                  ? 'bg-strategic-blue'
+                  : 'bg-clean-white'
               }`}
               style={{
                 animation: !isActive ? `twinkle-${index} ${4 + twinkleDelay}s ease-in-out ${twinkleDelay}s infinite` : 'none'

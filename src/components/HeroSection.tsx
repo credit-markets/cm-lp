@@ -29,10 +29,10 @@ const HeroSection = () => {
         {/* Main Headlines */}
         <div className="mb-12 md:mb-16">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-clean-white mb-6 leading-tight tracking-wider">
-            SHORT-DURATION TOKENIZED CREDIT
+            SHORT-DURATION EMERGING MARKET CREDIT
           </h1>
-          <h2 className="text-sm sm:text-lg md:text-xl text-depth-gray font-light tracking-[0.15em] md:tracking-[0.2em]">
-            Institutional access to asset-backed private credit in emerging markets
+          <h2 className="text-sm sm:text-lg md:text-xl text-clean-white/70 font-light tracking-[0.15em] md:tracking-[0.2em]">
+            Institutional access to tokenized asset-backed private credit in LATAM
           </h2>
         </div>
 
