@@ -21,7 +21,7 @@ const valueProps = [
 
 const ValueFlowSection = () => {
   return (
-    <section id="value" className="py-24 bg-deep-black relative overflow-hidden">
+    <section id="value" className="py-24 bg-dimensional-gray relative overflow-hidden">
       {/* Tech Grid Background */}
       <div className="absolute inset-0 opacity-[0.05]" 
            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>

@@ -28,15 +28,12 @@ const HeroSection = () => {
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6 transform -translate-y-8 sm:-translate-y-10 lg:-translate-y-14">
         {/* Main Headlines */}
         <div className="mb-12 md:mb-16">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-clean-white mb-4 md:mb-6 leading-tight tracking-wider">
-            EMPOWERING EDGE MARKETS
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-clean-white mb-6 leading-tight tracking-wider">
+            SHORT-DURATION TOKENIZED CREDIT
           </h1>
-          <h2 className="text-sm sm:text-lg md:text-xl text-depth-gray font-light tracking-[0.2em] md:tracking-[0.3em] uppercase">
-            WITH TOKENIZED CREDIT
-          </h2>
-          <p className="text-muted-foreground text-base sm:text-lg md:text-xl font-medium max-w-2xl mx-auto mt-6 leading-relaxed px-4">
+          <h2 className="text-sm sm:text-lg md:text-xl text-depth-gray font-light tracking-[0.15em] md:tracking-[0.2em]">
             Institutional access to asset-backed private credit in emerging markets
-          </p>
+          </h2>
         </div>
 
         {/* CTAs */}

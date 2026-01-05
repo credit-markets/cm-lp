@@ -7,14 +7,17 @@ const MarketArchitecture = () => {
           {/* Left Column: Narrative */}
           <div className="flex-1 space-y-8 z-10">
             <div>
-              <h2 className="text-section font-bold text-clean-white tracking-[0.2em] uppercase mb-4">
+            <h2 className="text-section font-bold text-depth-gray tracking-[0.2em] uppercase mb-4">
                 THE OPPORTUNITY
-              </h2>
+            </h2>
               <h3 className="text-3xl md:text-5xl font-bold text-clean-white leading-tight mb-6">
-                A structural credit gap in Latin America
+                A paradox of liquidity
               </h3>
+              <p className="text-xl text-depth-gray leading-relaxed font-light mb-8">
+                Useable capital is abundant, yet the infrastructure to deploy it safely is missing.
+              </p>
               <p className="text-xl text-depth-gray leading-relaxed font-light">
-                Small and medium-sized businesses across Latin America face a persistent shortage of affordable credit, despite strong underlying economic activity and asset generation.
+                We bridge this gap by connecting high-grade, short-term receivables with institutional capital through a transparent, compliant infrastructure.
               </p>
             </div>
 

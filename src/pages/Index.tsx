@@ -2,11 +2,10 @@ import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
-import VisionSection from "@/components/VisionSection";
+import PrinciplesSection from "@/components/PrinciplesSection";
 
 // Lazy load below-the-fold components
 const MarketArchitecture = lazy(() => import("@/components/MarketArchitecture"));
-const ProblemSection = lazy(() => import("@/components/ProblemSection"));
 const SolutionSection = lazy(() => import("@/components/SolutionSection"));
 const ValueFlowSection = lazy(() => import("@/components/ValueFlowSection"));
 const LegalStructureSection = lazy(() => import("@/components/LegalStructureSection"));
@@ -37,29 +36,26 @@ const Index = () => {
       {/* 1. Hero Section */}
       <HeroSection />
 
-      {/* 2. Our Vision */}
-      <VisionSection />
+      {/* 2. Principles Section (New) */}
+      <PrinciplesSection />
       
       <Suspense fallback={<div className="min-h-[50vh]" />}>
         {/* 3. The Opportunity (Market) */}
         <MarketArchitecture />
-
-        {/* 4. The Problem */}
-        <ProblemSection />
         
-        {/* 5. Our Approach (Solution) */}
+        {/* 4. Our Approach (Solution) */}
         <SolutionSection />
 
-        {/* 6. How Value Is Created */}
+        {/* 5. How Value Is Created */}
         <ValueFlowSection />
 
-        {/* 8. Structure & Compliance */}
+        {/* 7. Structure & Compliance */}
         <LegalStructureSection />
         
-        {/* Team Section (Kept as extra) */}
+        {/* Team Section */}
         <GeometricTeam />
         
-        {/* Access Flow (Kept as extra) */}
+        {/* Access Flow */}
         <AccessArchitecture />
         
         {/* Footer */}

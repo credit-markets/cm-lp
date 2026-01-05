@@ -47,47 +47,19 @@ const GeometricTeam = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
           
-          {/* Left Column: Visual "The Constellation" (Blueprint Style) */}
-          <div className="flex-1 relative w-full h-[600px] hidden lg:flex items-center justify-center">
-             
-             {/* The Network Visual */}
-             <div className="relative w-[500px] h-[500px]">
-                {/* Connecting Lines (Darker for White BG) */}
-                <svg className="absolute inset-0 w-full h-full">
-                   <motion.line x1="50%" y1="50%" x2="20%" y2="20%" stroke="#3B82F6" strokeWidth="1.5" strokeOpacity="0.3" animate={{ strokeOpacity: [0.2, 0.6, 0.2] }} transition={{ duration: 4, repeat: Infinity }} />
-                   <motion.line x1="50%" y1="50%" x2="80%" y2="20%" stroke="#3B82F6" strokeWidth="1.5" strokeOpacity="0.3" animate={{ strokeOpacity: [0.2, 0.6, 0.2] }} transition={{ duration: 5, repeat: Infinity, delay: 1 }} />
-                   <motion.line x1="50%" y1="50%" x2="20%" y2="80%" stroke="#3B82F6" strokeWidth="1.5" strokeOpacity="0.3" animate={{ strokeOpacity: [0.2, 0.6, 0.2] }} transition={{ duration: 3, repeat: Infinity, delay: 0.5 }} />
-                   <motion.line x1="50%" y1="50%" x2="80%" y2="80%" stroke="#3B82F6" strokeWidth="1.5" strokeOpacity="0.3" animate={{ strokeOpacity: [0.2, 0.6, 0.2] }} transition={{ duration: 6, repeat: Infinity, delay: 1.5 }} />
-                   <motion.circle cx="50%" cy="50%" r="200" stroke="#E5E7EB" strokeWidth="2" strokeDasharray="4 4" fill="none" animate={{ rotate: 360 }} transition={{ duration: 60, ease: "linear", repeat: Infinity }} style={{ originX: "50%", originY: "50%" }} />
-                </svg>
-
-                {/* Central Node */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-strategic-blue rounded-full shadow-lg"></div>
-
-                {/* Orbiting Nodes */}
-                <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="absolute inset-0">
-                   <div className="absolute top-0 left-1/2 w-3 h-3 bg-deep-black rounded-full border border-white"></div>
-                </motion.div>
-                <motion.div animate={{ rotate: -360 }} transition={{ duration: 50, repeat: Infinity, ease: "linear" }} className="absolute inset-[10%]">
-                   <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-depth-gray rounded-full"></div>
-                </motion.div>
-             </div>
-             
-             <div className="absolute bottom-12 left-12">
-                <h2 className="text-4xl md:text-5xl font-bold text-deep-black uppercase tracking-widest">
+          {/* Left Column: Header (was Visual) */}
+          <div className="flex-1 flex items-center justify-center lg:justify-start">
+             <div className="text-left">
+                <h2 className="text-4xl md:text-5xl font-bold text-deep-black uppercase tracking-widest mb-4">
                   LEADERSHIP
                 </h2>
+                <div className="w-24 h-1 bg-strategic-blue"></div>
              </div>
-
           </div>
 
           {/* Right Column: Team Grid (Isometric Cards on White) */}
           <div className="flex-1 space-y-12 z-10 w-full">
-            <div className="lg:hidden text-center mb-8">
-               <h2 className="text-section font-bold text-deep-black tracking-[0.2em] uppercase">
-                LEADERSHIP
-              </h2>
-            </div>
+
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {teamMembers.map((member, index) => (

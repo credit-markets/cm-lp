@@ -26,7 +26,7 @@ const pillars = [
 
 const SolutionSection = () => {
   return (
-    <section id="solution" className="py-24 bg-dimensional-gray relative overflow-hidden">
+    <section id="solution" className="py-24 bg-deep-black relative overflow-hidden">
       {/* Tech Grid Background */}
       <div className="absolute inset-0 opacity-[0.05]" 
            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
@@ -99,6 +99,11 @@ const SolutionSection = () => {
               <p className="text-xl text-depth-gray leading-relaxed font-light">
                 Credit Markets addresses these challenges through a disciplined, institution-first approach to private credit distribution.
               </p>
+              <div className="mt-8">
+                 <button className="px-6 py-3 bg-strategic-blue/10 border border-strategic-blue/50 text-strategic-blue text-sm font-bold uppercase tracking-wider rounded-sm hover:bg-strategic-blue hover:text-white transition-all duration-300">
+                   View Documentation
+                 </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 gap-6">
