@@ -84,10 +84,10 @@ const Navigation = () => {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-12">
             <a
-              href={isMainPage ? "#vision" : "/#vision"}
+              href={isMainPage ? "#principles" : "/#principles"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
-              VISION
+              PRINCIPLES
             </a>
             <a
               href={isMainPage ? "#solution" : "/#solution"}
