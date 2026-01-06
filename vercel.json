@@ -1,0 +1,13 @@
+{
+    "buildCommand": "npm run build",
+    "installCommand": "npm install",
+    "devCommand": "vite",
+    "framework": null,
+    "outputDirectory": "dist",
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "/api/:path*"
+        }
+    ]
+}

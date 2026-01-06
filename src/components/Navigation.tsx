@@ -53,7 +53,7 @@ const Navigation = () => {
     };
 
     const onScroll = () => {
-      // Use rAF to avoid jank
+      if (window.innerWidth < 768) return; 
       requestAnimationFrame(checkBackground);
     };
 
@@ -68,10 +68,10 @@ const Navigation = () => {
 
   return (
     <nav ref={navRef} className="sticky top-0 z-50 bg-transparent">
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-6 py-4 md:py-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div ref={logoWrapperRef} className="h-8 w-8">
+          <div ref={logoWrapperRef} className="h-10 w-10 md:h-8 md:w-8">
             <Link to="/" aria-label="Home">
               <img
                 src={cmLogoSvg}
@@ -80,22 +80,22 @@ const Navigation = () => {
               />
             </Link>
           </div>
-          
+
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-12">
-            <a 
-              href={isMainPage ? "#protocol" : "/#protocol"}
+            <a
+              href={isMainPage ? "#principles" : "/#principles"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
-              PROTOCOL
+              PRINCIPLES
             </a>
-            <a 
-              href={isMainPage ? "#markets" : "/#markets"}
+            <a
+              href={isMainPage ? "#solution" : "/#solution"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >
-              MARKETS
+              SOLUTION
             </a>
-            <a 
+            <a
               href={isMainPage ? "#access" : "/#access"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >

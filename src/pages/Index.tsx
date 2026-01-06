@@ -1,13 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
-import MarketArchitecture from "@/components/MarketArchitecture";
-import ProtocolLayers from "@/components/ProtocolLayers";
-import LiveTerminal from "@/components/LiveTerminal";
-import GeometricTeam from "@/components/GeometricTeam";
-import AccessArchitecture from "@/components/AccessArchitecture";
-import TerminalFooter from "@/components/TerminalFooter";
+import PrinciplesSection from "@/components/PrinciplesSection";
+
+// Lazy load below-the-fold components
+const MarketArchitecture = lazy(() => import("@/components/MarketArchitecture"));
+const SolutionSection = lazy(() => import("@/components/SolutionSection"));
+const ValueFlowSection = lazy(() => import("@/components/ValueFlowSection"));
+const LegalStructureSection = lazy(() => import("@/components/LegalStructureSection"));
+const GeometricTeam = lazy(() => import("@/components/GeometricTeam"));
+const AccessArchitecture = lazy(() => import("@/components/AccessArchitecture"));
+const TerminalFooter = lazy(() => import("@/components/TerminalFooter"));
 
 const Index = () => {
   const location = useLocation();
@@ -17,38 +21,43 @@ const Index = () => {
     if (location.hash) {
       const element = document.getElementById(location.hash.substring(1));
       if (element) {
-        // Small delay to ensure the page has rendered
-        setTimeout(() => {
+        // Use requestAnimationFrame for smoother integration with CSS smooth scroll
+        requestAnimationFrame(() => {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        });
       }
     }
   }, [location.hash]);
+
   return (
     <main className="min-h-screen bg-deep-black">
       {/* Navigation */}
       <Navigation />
       
-      {/* Hero Section with Spline Animation Space */}
+      {/* 1. Hero Section */}
       <HeroSection />
+
+      {/* 2. Principles Section */}
+      <PrinciplesSection />
       
-      {/* Market Infrastructure */}
-      <MarketArchitecture />
+      {/* Heavy core architecture components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
+        <MarketArchitecture />
+        <SolutionSection />
+      </Suspense>
+
+      {/* Secondary narrative components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
+        <ValueFlowSection />
+        <LegalStructureSection />
+      </Suspense>
       
-      {/* Protocol Architecture */}
-      <ProtocolLayers />
-      
-      {/* Live Terminal */}
-      <LiveTerminal />
-      
-      {/* Team Section */}
-      <GeometricTeam />
-      
-      {/* Access Flow */}
-      <AccessArchitecture />
-      
-      {/* Footer */}
-      <TerminalFooter />
+      {/* Team & Conversion components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
+        <GeometricTeam />
+        <AccessArchitecture />
+        <TerminalFooter />
+      </Suspense>
     </main>
   );
 };
