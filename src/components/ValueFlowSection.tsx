@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { TrendingUp, Globe, Building2 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const valueProps = [
   {
@@ -20,15 +21,18 @@ const valueProps = [
 ];
 
 const ValueFlowSection = () => {
+  const isMobile = useIsMobile();
+
   return (
-    <section id="value" className="py-24 bg-deep-black relative overflow-hidden">
+    <section id="value" className="py-24 bg-dimensional-gray relative overflow-hidden">
       {/* Tech Grid Background */}
       <div className="absolute inset-0 opacity-[0.05]" 
            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
       </div>
 
-       {/* Central Blue/White Glow */}
-       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-strategic-blue/5 rounded-full blur-[120px] pointer-events-none"></div>
+       {/* Central Blue/White Glow - Performance Optimized */}
+       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none opacity-40"
+            style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)' }}></div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
@@ -52,12 +56,14 @@ const ValueFlowSection = () => {
                <div className="absolute top-0 bottom-0 left-[-1px] w-[1px] bg-gradient-to-b from-strategic-blue via-clean-white/50 to-transparent"></div>
 
               {valueProps.map((prop, index) => (
-                <motion.div 
+                <motion.div
                   key={prop.title}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="group relative"
+                  style={{ willChange: 'transform, opacity' }}
                 >
                   {/* Node on Line */}
                   <div className="absolute top-1 left-[-41px] w-5 h-5 bg-deep-black border border-strategic-blue rounded-full flex items-center justify-center z-10">
@@ -84,41 +90,44 @@ const ValueFlowSection = () => {
           </div>
 
           {/* Right Column: Visual "The Engine" */}
-          <div className="flex-1 relative w-full aspect-square md:aspect-auto md:h-[600px] flex items-center justify-center">
+          <div className="flex-1 relative w-full aspect-square md:aspect-auto md:h-[600px] items-center justify-center hidden md:flex">
              
              {/* Core Engine */}
              <div className="relative">
+                {/* Center Glow - Performance Optimized */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none opacity-50"
+                  style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%)' }}></div>
                 {/* Ring 1 (Inner) */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] border border-strategic-blue/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
-                
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] border border-strategic-blue/30 rounded-full ${isMobile ? '' : 'animate-[spin_10s_linear_infinite]'}`}></div>
+
                 {/* Ring 2 (Middle) */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] border border-dotted border-depth-gray/30 rounded-full animate-[spin_20s_linear_infinite_reverse]"></div>
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] border border-dotted border-depth-gray/30 rounded-full ${isMobile ? '' : 'animate-[spin_20s_linear_infinite_reverse]'}`}></div>
 
                 {/* Ring 3 (Outer) */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-depth-gray/10 rounded-full animate-[spin_30s_linear_infinite]">
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-depth-gray/10 rounded-full ${isMobile ? '' : 'animate-[spin_30s_linear_infinite]'}`}>
                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 w-2 h-2 bg-clean-white rounded-full"></div>
                 </div>
 
                 {/* Central Power Source */}
                 <div className="w-24 h-24 bg-deep-black border-2 border-clean-white rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(255,255,255,0.2)] z-20 relative">
-                   <div className="w-12 h-12 bg-clean-white rounded-full animate-pulse"></div>
+                   <div className={`w-12 h-12 bg-clean-white rounded-full ${isMobile ? '' : 'animate-pulse'}`}></div>
                 </div>
              </div>
 
              {/* Emitted Particles (Abstract Value) */}
-             <motion.div 
-               animate={{ opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "20%"], left: ["50%", "80%"] }}
-               transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
+             <motion.div
+               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "20%"], left: ["50%", "80%"] }}
+               transition={isMobile ? {} : { duration: 3, repeat: Infinity, ease: "easeOut" }}
                className="absolute w-2 h-2 bg-strategic-blue rounded-full top-1/2 left-1/2"
              ></motion.div>
-             <motion.div 
-               animate={{ opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "80%"], left: ["50%", "20%"] }}
-               transition={{ duration: 3, repeat: Infinity, ease: "easeOut", delay: 1 }}
+             <motion.div
+               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "80%"], left: ["50%", "20%"] }}
+               transition={isMobile ? {} : { duration: 3, repeat: Infinity, ease: "easeOut", delay: 1 }}
                className="absolute w-2 h-2 bg-strategic-blue rounded-full top-1/2 left-1/2"
              ></motion.div>
-             <motion.div 
-               animate={{ opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "20%"], left: ["50%", "20%"] }}
-               transition={{ duration: 3, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
+             <motion.div
+               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "20%"], left: ["50%", "20%"] }}
+               transition={isMobile ? {} : { duration: 3, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
                className="absolute w-2 h-2 bg-strategic-blue rounded-full top-1/2 left-1/2"
              ></motion.div>
 

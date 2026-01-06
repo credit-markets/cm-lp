@@ -2,11 +2,10 @@ import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
-import VisionSection from "@/components/VisionSection";
+import PrinciplesSection from "@/components/PrinciplesSection";
 
 // Lazy load below-the-fold components
 const MarketArchitecture = lazy(() => import("@/components/MarketArchitecture"));
-const ProblemSection = lazy(() => import("@/components/ProblemSection"));
 const SolutionSection = lazy(() => import("@/components/SolutionSection"));
 const ValueFlowSection = lazy(() => import("@/components/ValueFlowSection"));
 const LegalStructureSection = lazy(() => import("@/components/LegalStructureSection"));
@@ -22,13 +21,14 @@ const Index = () => {
     if (location.hash) {
       const element = document.getElementById(location.hash.substring(1));
       if (element) {
-        // Small delay to ensure the page has rendered
-        setTimeout(() => {
+        // Use requestAnimationFrame for smoother integration with CSS smooth scroll
+        requestAnimationFrame(() => {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        });
       }
     }
   }, [location.hash]);
+
   return (
     <main className="min-h-screen bg-deep-black">
       {/* Navigation */}
@@ -37,32 +37,25 @@ const Index = () => {
       {/* 1. Hero Section */}
       <HeroSection />
 
-      {/* 2. Our Vision */}
-      <VisionSection />
+      {/* 2. Principles Section */}
+      <PrinciplesSection />
       
-      <Suspense fallback={<div className="min-h-[50vh]" />}>
-        {/* 3. The Opportunity (Market) */}
+      {/* Heavy core architecture components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <MarketArchitecture />
-
-        {/* 4. The Problem */}
-        <ProblemSection />
-        
-        {/* 5. Our Approach (Solution) */}
         <SolutionSection />
+      </Suspense>
 
-        {/* 6. How Value Is Created */}
+      {/* Secondary narrative components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <ValueFlowSection />
-
-        {/* 8. Structure & Compliance */}
         <LegalStructureSection />
-        
-        {/* Team Section (Kept as extra) */}
+      </Suspense>
+      
+      {/* Team & Conversion components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <GeometricTeam />
-        
-        {/* Access Flow (Kept as extra) */}
         <AccessArchitecture />
-        
-        {/* Footer */}
         <TerminalFooter />
       </Suspense>
     </main>
