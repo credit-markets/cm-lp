@@ -30,8 +30,9 @@ const ValueFlowSection = () => {
            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
       </div>
 
-       {/* Central Blue/White Glow */}
-       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-strategic-blue/5 rounded-full blur-[120px] pointer-events-none"></div>
+       {/* Central Blue/White Glow - Performance Optimized */}
+       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none opacity-40"
+            style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)' }}></div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
@@ -93,6 +94,9 @@ const ValueFlowSection = () => {
              
              {/* Core Engine */}
              <div className="relative">
+                {/* Center Glow - Performance Optimized */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none opacity-50"
+                  style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%)' }}></div>
                 {/* Ring 1 (Inner) */}
                 <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] border border-strategic-blue/30 rounded-full ${isMobile ? '' : 'animate-[spin_10s_linear_infinite]'}`}></div>
 

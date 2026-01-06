@@ -21,13 +21,14 @@ const Index = () => {
     if (location.hash) {
       const element = document.getElementById(location.hash.substring(1));
       if (element) {
-        // Small delay to ensure the page has rendered
-        setTimeout(() => {
+        // Use requestAnimationFrame for smoother integration with CSS smooth scroll
+        requestAnimationFrame(() => {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        });
       }
     }
   }, [location.hash]);
+
   return (
     <main className="min-h-screen bg-deep-black">
       {/* Navigation */}
@@ -36,29 +37,25 @@ const Index = () => {
       {/* 1. Hero Section */}
       <HeroSection />
 
-      {/* 2. Principles Section (New) */}
+      {/* 2. Principles Section */}
       <PrinciplesSection />
       
-      <Suspense fallback={<div className="min-h-[50vh]" />}>
-        {/* 3. The Opportunity (Market) */}
+      {/* Heavy core architecture components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <MarketArchitecture />
-        
-        {/* 4. Our Approach (Solution) */}
         <SolutionSection />
+      </Suspense>
 
-        {/* 5. How Value Is Created */}
+      {/* Secondary narrative components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <ValueFlowSection />
-
-        {/* 7. Structure & Compliance */}
         <LegalStructureSection />
-        
-        {/* Team Section */}
+      </Suspense>
+      
+      {/* Team & Conversion components */}
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <GeometricTeam />
-        
-        {/* Access Flow */}
         <AccessArchitecture />
-        
-        {/* Footer */}
         <TerminalFooter />
       </Suspense>
     </main>

@@ -60,8 +60,9 @@ const MarketArchitecture = () => {
           {/* Right Column: Connectivity Hub (Abstract) */}
           <div className="flex-1 relative w-full aspect-square md:aspect-auto md:h-[600px] items-center justify-center hidden md:flex">
              
-             {/* Center Glow */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-strategic-blue/10 rounded-full blur-3xl"></div>
+             {/* Center Glow - Performance Optimized */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none opacity-50"
+                  style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%)' }}></div>
 
              {/* Tech Grid Background (Subtle) */}
              <div className="absolute inset-0 opacity-[0.05]" 
