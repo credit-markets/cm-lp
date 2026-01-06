@@ -1,9 +1,12 @@
 import { Button } from "./ui/button";
-import { lazy, Suspense, memo } from "react";
+import { lazy, Suspense, memo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
 const HeroSection = memo(() => {
+  const [sceneLoaded, setSceneLoaded] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-deep-black overflow-hidden">
       {/* Background Visualization */}
@@ -12,13 +15,24 @@ const HeroSection = memo(() => {
           <div className="w-full h-[80vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/5 rounded-lg border border-strategic-blue/10 relative overflow-hidden hero-spline-container">
             <div className="absolute inset-0">
               <div className="w-full h-full scale-[1.3] origin-center opacity-80">
-                <Suspense fallback={<div className="w-full h-full bg-deep-black/50 flex items-center justify-center">
-                  <div className="text-strategic-blue animate-pulse font-mono text-xs">LOADING PROTOCOL VIEW...</div>
-                </div>}>
-                  <Spline
+                <Suspense fallback={
+                  <div className="w-full h-full bg-deep-black flex items-center justify-center relative">
+                    <div className="absolute inset-0 opacity-20" 
+                         style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 75%)' }}></div>
+                  </div>
+                }>
+                  <motion.div 
                     className="w-full h-full"
-                    scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"
-                  />
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: sceneLoaded ? 1 : 0 }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                  >
+                    <Spline
+                      className="w-full h-full"
+                      scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"
+                      onLoad={() => setSceneLoaded(true)}
+                    />
+                  </motion.div>
                 </Suspense>
               </div>
             </div>
