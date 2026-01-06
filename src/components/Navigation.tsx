@@ -53,7 +53,7 @@ const Navigation = () => {
     };
 
     const onScroll = () => {
-      // Use rAF to avoid jank
+      if (window.innerWidth < 768) return; 
       requestAnimationFrame(checkBackground);
     };
 

@@ -51,9 +51,11 @@ const PrinciplesSection = () => {
            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
       </div>
 
-      {/* Nebula-style layered glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-strategic-blue/8 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] md:w-[350px] h-[250px] md:h-[350px] bg-strategic-blue/6 rounded-full blur-[80px] pointer-events-none animate-pulse"></div>
+      {/* Nebula-style layered glows - Optimized using radial gradients instead of heavy blurs */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[600px] h-[400px] md:h-[600px] rounded-full pointer-events-none"
+           style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%)' }}></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] md:w-[350px] h-[250px] md:h-[350px] rounded-full pointer-events-none animate-pulse"
+           style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%)' }}></div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="text-center mb-10 md:mb-16">
@@ -66,7 +68,7 @@ const PrinciplesSection = () => {
         </div>
 
         {/* Constellation Container */}
-        <div className="relative w-full max-w-[400px] md:max-w-[850px] h-[420px] md:h-[580px] mx-auto flex items-center justify-center">
+        <div className="relative w-full max-w-[400px] md:max-w-[850px] h-[420px] md:h-[580px] mx-auto flex items-center justify-center constellation-container">
 
           {/* SVG Connection Lines */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
