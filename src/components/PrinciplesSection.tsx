@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useState, memo } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const principles = [
   { title: "Capital Preservation", desc: "Our primary mandate is the protection of principal through rigorous risk management.", code: "CAP_PRES" },
@@ -11,8 +12,7 @@ const principles = [
   { title: "Trust Minimized", desc: "We rely on verification and cryptographic enforcement, not promises.", code: "TRUST_MN" }
 ];
 
-// Static node positions (percentage offsets from center)
-const nodePositions = [
+const desktopPositions = [
   { x: 0, y: -35 },    // Top center
   { x: -32, y: -18 },  // Upper-left
   { x: -36, y: 15 },   // Lower-left
@@ -20,6 +20,16 @@ const nodePositions = [
   { x: 18, y: 36 },    // Bottom-right
   { x: 38, y: 8 },     // Right
   { x: 28, y: -22 },   // Upper-right
+];
+
+const mobilePositions = [
+  { x: 0, y: -38 },    // Top
+  { x: -28, y: -20 },  // Upper-left
+  { x: -30, y: 12 },   // Lower-left
+  { x: -10, y: 35 },   // Bottom-left
+  { x: 15, y: 32 },    // Bottom-right
+  { x: 30, y: 5 },     // Right
+  { x: 25, y: -25 },   // Upper-right
 ];
 
 // Constellation connections (adjacent stars)
@@ -30,9 +40,12 @@ const constellationLines = [
 
 const PrinciplesSection = () => {
   const [activePrinciple, setActivePrinciple] = useState<number | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+  const nodePositions = isMobile ? mobilePositions : desktopPositions;
 
   return (
-    <section id="principles" className="py-16 md:py-24 bg-deep-black relative overflow-hidden min-h-[700px] md:min-h-[850px]">
+    <section id="principles" className="py-16 md:py-24 bg-deep-black relative overflow-hidden min-h-[650px] md:min-h-[850px]">
       {/* Tech Grid Background */}
       <div className="absolute inset-0 opacity-[0.05]"
            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
@@ -61,13 +74,13 @@ const PrinciplesSection = () => {
               {/* Gradient for energy pulse effect */}
               <linearGradient id="energyPulse" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="rgba(59, 130, 246, 0)">
-                  <animate attributeName="offset" values="-0.5;1.5" dur="2s" repeatCount="indefinite" />
+                  {!shouldReduceMotion && <animate attributeName="offset" values="-0.5;1.5" dur="2s" repeatCount="indefinite" />}
                 </stop>
                 <stop offset="50%" stopColor="rgba(59, 130, 246, 0.8)">
-                  <animate attributeName="offset" values="0;2" dur="2s" repeatCount="indefinite" />
+                  {!shouldReduceMotion && <animate attributeName="offset" values="0;2" dur="2s" repeatCount="indefinite" />}
                 </stop>
                 <stop offset="100%" stopColor="rgba(59, 130, 246, 0)">
-                  <animate attributeName="offset" values="0.5;2.5" dur="2s" repeatCount="indefinite" />
+                  {!shouldReduceMotion && <animate attributeName="offset" values="0.5;2.5" dur="2s" repeatCount="indefinite" />}
                 </stop>
               </linearGradient>
             </defs>
@@ -100,6 +113,7 @@ const PrinciplesSection = () => {
                       opacity: { duration: 0.8, delay: idx * 0.1 },
                       stroke: { duration: 0.3 }
                     }}
+                    viewport={{ once: true }}
                   />
                 </g>
               );
@@ -124,6 +138,7 @@ const PrinciplesSection = () => {
                     pathLength: { duration: 1, delay: i * 0.1 },
                     stroke: { duration: 0.3 }
                   }}
+                  viewport={{ once: true }}
                 />
                 {/* Energy pulse on active line */}
                 {activePrinciple === i && (
@@ -209,12 +224,13 @@ const PrinciplesSection = () => {
               position={nodePositions[i]}
               isActive={activePrinciple === i}
               setActive={setActivePrinciple}
+              isMobile={isMobile}
             />
           ))}
 
           {/* Active Principle Detail Card */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] md:w-[300px] pointer-events-none z-30"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[190px] md:w-[300px] pointer-events-none z-30"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{
               opacity: activePrinciple !== null ? 1 : 0,
@@ -223,17 +239,17 @@ const PrinciplesSection = () => {
             transition={{ duration: 0.2 }}
           >
             {activePrinciple !== null && (
-              <div className="bg-deep-black/95 backdrop-blur-md border border-strategic-blue/30 p-4 md:p-5 rounded-sm shadow-[0_0_30px_rgba(59,130,246,0.15)]">
-                <div className="flex items-center justify-between mb-2 md:mb-3">
-                  <span className="text-[9px] md:text-[10px] font-mono text-strategic-blue/60 tracking-wider">
+              <div className="bg-deep-black/95 backdrop-blur-md border border-strategic-blue/30 p-3.5 md:p-5 rounded-sm shadow-[0_0_30px_rgba(59,130,246,0.15)] text-center md:text-left">
+                <div className="flex items-center justify-between mb-1.5 md:mb-3">
+                  <span className="text-[8px] md:text-[10px] font-mono text-strategic-blue/60 tracking-wider">
                     {principles[activePrinciple].code}
                   </span>
                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-strategic-blue rounded-full animate-pulse"></div>
                 </div>
-                <h4 className="text-strategic-blue font-bold uppercase text-xs md:text-sm mb-1.5 md:mb-2 tracking-wide">
+                <h4 className="text-strategic-blue font-bold uppercase text-[11px] md:text-sm mb-1 md:mb-2 tracking-wide">
                   {principles[activePrinciple].title}
                 </h4>
-                <p className="text-clean-white/90 text-xs md:text-sm font-light leading-relaxed">
+                <p className="text-clean-white/90 text-[11px] md:text-sm font-light leading-relaxed">
                   {principles[activePrinciple].desc}
                 </p>
               </div>
@@ -246,34 +262,44 @@ const PrinciplesSection = () => {
   );
 };
 
-const PrincipleNode = ({
+const PrincipleNode = memo(({
   index,
   principle,
   position,
   isActive,
-  setActive
+  setActive,
+  isMobile
 }: {
   index: number,
   principle: { title: string, desc: string, code: string },
   position: { x: number, y: number },
   isActive: boolean,
-  setActive: (i: number | null) => void
+  setActive: (i: number | null) => void,
+  isMobile: boolean
 }) => {
   // Unique animation delay for twinkling effect
   const twinkleDelay = index * 0.7;
 
+  const handleInteraction = () => {
+    setActive(isActive ? null : index);
+  };
+
   return (
     <div
-      className="absolute pointer-events-auto cursor-pointer z-10 group"
+      className="absolute pointer-events-auto cursor-pointer z-10 group touch-manipulation"
       style={{
         left: `${50 + position.x}%`,
         top: `${50 + position.y}%`,
         transform: 'translate(-50%, -50%)',
         animation: `float-star ${8 + index * 0.5}s ease-in-out ${index * 0.3}s infinite`,
       }}
-      onMouseEnter={() => setActive(index)}
-      onMouseLeave={() => setActive(null)}
-      onClick={() => setActive(isActive ? null : index)}
+      onMouseEnter={() => !('ontouchstart' in window) && setActive(index)}
+      onMouseLeave={() => !('ontouchstart' in window) && setActive(null)}
+      onClick={handleInteraction}
+      onTouchEnd={(e) => {
+        e.preventDefault();
+        handleInteraction();
+      }}
     >
       <style>{`
         @keyframes float-star {
@@ -377,15 +403,15 @@ const PrincipleNode = ({
           animate={{ y: isActive ? -4 : 0 }}
           transition={{ duration: 0.3 }}
         >
-          <span className={`text-[8px] md:text-[11px] font-mono uppercase tracking-wider whitespace-nowrap transition-colors duration-300 ${
+          <span className={`text-[7px] md:text-[11px] font-mono uppercase tracking-wider whitespace-nowrap transition-colors duration-300 ${
             isActive ? 'text-strategic-blue font-bold' : 'text-depth-gray group-hover:text-strategic-blue/70'
           }`}>
-            {principle.code}
+            {isMobile ? principle.code : principle.title}
           </span>
         </motion.div>
       </motion.div>
     </div>
   );
-};
+});
 
 export default PrinciplesSection;

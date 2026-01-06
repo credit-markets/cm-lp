@@ -1,9 +1,9 @@
 import { Button } from "./ui/button";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, memo } from "react";
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
-const HeroSection = () => {
+const HeroSection = memo(() => {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-deep-black overflow-hidden">
       {/* Space for Spline 3D Animation - 70% of viewport */}
@@ -11,11 +11,17 @@ const HeroSection = () => {
         <div className="w-full h-full max-w-6xl max-h-screen flex items-center justify-center">
           <div className="w-full h-[80vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/10 rounded-lg border border-strategic-blue/20 relative overflow-hidden">
             <div className="absolute inset-0">
-              <div className="w-full h-full scale-[1.3] origin-center opacity-80">
-                <Suspense fallback={<div className="w-full h-full bg-deep-black/50" />}>
+              <div className="w-full h-full scale-[1.3] origin-center opacity-80" style={{ willChange: 'transform' }}>
+                <Suspense fallback={<div className="w-full h-full bg-deep-black/50 flex items-center justify-center">
+                  <div className="text-strategic-blue animate-pulse">Loading 3D Scene...</div>
+                </div>}>
                   <Spline
                     className="w-full h-full"
                     scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"
+                    style={{
+                      willChange: 'transform',
+                      transform: 'translateZ(0)'
+                    }}
                   />
                 </Suspense>
               </div>
@@ -38,12 +44,14 @@ const HeroSection = () => {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto px-4 sm:px-0">
-          <Button variant="hero" size="hero" className="w-full sm:w-auto min-w-[200px]">
-            Request Access
-          </Button>
-          <a href="https://t.me/lucastobritto" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+          <a href="#access" className="w-full sm:w-auto">
+            <Button variant="hero" size="hero" className="w-full sm:w-auto min-w-[200px]">
+              Request Access
+            </Button>
+          </a>
+          <a href="mailto:lucas@credit.markets" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
             <Button variant="outline" size="hero" className="w-full sm:w-auto min-w-[200px]">
-              Speak with the Team
+              Contact the Team
             </Button>
           </a>
         </div>
@@ -59,6 +67,6 @@ const HeroSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default HeroSection;

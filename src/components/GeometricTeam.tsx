@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import teamLucas from "@/assets/team-lucas.jpg";
 import teamAubry from "@/assets/team-aubry.jpg";
 import teamRodrigo from "@/assets/team-rodrigo.jpg";
@@ -39,6 +40,8 @@ const teamMembers = [
 ];
 
 const GeometricTeam = () => {
+  const isMobile = useIsMobile();
+
   return (
     <section id="team" className="py-24 bg-clean-white relative overflow-hidden isometric-grid">
        {/* Central Blue Glow (Subtle) */}
@@ -63,12 +66,14 @@ const GeometricTeam = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {teamMembers.map((member, index) => (
-                <motion.div 
+                <motion.div
                   key={member.name}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="group relative bg-white border-2 border-depth-gray/10 hover:border-strategic-blue/50 rounded-sm overflow-hidden transition-all duration-300 hover:shadow-xl"
+                  style={{ willChange: 'transform, opacity' }}
                 >
                   <div className="flex items-start p-6 gap-4">
                     <div className="w-16 h-16 rounded-full overflow-hidden border border-depth-gray/10 shrink-0 group-hover:border-strategic-blue/50 transition-colors duration-300">

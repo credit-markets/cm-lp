@@ -120,10 +120,36 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, sans-serif;
     overflow-x: hidden;
+    /* Enable font smoothing for better mobile performance */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Performance optimizations for animations */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Hardware acceleration for animated elements */
+  [class*="animate-"],
+  [class*="motion-"] {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
   
   /* Typography System */
@@ -205,10 +231,29 @@
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
   }
-  
+
   @keyframes orbit {
     0% { transform: rotate(0deg) translateX(160px) rotate(0deg); }
     100% { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
+  }
+
+  /* Optimized floating animation for principle nodes */
+  @keyframes float-smooth {
+    0%, 100% {
+      transform: translate(-50%, -50%) translate(0, 0);
+    }
+    33% {
+      transform: translate(-50%, -50%) translate(3px, 4px);
+    }
+    66% {
+      transform: translate(-50%, -50%) translate(-3px, -4px);
+    }
+  }
+
+  /* Optimized twinkle animation */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
   }
   
   /* Isometric Grid Background */
