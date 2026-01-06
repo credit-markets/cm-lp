@@ -190,7 +190,7 @@ const AccessArchitecture = () => {
                   </Button>
                   <div className="text-center mt-4">
                     <p className="text-xs text-depth-gray/50 font-mono">
-                      By submitting, you agree to our Terms and Policy.
+                      By submitting, you agree to our Privacy Policy.
                     </p>
                   </div>
                 </div>

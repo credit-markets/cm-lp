@@ -50,7 +50,7 @@ const MarketArchitecture = () => {
                      "Local credit originators lack access to a broader investor base, while global investors struggle to deploy capital efficiently."
                    </p>
                    <p className="text-strategic-blue font-mono text-xs uppercase tracking-wider">
-                     — Lucas Brito, CEO
+                     — Lucas Britto, CEO
                    </p>
                 </div>
               </div>
