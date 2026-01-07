@@ -71,10 +71,10 @@ const GeometricTeam = () => {
               {teamMembers.map((member, index) => (
                 <motion.div
                   key={member.name}
-                  initial={isMobile ? false : { opacity: 0, y: 20 }}
-                  whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+                  initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={isMobile ? {} : { duration: 0.5, delay: index * 0.1 }}
+                  transition={isMobile ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
                   className="group relative bg-white border-2 border-depth-gray/10 hover:border-strategic-blue/50 rounded-sm overflow-hidden transition-colors duration-300 hover:shadow-xl"
                 >
                   <div className="flex items-start p-6 gap-4">
