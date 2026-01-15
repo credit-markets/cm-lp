@@ -1,50 +1,112 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { useToast } from "@/hooks/use-toast";
+
+interface WaitlistData {
+  email: string | null;
+  telegram: string | null;
+  investment: string | null;
+  type: string | null;
+}
 
 const AccessArchitecture = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { toast } = useToast();
+
+  const submitMutation = useMutation({
+    mutationFn: async (data: WaitlistData) => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+      try {
+        const response = await fetch("/api/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          let errorMessage = 'Submission failed';
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.error || errorMessage;
+          } catch (e) {
+            errorMessage = response.statusText || errorMessage;
+          }
+
+          console.error('Form submission failed', {
+            status: response.status,
+            statusText: response.statusText,
+            errorMessage,
+            url: response.url,
+          });
+
+          throw new Error(errorMessage);
+        }
+
+        return response.json();
+      } catch (error) {
+        clearTimeout(timeoutId);
+
+        if (error instanceof Error) {
+          if (error.name === 'AbortError') {
+            throw new Error('Request timed out. Please check your internet connection and try again.');
+          }
+          if (error.message.includes('Failed to fetch')) {
+            throw new Error('Unable to connect. Please check your internet connection.');
+          }
+        }
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      setIsSuccess(true);
+      toast({
+        title: "Request Received",
+        description: "We'll be in touch shortly.",
+        variant: "default",
+      });
+    },
+    onError: (error) => {
+      console.error("Form submission error", {
+        error: error instanceof Error ? error.message : String(error),
+        timestamp: new Date().toISOString(),
+      });
+
+      const message = error instanceof Error ? error.message : "Error submitting form. Please try again.";
+      toast({
+        title: "Submission Failed",
+        description: message,
+        variant: "destructive",
+      });
+    }
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const data = {
-      email: formData.get("email"),
-      telegram: formData.get("telegram"),
-      investment: formData.get("investment"),
-      type: formData.get("type"),
+    const data: WaitlistData = {
+      email: formData.get("email") as string,
+      telegram: formData.get("telegram") as string,
+      investment: formData.get("investment") as string,
+      type: formData.get("type") as string,
     };
 
-    try {
-      const response = await fetch("/api/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        setIsSuccess(true);
-      } else {
-        console.error("Submission failed");
-        alert("Something went wrong. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Error submitting form.");
-    } finally {
-      setIsLoading(false);
-    }
+    submitMutation.mutate(data);
   };
 
   return (
     <section
       id="access"
-      className="relative overflow-hidden py-24 bg-gradient-depth"
+      className="relative overflow-hidden py-24 bg-gradient-depth below-fold-section"
     >
       <div className="container mx-auto px-6">
         {/* Section Header */}
@@ -180,11 +242,11 @@ const AccessArchitecture = () => {
                 <div className="pt-6">
                   <Button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={submitMutation.isPending}
                     className="w-full bg-strategic-blue hover:bg-strategic-blue/90 text-deep-black font-bold tracking-wider py-6 text-lg relative group overflow-hidden disabled:opacity-70"
                   >
                     <span className="relative z-10">
-                      {isLoading ? "SUBMITTING..." : "SUBMIT REQUEST"}
+                      {submitMutation.isPending ? "SUBMITTING..." : "SUBMIT REQUEST"}
                     </span>
                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                   </Button>

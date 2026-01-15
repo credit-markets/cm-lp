@@ -3,11 +3,16 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Analytics } from "@vercel/analytics/react";
+import { lazy, Suspense } from "react";
 import Index from "./pages/Index";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
+
+// Lazy load analytics to avoid blocking hydration
+const Analytics = lazy(() =>
+  import("@vercel/analytics/react").then(mod => ({ default: mod.Analytics }))
+);
 
 const queryClient = new QueryClient();
 
@@ -25,7 +30,9 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      <Analytics />
+      <Suspense fallback={null}>
+        <Analytics />
+      </Suspense>
     </TooltipProvider>
   </QueryClientProvider>
 );

@@ -10,6 +10,7 @@ const SolutionSection = lazy(() => import("@/components/SolutionSection"));
 const ValueFlowSection = lazy(() => import("@/components/ValueFlowSection"));
 const LegalStructureSection = lazy(() => import("@/components/LegalStructureSection"));
 const GeometricTeam = lazy(() => import("@/components/GeometricTeam"));
+const BlogInsightsSection = lazy(() => import("@/components/BlogInsightsSection"));
 const AccessArchitecture = lazy(() => import("@/components/AccessArchitecture"));
 const TerminalFooter = lazy(() => import("@/components/TerminalFooter"));
 
@@ -17,17 +18,61 @@ const Index = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Handle hash navigation when component mounts or location changes
-    if (location.hash) {
-      const element = document.getElementById(location.hash.substring(1));
+    function scrollToHash(hash: string, retries = 3): void {
+      if (!hash) return;
+
+      const elementId = hash.substring(1);
+      const element = document.getElementById(elementId);
+
       if (element) {
-        // Use requestAnimationFrame for smoother integration with CSS smooth scroll
         requestAnimationFrame(() => {
           element.scrollIntoView({ behavior: 'smooth' });
         });
+        return;
       }
+
+      if (retries > 0) {
+        console.log(`Element #${elementId} not found, retrying...`, { retriesLeft: retries });
+        setTimeout(() => scrollToHash(hash, retries - 1), 300);
+        return;
+      }
+
+      console.error(`Navigation target not found: #${elementId}`, {
+        availableIds: Array.from(document.querySelectorAll('[id]')).map(el => el.id),
+        requestedHash: hash,
+      });
+    }
+
+    if (location.hash) {
+      scrollToHash(location.hash);
     }
   }, [location.hash]);
+
+  useEffect(() => {
+    async function preloadComponents(): Promise<void> {
+      const components = [
+        { name: 'MarketArchitecture', load: () => import("@/components/MarketArchitecture") },
+        { name: 'SolutionSection', load: () => import("@/components/SolutionSection") },
+        { name: 'ValueFlowSection', load: () => import("@/components/ValueFlowSection") },
+        { name: 'LegalStructureSection', load: () => import("@/components/LegalStructureSection") },
+        { name: 'BlogInsightsSection', load: () => import("@/components/BlogInsightsSection") },
+      ];
+
+      for (const component of components) {
+        try {
+          await component.load();
+        } catch (error) {
+          console.error(`Failed to preload ${component.name}`, {
+            error: error instanceof Error ? error.message : String(error),
+            componentName: component.name,
+          });
+        }
+      }
+    }
+
+    const timer = setTimeout(preloadComponents, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="min-h-screen bg-deep-black">
@@ -39,23 +84,37 @@ const Index = () => {
 
       {/* 2. Principles Section */}
       <PrinciplesSection />
-      
-      {/* Heavy core architecture components */}
+
+      {/* Individual Suspense boundaries for parallel loading */}
       <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <MarketArchitecture />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <SolutionSection />
       </Suspense>
 
-      {/* Secondary narrative components */}
       <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <ValueFlowSection />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <LegalStructureSection />
       </Suspense>
-      
-      {/* Team & Conversion components */}
+
       <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <GeometricTeam />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
+        <BlogInsightsSection />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <AccessArchitecture />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <TerminalFooter />
       </Suspense>
     </main>

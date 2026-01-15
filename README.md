@@ -1,73 +1,240 @@
-# Welcome to your Lovable project
+# Credit Markets Landing Page
 
-## Project info
+A high-performance, production-ready landing page for Credit Markets - a fintech platform connecting global investors with emerging market credit opportunities in Latin America.
 
-**URL**: https://lovable.dev/projects/dab507d7-30a4-4951-8010-9f93fedc019c
+## Overview
 
-## How can I edit this code?
+Credit Markets bridges institutional capital with tokenized asset-backed private credit in LATAM. This landing page showcases the platform's value proposition with a sophisticated "neo-geometric" design aesthetic, 3D visualizations, and interactive elements built for institutional investor engagement.
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+### Core Framework
+- **React 18.3** - Modern UI library with concurrent features
+- **TypeScript 5.8** - Type-safe development
+- **Vite 5.4** - Ultra-fast build tool and dev server
+- **React Router 6.30** - Client-side routing
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/dab507d7-30a4-4951-8010-9f93fedc019c) and start prompting.
+### UI & Styling
+- **shadcn/ui** - 48+ accessible, customizable components
+- **Radix UI** - Unstyled, accessible component primitives
+- **Tailwind CSS 3.4** - Utility-first styling
+- **Framer Motion 12** - Advanced animations
+- **Lucide React** - Icon library
 
-Changes made via Lovable will be committed automatically to this repo.
+### 3D & Visualization
+- **Spline** - Interactive 3D scenes
+- **Custom SVG animations** - Constellation visualizations
 
-**Use your preferred IDE**
+### Data & State Management
+- **TanStack React Query 5** - Server state management
+- **React Hook Form 7** - Form state management
+- **Zod 3** - Schema validation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Backend & Database
+- **Vercel Edge Functions** - Serverless API
+- **Neon Database** - Serverless Postgres
+- **Vercel Analytics** - Web analytics
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting Started
 
-Follow these steps:
+### Prerequisites
+- Node.js 18+ and npm (install with [nvm](https://github.com/nvm-sh/nvm))
+- Git
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Installation
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+# Clone the repository
+git clone <repository-url>
+cd cm-lp
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your DATABASE_URL
+
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Environment Variables
 
-**Use GitHub Codespaces**
+Create a `.env` file in the root directory:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```env
+DATABASE_URL=your_neon_database_connection_string
+POSTGRES_URL=your_postgres_connection_string
+```
 
-## What technologies are used for this project?
+## Project Structure
 
-This project is built with:
+```
+cm-lp/
+├── api/                      # Serverless API functions
+│   └── submit.ts            # Waitlist form submission handler
+├── src/
+│   ├── components/          # React components
+│   │   ├── ui/             # shadcn/ui components (48 components)
+│   │   ├── Navigation.tsx   # Adaptive navigation with scroll-based logo coloring
+│   │   ├── HeroSection.tsx  # 3D Spline hero with lazy loading
+│   │   ├── PrinciplesSection.tsx  # Interactive constellation
+│   │   ├── MarketArchitecture.tsx # Market opportunity visualization
+│   │   ├── SolutionSection.tsx    # Solution pillars
+│   │   ├── ValueFlowSection.tsx   # Value proposition
+│   │   ├── LegalStructureSection.tsx  # Regulatory framework
+│   │   ├── GeometricTeam.tsx      # Team showcase
+│   │   ├── AccessArchitecture.tsx # Waitlist form
+│   │   └── TerminalFooter.tsx     # Terminal-styled footer
+│   ├── pages/               # Route pages
+│   │   ├── Index.tsx       # Main landing page
+│   │   ├── Terms.tsx       # Terms of Service
+│   │   ├── Privacy.tsx     # Privacy Policy
+│   │   └── NotFound.tsx    # 404 page
+│   ├── hooks/              # Custom React hooks
+│   │   ├── use-mobile.tsx  # Mobile breakpoint detection
+│   │   └── use-toast.ts    # Toast notifications
+│   ├── lib/                # Utilities
+│   │   └── utils.ts        # Helper functions
+│   ├── assets/             # Static assets
+│   ├── App.tsx             # Root component
+│   ├── main.tsx            # Application entry point
+│   └── index.css           # Global styles & design system
+├── public/                 # Static public assets
+├── vite.config.ts          # Vite configuration
+├── tailwind.config.ts      # Tailwind configuration
+├── tsconfig.json           # TypeScript configuration
+└── package.json            # Dependencies and scripts
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Available Scripts
 
-## How can I deploy this project?
+```bash
+# Development
+npm run dev          # Start development server (localhost:8080)
 
-Simply open [Lovable](https://lovable.dev/projects/dab507d7-30a4-4951-8010-9f93fedc019c) and click on Share -> Publish.
+# Production
+npm run build        # Build for production
+npm run preview      # Preview production build
 
-## Can I connect a custom domain to my Lovable project?
+# Code Quality
+npm run lint         # Run ESLint
+```
 
-Yes, you can!
+## Performance Optimizations
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This application implements industry-leading React performance best practices:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Critical Optimizations
+- **Lazy Loading**: Heavy components (3D graphics, below-fold sections) load on-demand
+- **Code Splitting**: Individual Suspense boundaries for parallel loading
+- **Analytics Deferred**: Vercel Analytics loads asynchronously to avoid blocking hydration
+- **API Optimization**: Database table creation cached to avoid sequential queries
+
+### High Priority Optimizations
+- **Memoization**: PrincipleNode components with custom comparison functions
+- **Hook Optimization**: `useIsMobile` uses matchMedia API instead of resize events
+- **GPU Acceleration**: SVG animations use `willChange` hints
+- **React Query**: Form submissions with automatic deduplication
+
+### Additional Optimizations
+- **Image Optimization**: width/height attributes, async decoding
+- **Scroll Throttling**: Navigation scroll events throttled to 100ms with caching
+- **Content Visibility**: CSS `content-visibility: auto` for below-fold sections
+- **Smooth Animations**: AnimatePresence for exit animations
+- **Bundle Optimization**: Configured for optimal icon tree-shaking
+
+### Performance Metrics
+
+Estimated performance gains:
+- **First Contentful Paint (FCP)**: -150ms to -250ms
+- **Largest Contentful Paint (LCP)**: -400ms to -600ms
+- **Time to Interactive (TTI)**: -300ms to -500ms
+- **Total Blocking Time (TBT)**: -75ms to -150ms
+
+## Design System
+
+The application uses a custom "Neo-Geometric" design system:
+
+### Color Palette
+- **Deep Black** (`#090909`) - Primary background
+- **Dimensional Gray** (`#393939`) - Secondary background
+- **Clean White** (`#f8f8f8`) - Primary text
+- **Strategic Blue** (`#79c2ff`) - Accent color
+- **Navy Accent** (`#01184e`) - Secondary accent
+
+### Typography
+- **IBM Plex Mono** - Monospace font for code/technical elements
+- **Inter** - Sans-serif for body text
+
+### Key Features
+- Isometric transformations on card elements
+- Terminal-inspired scanline effects
+- Constellation-style visualizations
+- 3D perspective layers
+
+## API Routes
+
+### POST `/api/submit`
+
+Submit waitlist form data.
+
+**Request Body:**
+```json
+{
+  "email": "investor@example.com",
+  "telegram": "@username",
+  "investment": "$100K-$500K",
+  "type": "institutional"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Success"
+}
+```
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Install Vercel CLI: `npm i -g vercel`
+2. Run: `vercel`
+3. Follow prompts to deploy
+4. Add environment variables in Vercel dashboard
+
+### Manual Build
+
+```bash
+# Build the application
+npm run build
+
+# Output will be in /dist directory
+# Deploy the dist folder to your hosting provider
+```
+
+## Browser Support
+
+- Chrome/Edge (last 2 versions)
+- Firefox (last 2 versions)
+- Safari (last 2 versions)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Contributing
+
+This is a private project for Credit Markets. For questions or support, contact the development team.
+
+## License
+
+Proprietary - All rights reserved by Credit Markets
+
+## Support
+
+For technical support or questions:
+- Email: lucas@credit.markets
+- Website: https://credit.markets

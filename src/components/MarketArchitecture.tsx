@@ -4,7 +4,7 @@ const MarketArchitecture = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section id="opportunity" className="py-24 bg-dimensional-gray overflow-hidden">
+    <section id="opportunity" className="py-24 bg-dimensional-gray overflow-hidden below-fold-section">
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
           
