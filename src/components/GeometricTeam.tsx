@@ -43,8 +43,7 @@ const GeometricTeam = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section id="team" className="py-24 bg-clean-white relative overflow-hidden isometric-grid">
-       {/* Central Blue Glow (Subtle) - Use radial gradient instead of blur for better performance */}
+    <section id="team" className="py-24 bg-clean-white relative overflow-hidden isometric-grid below-fold-section">
        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none"
             style={{
               background: 'radial-gradient(circle, rgba(121, 194, 255, 0.05) 0%, transparent 70%)',
@@ -53,7 +52,6 @@ const GeometricTeam = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
 
-          {/* Left Column: Header (was Visual) */}
           <div className="flex-1 flex items-center justify-center lg:justify-start">
              <div className="text-left">
                 <h2 className="text-4xl md:text-5xl font-bold text-deep-black uppercase tracking-widest mb-4">
@@ -63,10 +61,7 @@ const GeometricTeam = () => {
              </div>
           </div>
 
-          {/* Right Column: Team Grid (Isometric Cards on White) */}
           <div className="flex-1 space-y-12 z-10 w-full">
-
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {teamMembers.map((member, index) => (
                 <motion.div
@@ -82,7 +77,10 @@ const GeometricTeam = () => {
                       <img
                         src={member.image}
                         alt={member.name}
+                        width={64}
+                        height={64}
                         loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover grayscale md:group-hover:grayscale-0 transition-all duration-300"
                       />
                     </div>
@@ -99,7 +97,6 @@ const GeometricTeam = () => {
                     </div>
                   </div>
 
-                  {/* Isometric Corner Accent */}
                   <div className="absolute top-0 right-0 w-8 h-8 bg-strategic-blue/10 md:group-hover:bg-strategic-blue transform rotate-45 translate-x-4 -translate-y-4 transition-colors duration-300"></div>
                 </motion.div>
               ))}

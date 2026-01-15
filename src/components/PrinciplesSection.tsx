@@ -1,5 +1,5 @@
-import { motion, useReducedMotion } from "framer-motion";
-import { useState, memo } from "react";
+import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
+import { useState, memo, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const principles = [
@@ -37,11 +37,15 @@ const constellationLines = [
   [0, 3], [1, 4], [2, 5]
 ];
 
-const PrinciplesSection = () => {
+const PrinciplesSection = memo(() => {
   const [activePrinciple, setActivePrinciple] = useState<number | null>(null);
   const isMobile = useIsMobile();
   const shouldReduceMotion = useReducedMotion();
   const nodePositions = isMobile ? mobilePositions : desktopPositions;
+
+  const handleSetActive = useCallback((index: number | null) => {
+    setActivePrinciple(prev => prev === index ? null : index);
+  }, []);
 
   return (
     <section id="principles" className="py-16 md:py-24 bg-deep-black relative overflow-hidden min-h-[650px] md:min-h-[850px]">
@@ -57,13 +61,12 @@ const PrinciplesSection = () => {
             OUR PRINCIPLES
           </h2>
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-light text-white leading-tight max-w-3xl mx-auto px-4">
-            Non-negotiable standards that secure capital & align incentives.
+            Non-negotiable standards that secure capital and align incentives.
           </h3>
         </div>
 
         <div className="relative w-full max-w-[400px] md:max-w-[850px] h-[480px] md:h-[580px] mx-auto flex items-center justify-center constellation-container transition-all duration-500">
-          {/* SELECT ONE Hint */}
-          <motion.div 
+          <motion.div
             className="absolute top-[calc(50%+65px)] md:top-[calc(50%+85px)] left-1/2 -translate-x-1/2 z-20 pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: activePrinciple === null ? 0.4 : 0 }}
@@ -71,8 +74,7 @@ const PrinciplesSection = () => {
           >
             <span className="text-[10px] md:text-xs font-mono text-white/60 uppercase tracking-[0.4em]">Select One</span>
           </motion.div>
-          
-          {/* THE WEB */}
+
           <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
             <defs>
               <radialGradient id="central-glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
@@ -80,7 +82,6 @@ const PrinciplesSection = () => {
                 <stop offset="100%" stopColor="rgba(59, 130, 246, 0)" />
               </radialGradient>
 
-              {/* Energy Pulse Gradient - Performance optimized SVG animation */}
               <linearGradient id="energyPulse" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="rgba(59, 130, 246, 0)">
                   {!shouldReduceMotion && <animate attributeName="offset" values="-0.5;1.5" dur="2s" repeatCount="indefinite" />}
@@ -94,10 +95,8 @@ const PrinciplesSection = () => {
               </linearGradient>
             </defs>
 
-            {/* Central Ambient Glow - Behind everything else in the web */}
             <circle cx="50%" cy="50%" r="20%" fill="url(#central-glow)" />
 
-            {/* Concentric Hub Rings */}
             {[8, 11, 14, 17].map((radius, idx) => (
               <circle
                 key={`hub-ring-${idx}`}
@@ -109,8 +108,7 @@ const PrinciplesSection = () => {
                 strokeWidth="1"
               />
             ))}
-            
-            {/* Constellation Lines */}
+
             {constellationLines.map(([from, to], idx) => {
               const fromPos = nodePositions[from];
               const toPos = nodePositions[to];
@@ -131,7 +129,6 @@ const PrinciplesSection = () => {
               );
             })}
 
-            {/* Core Spokes */}
             {nodePositions.map((pos, i) => (
               <line
                 key={`spoke-${i}`}
@@ -145,11 +142,9 @@ const PrinciplesSection = () => {
               />
             ))}
 
-            {/* Energy Pulse - Only on active spoke */}
             {activePrinciple !== null && nodePositions.map((pos, i) =>
               activePrinciple === i && (
                 <g key={`energy-pulse-${i}`}>
-                  {/* Flowing gradient energy */}
                   <motion.line
                     x1="50%"
                     y1="50%"
@@ -161,8 +156,8 @@ const PrinciplesSection = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
+                    style={{ willChange: 'opacity' }}
                   />
-                  {/* Soft glow layer behind */}
                   <motion.line
                     x1="50%"
                     y1="50%"
@@ -174,6 +169,7 @@ const PrinciplesSection = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
+                    style={{ willChange: 'opacity' }}
                   />
                 </g>
               )
@@ -200,40 +196,52 @@ const PrinciplesSection = () => {
               principle={principle}
               position={nodePositions[i]}
               isActive={activePrinciple === i}
-              setActive={setActivePrinciple}
+              setActive={handleSetActive}
               isMobile={isMobile}
             />
           ))}
         </div>
 
-          <motion.div
-            className="absolute top-1/2 left-1/2 w-[280px] md:w-[320px] pointer-events-none z-30"
-            initial={false}
-            animate={{ 
-              opacity: activePrinciple !== null ? 1 : 0, 
-              scale: activePrinciple !== null ? 1 : 0.95,
-              x: "-50%",
-              y: "-50%"
-            }}
-          >
-            {activePrinciple !== null && (
-              <div className="bg-deep-black/95 backdrop-blur-md border border-strategic-blue/30 p-5 md:p-6 rounded-sm shadow-[0_0_30px_rgba(59,130,246,0.15)] pointer-events-auto">
-                <span className="text-[10px] font-mono text-strategic-blue/60 block mb-2 md:mb-3 uppercase tracking-widest">{principles[activePrinciple].code}</span>
-                <h4 className="text-strategic-blue font-bold uppercase text-xs md:text-sm mb-1 md:mb-2 tracking-wide">
-                  {principles[activePrinciple].title}
-                </h4>
-                <p className="text-white/90 text-[12px] md:text-sm font-light leading-relaxed">
-                  {principles[activePrinciple].desc}
-                </p>
-              </div>
-            )}
-          </motion.div>
+          <div className="absolute top-1/2 left-1/2 w-[280px] md:w-[320px] pointer-events-none z-30" style={{ transform: 'translate(-50%, -50%)' }}>
+            <AnimatePresence mode="wait">
+              {activePrinciple !== null && (
+                <motion.div
+                  key={activePrinciple}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="bg-deep-black/95 backdrop-blur-md border border-strategic-blue/30 p-5 md:p-6 rounded-sm shadow-[0_0_30px_rgba(59,130,246,0.15)] pointer-events-auto">
+                    <span className="text-[10px] font-mono text-strategic-blue/80 block mb-2 md:mb-3 uppercase tracking-widest">{principles[activePrinciple].code}</span>
+                    <h4 className="text-clean-white font-bold uppercase text-xs md:text-sm mb-1 md:mb-2 tracking-wide">
+                      {principles[activePrinciple].title}
+                    </h4>
+                    <p className="text-clean-white/95 text-[12px] md:text-sm font-light leading-relaxed">
+                      {principles[activePrinciple].desc}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
       </div>
     </section>
   );
-};
+});
 
-const PrincipleNode = memo(({ index, principle, position, isActive, setActive, isMobile }: any) => {
+PrinciplesSection.displayName = 'PrinciplesSection';
+
+interface PrincipleNodeProps {
+  index: number;
+  principle: { title: string; code: string; desc: string };
+  position: { x: number; y: number };
+  isActive: boolean;
+  setActive: (index: number | null) => void;
+  isMobile: boolean;
+}
+
+const PrincipleNode = memo<PrincipleNodeProps>(({ index, principle, position, isActive, setActive, isMobile }) => {
   return (
     <div
       className="absolute z-20 touch-none select-none"
@@ -244,14 +252,12 @@ const PrincipleNode = memo(({ index, principle, position, isActive, setActive, i
       }}
     >
       <div className="flex flex-col items-center group">
-        {/* THE SATELLITE BALL - Positioned to partially overlap or sit tight above label */}
         <div
           className="cursor-pointer relative z-40 flex items-center justify-center transition-all duration-500 group-hover:scale-110 pointer-events-auto"
           onClick={() => setActive(isActive ? null : index)}
           onMouseEnter={() => !isMobile && setActive(index)}
           onMouseLeave={() => !isMobile && setActive(null)}
         >
-          {/* Active Halo Effect - Pulsing rings */}
           {isActive && (
             <>
               <div className="absolute inset-0 rounded-full bg-strategic-blue/15 animate-pulse scale-[3] shadow-[0_0_40px_rgba(59,130,246,0.4)]" />
@@ -259,21 +265,18 @@ const PrincipleNode = memo(({ index, principle, position, isActive, setActive, i
             </>
           )}
 
-          {/* Ambient Glow - Enhanced with multiple layers */}
           <div className={`absolute inset-0 rounded-full transition-all duration-500 ${
             isActive
               ? 'bg-strategic-blue/30 scale-[2] shadow-[0_0_30px_rgba(59,130,246,0.5)]'
               : 'bg-white/5 group-hover:bg-strategic-blue/20 group-hover:scale-150'
           }`} style={{ width: '100%', height: '100%' }} />
 
-          {/* Outer ring on hover */}
           <div className={`absolute inset-0 rounded-full border transition-all duration-500 ${
             isActive
               ? 'border-strategic-blue/60 scale-[2.2]'
               : 'border-white/10 group-hover:border-strategic-blue/40 group-hover:scale-[2]'
           }`} />
 
-          {/* Core Dot - Enhanced with better scaling */}
           <div className={`w-3.5 h-3.5 md:w-4.5 md:h-4.5 rounded-full transition-all duration-500 relative z-10 border-2 ${
             isActive
               ? 'bg-strategic-blue shadow-[0_0_20px_rgba(59,130,246,1)] scale-125 border-white'
@@ -281,12 +284,10 @@ const PrincipleNode = memo(({ index, principle, position, isActive, setActive, i
           }`} />
         </div>
 
-        {/* HUD CONNECTOR - Vertical line or junction dot */}
         <div className={`w-[1px] h-3 transition-colors duration-300 -mt-1 ${
           isActive ? 'bg-strategic-blue/60' : 'bg-white/20'
         }`} />
 
-        {/* MISSION CONTROL LABEL BOX */}
         <div
           className={`px-3 py-1.5 md:px-4 md:py-2 border transition-all duration-500 backdrop-blur-sm cursor-pointer whitespace-nowrap select-none overflow-hidden ${
             isActive
@@ -296,7 +297,7 @@ const PrincipleNode = memo(({ index, principle, position, isActive, setActive, i
           onClick={() => setActive(isActive ? null : index)}
         >
           <span className={`text-[9px] md:text-[10px] font-mono uppercase tracking-[0.25em] transition-all duration-500 ${
-            isActive ? 'text-white font-bold' : 'text-white/60 group-hover:text-strategic-blue/90 group-hover:font-semibold'
+            isActive ? 'text-clean-white font-bold' : 'text-clean-white/80 group-hover:text-strategic-blue/90 group-hover:font-semibold'
           }`}>
             {isMobile ? principle.code : principle.title}
           </span>
@@ -304,6 +305,9 @@ const PrincipleNode = memo(({ index, principle, position, isActive, setActive, i
       </div>
     </div>
   );
-});
+}, (prevProps, nextProps) =>
+  prevProps.isActive === nextProps.isActive &&
+  prevProps.isMobile === nextProps.isMobile
+);
 
 export default PrinciplesSection;

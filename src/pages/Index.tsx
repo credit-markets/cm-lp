@@ -17,17 +17,56 @@ const Index = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Handle hash navigation when component mounts or location changes
-    if (location.hash) {
-      const element = document.getElementById(location.hash.substring(1));
+    const scrollToHash = async (hash: string, retries = 3): Promise<void> => {
+      if (!hash) return;
+
+      const elementId = hash.substring(1);
+      const element = document.getElementById(elementId);
+
       if (element) {
-        // Use requestAnimationFrame for smoother integration with CSS smooth scroll
         requestAnimationFrame(() => {
           element.scrollIntoView({ behavior: 'smooth' });
         });
+      } else if (retries > 0) {
+        console.log(`Element #${elementId} not found, retrying...`, { retriesLeft: retries });
+        setTimeout(() => scrollToHash(hash, retries - 1), 300);
+      } else {
+        console.error(`Navigation target not found: #${elementId}`, {
+          availableIds: Array.from(document.querySelectorAll('[id]')).map(el => el.id),
+          requestedHash: hash,
+        });
       }
+    };
+
+    if (location.hash) {
+      scrollToHash(location.hash);
     }
   }, [location.hash]);
+
+  useEffect(() => {
+    const preloadComponents = async () => {
+      const components = [
+        { name: 'MarketArchitecture', import: () => import("@/components/MarketArchitecture") },
+        { name: 'SolutionSection', import: () => import("@/components/SolutionSection") },
+        { name: 'ValueFlowSection', import: () => import("@/components/ValueFlowSection") },
+        { name: 'LegalStructureSection', import: () => import("@/components/LegalStructureSection") },
+      ];
+
+      for (const component of components) {
+        try {
+          await component.import();
+        } catch (error) {
+          console.error(`Failed to preload ${component.name}`, {
+            error: error instanceof Error ? error.message : String(error),
+            componentName: component.name,
+          });
+        }
+      }
+    };
+
+    const timer = setTimeout(preloadComponents, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="min-h-screen bg-deep-black">
@@ -39,23 +78,33 @@ const Index = () => {
 
       {/* 2. Principles Section */}
       <PrinciplesSection />
-      
-      {/* Heavy core architecture components */}
+
+      {/* Individual Suspense boundaries for parallel loading */}
       <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <MarketArchitecture />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <SolutionSection />
       </Suspense>
 
-      {/* Secondary narrative components */}
       <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <ValueFlowSection />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <LegalStructureSection />
       </Suspense>
-      
-      {/* Team & Conversion components */}
+
       <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <GeometricTeam />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <AccessArchitecture />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <TerminalFooter />
       </Suspense>
     </main>

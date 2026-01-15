@@ -47,7 +47,7 @@ const SolutionSection = () => {
   return (
     <section
       id="solution"
-      className="py-24 bg-deep-black relative overflow-hidden"
+      className="py-24 bg-deep-black relative overflow-hidden below-fold-section"
     >
       {/* Tech Grid Background */}
       <div
@@ -76,7 +76,7 @@ const SolutionSection = () => {
 
             {/* Ring 2 (Originators) - Stabilized */}
             <div
-              className={`absolute top-1/2 right-[20%] translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] border-2 border-item-blue/20 rounded-full ${
+              className={`absolute top-1/2 right-[20%] translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] border-2 border-strategic-blue/20 rounded-full ${
                 isMobile ? "" : "animate-[spin_60s_linear_infinite_reverse]"
               }`}
             ></div>
@@ -191,7 +191,7 @@ const SolutionSection = () => {
                   className="group flex items-start gap-4 p-4 rounded-sm hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5"
                   style={{ willChange: "transform, opacity" }}
                 >
-                  <div className="w-10 h-10 rounded-sm bg-deep-black border border-item-blue/20 flex items-center justify-center text-strategic-blue group-hover:scale-110 transition-transform duration-300 shrink-0">
+                  <div className="w-10 h-10 rounded-sm bg-deep-black border border-strategic-blue/20 flex items-center justify-center text-strategic-blue group-hover:scale-110 transition-transform duration-300 shrink-0">
                     {pillar.icon}
                   </div>
                   <div>
