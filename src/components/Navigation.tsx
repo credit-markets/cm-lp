@@ -159,6 +159,12 @@ const Navigation = () => {
               SOLUTION
             </a>
             <a
+              href={isMainPage ? "#research" : "/#research"}
+              className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
+            >
+              RESEARCH
+            </a>
+            <a
               href={isMainPage ? "#access" : "/#access"}
               className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
             >

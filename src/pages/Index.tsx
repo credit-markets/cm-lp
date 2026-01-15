@@ -10,6 +10,7 @@ const SolutionSection = lazy(() => import("@/components/SolutionSection"));
 const ValueFlowSection = lazy(() => import("@/components/ValueFlowSection"));
 const LegalStructureSection = lazy(() => import("@/components/LegalStructureSection"));
 const GeometricTeam = lazy(() => import("@/components/GeometricTeam"));
+const BlogInsightsSection = lazy(() => import("@/components/BlogInsightsSection"));
 const AccessArchitecture = lazy(() => import("@/components/AccessArchitecture"));
 const TerminalFooter = lazy(() => import("@/components/TerminalFooter"));
 
@@ -17,7 +18,7 @@ const Index = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const scrollToHash = async (hash: string, retries = 3): Promise<void> => {
+    function scrollToHash(hash: string, retries = 3): void {
       if (!hash) return;
 
       const elementId = hash.substring(1);
@@ -27,16 +28,20 @@ const Index = () => {
         requestAnimationFrame(() => {
           element.scrollIntoView({ behavior: 'smooth' });
         });
-      } else if (retries > 0) {
+        return;
+      }
+
+      if (retries > 0) {
         console.log(`Element #${elementId} not found, retrying...`, { retriesLeft: retries });
         setTimeout(() => scrollToHash(hash, retries - 1), 300);
-      } else {
-        console.error(`Navigation target not found: #${elementId}`, {
-          availableIds: Array.from(document.querySelectorAll('[id]')).map(el => el.id),
-          requestedHash: hash,
-        });
+        return;
       }
-    };
+
+      console.error(`Navigation target not found: #${elementId}`, {
+        availableIds: Array.from(document.querySelectorAll('[id]')).map(el => el.id),
+        requestedHash: hash,
+      });
+    }
 
     if (location.hash) {
       scrollToHash(location.hash);
@@ -44,17 +49,18 @@ const Index = () => {
   }, [location.hash]);
 
   useEffect(() => {
-    const preloadComponents = async () => {
+    async function preloadComponents(): Promise<void> {
       const components = [
-        { name: 'MarketArchitecture', import: () => import("@/components/MarketArchitecture") },
-        { name: 'SolutionSection', import: () => import("@/components/SolutionSection") },
-        { name: 'ValueFlowSection', import: () => import("@/components/ValueFlowSection") },
-        { name: 'LegalStructureSection', import: () => import("@/components/LegalStructureSection") },
+        { name: 'MarketArchitecture', load: () => import("@/components/MarketArchitecture") },
+        { name: 'SolutionSection', load: () => import("@/components/SolutionSection") },
+        { name: 'ValueFlowSection', load: () => import("@/components/ValueFlowSection") },
+        { name: 'LegalStructureSection', load: () => import("@/components/LegalStructureSection") },
+        { name: 'BlogInsightsSection', load: () => import("@/components/BlogInsightsSection") },
       ];
 
       for (const component of components) {
         try {
-          await component.import();
+          await component.load();
         } catch (error) {
           console.error(`Failed to preload ${component.name}`, {
             error: error instanceof Error ? error.message : String(error),
@@ -62,7 +68,7 @@ const Index = () => {
           });
         }
       }
-    };
+    }
 
     const timer = setTimeout(preloadComponents, 1500);
     return () => clearTimeout(timer);
@@ -98,6 +104,10 @@ const Index = () => {
 
       <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
         <GeometricTeam />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
+        <BlogInsightsSection />
       </Suspense>
 
       <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>

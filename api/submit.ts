@@ -116,10 +116,11 @@ export default async function handler(request: Request) {
         let statusCode = 500;
 
         if (error instanceof Error) {
-            if (error.message.includes('connect') || error.message.includes('ECONNREFUSED')) {
+            const errorMsg = error.message;
+            if (errorMsg.includes('connect') || errorMsg.includes('ECONNREFUSED')) {
                 userMessage = 'Unable to connect to database. Please try again in a moment.';
                 console.error('DATABASE CONNECTION ERROR - check DATABASE_URL and network connectivity');
-            } else if (error.message.includes('unique') || error.message.includes('duplicate')) {
+            } else if (errorMsg.includes('unique') || errorMsg.includes('duplicate')) {
                 userMessage = 'This email is already registered on our waitlist.';
                 statusCode = 409;
             }

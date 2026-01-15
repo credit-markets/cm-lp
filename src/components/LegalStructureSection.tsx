@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
-import { ShieldCheck, Globe, FileText, Scale, Landmark } from "lucide-react";
+import { ShieldCheck, Globe, Landmark } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const LegalStructureSection = () => {
+const LegalStructureSection = memo(() => {
   const isMobile = useIsMobile();
 
   return (
@@ -32,32 +33,24 @@ const LegalStructureSection = () => {
             <div className="relative">
               {/* Layer 1 (Outer Hexagon) */}
               <div
-                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] border border-depth-gray/20 rounded-[4rem] ${
-                  isMobile ? "" : "animate-[spin_40s_linear_infinite]"
-                }`}
+                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] border border-depth-gray/20 rounded-[4rem] ${!isMobile ? "animate-[spin_40s_linear_infinite]" : ""}`}
               ></div>
 
               {/* Layer 2 (Middle Circle) */}
               <div
-                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] border-2 border-dashed border-strategic-blue/20 rounded-full ${
-                  isMobile ? "" : "animate-[spin_30s_linear_infinite_reverse]"
-                }`}
+                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] border-2 border-dashed border-strategic-blue/20 rounded-full ${!isMobile ? "animate-[spin_30s_linear_infinite_reverse]" : ""}`}
               ></div>
 
               {/* Layer 3 (Inner Shield) */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] bg-deep-black border border-strategic-blue/30 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.1)]">
                 <ShieldCheck
-                  className={`w-16 h-16 text-strategic-blue ${
-                    isMobile ? "" : "animate-pulse"
-                  }`}
+                  className={`w-16 h-16 text-strategic-blue ${!isMobile ? "animate-pulse" : ""}`}
                 />
               </div>
 
               {/* Orbiting Lock */}
               <div
-                className={`absolute top-1/2 left-1/2 w-[320px] h-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full ${
-                  isMobile ? "" : "animate-[spin_15s_linear_infinite]"
-                }`}
+                className={`absolute top-1/2 left-1/2 w-[320px] h-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full ${!isMobile ? "animate-[spin_15s_linear_infinite]" : ""}`}
               >
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 w-6 h-6 bg-deep-black border border-strategic-blue rounded-sm flex items-center justify-center">
                   <div className="w-1.5 h-1.5 bg-clean-white rounded-full"></div>
@@ -144,6 +137,8 @@ const LegalStructureSection = () => {
       </div>
     </section>
   );
-};
+});
+
+LegalStructureSection.displayName = "LegalStructureSection";
 
 export default LegalStructureSection;
