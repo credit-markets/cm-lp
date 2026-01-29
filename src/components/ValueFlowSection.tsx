@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, Globe, Building2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -20,7 +21,7 @@ const valueProps = [
   }
 ];
 
-const ValueFlowSection = () => {
+const ValueFlowSection = memo(() => {
   const isMobile = useIsMobile();
 
   return (
@@ -91,12 +92,12 @@ const ValueFlowSection = () => {
 
           {/* Right Column: Visual "The Engine" */}
           <div className="flex-1 relative w-full aspect-square md:aspect-auto md:h-[600px] items-center justify-center hidden md:flex">
-             
+
              {/* Core Engine */}
              <div className="relative">
-                {/* Center Glow - Performance Optimized */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none opacity-50"
-                  style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%)' }}></div>
+                {/* Center Glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none opacity-50"
+                     style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%)' }}></div>
                 {/* Ring 1 (Inner) */}
                 <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] border border-strategic-blue/30 rounded-full ${isMobile ? '' : 'animate-[spin_10s_linear_infinite]'}`}></div>
 
@@ -114,21 +115,24 @@ const ValueFlowSection = () => {
                 </div>
              </div>
 
-             {/* Emitted Particles (Abstract Value) */}
+             {/* Emitted Particles (Abstract Value) - Using transform for GPU acceleration */}
              <motion.div
-               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "20%"], left: ["50%", "80%"] }}
+               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], x: [0, 120], y: [0, -120] }}
                transition={isMobile ? {} : { duration: 3, repeat: Infinity, ease: "easeOut" }}
                className="absolute w-2 h-2 bg-strategic-blue rounded-full top-1/2 left-1/2"
+               style={{ willChange: 'transform, opacity' }}
              ></motion.div>
              <motion.div
-               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "80%"], left: ["50%", "20%"] }}
+               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], x: [0, -120], y: [0, 120] }}
                transition={isMobile ? {} : { duration: 3, repeat: Infinity, ease: "easeOut", delay: 1 }}
                className="absolute w-2 h-2 bg-strategic-blue rounded-full top-1/2 left-1/2"
+               style={{ willChange: 'transform, opacity' }}
              ></motion.div>
              <motion.div
-               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], top: ["50%", "20%"], left: ["50%", "20%"] }}
+               animate={isMobile ? {} : { opacity: [0, 1, 0], scale: [1, 1.5], x: [0, -120], y: [0, -120] }}
                transition={isMobile ? {} : { duration: 3, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
                className="absolute w-2 h-2 bg-strategic-blue rounded-full top-1/2 left-1/2"
+               style={{ willChange: 'transform, opacity' }}
              ></motion.div>
 
           </div>
@@ -137,6 +141,8 @@ const ValueFlowSection = () => {
       </div>
     </section>
   );
-};
+});
+
+ValueFlowSection.displayName = 'ValueFlowSection';
 
 export default ValueFlowSection;

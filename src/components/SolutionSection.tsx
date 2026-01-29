@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import {
   ShieldCheck,
@@ -41,7 +42,7 @@ const pillars = [
   },
 ];
 
-const SolutionSection = () => {
+const SolutionSection = memo(() => {
   const isMobile = useIsMobile();
 
   return (
@@ -188,10 +189,9 @@ const SolutionSection = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group flex items-start gap-4 p-4 rounded-sm hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5"
-                  style={{ willChange: "transform, opacity" }}
+                  className="group relative flex items-start gap-4 p-5 rounded-sm bg-white/[0.02] border border-white/5 hover:border-strategic-blue/30 transition-all duration-300"
                 >
-                  <div className="w-10 h-10 rounded-sm bg-deep-black border border-strategic-blue/20 flex items-center justify-center text-strategic-blue group-hover:scale-110 transition-transform duration-300 shrink-0">
+                  <div className="w-10 h-10 rounded-sm bg-deep-black border border-strategic-blue/20 flex items-center justify-center text-strategic-blue group-hover:border-strategic-blue/50 transition-all duration-300 shrink-0">
                     {pillar.icon}
                   </div>
                   <div>
@@ -210,6 +210,8 @@ const SolutionSection = () => {
       </div>
     </section>
   );
-};
+});
+
+SolutionSection.displayName = 'SolutionSection';
 
 export default SolutionSection;

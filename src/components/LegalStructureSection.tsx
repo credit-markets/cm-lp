@@ -28,9 +28,9 @@ const LegalStructureSection = memo(() => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
           {/* Left Column: Visual "The Shield" */}
-          <div className="flex-1 relative w-full aspect-square md:aspect-auto md:h-[600px] items-center justify-center order-2 lg:order-1 hidden md:flex">
+          <div className="flex-1 relative w-full aspect-square md:aspect-auto md:h-[600px] items-center justify-center order-2 lg:order-1 hidden md:flex overflow-hidden">
             {/* Rotating Shield Layers */}
-            <div className="relative">
+            <div className="relative z-0">
               {/* Layer 1 (Outer Hexagon) */}
               <div
                 className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] border border-depth-gray/20 rounded-[4rem] ${!isMobile ? "animate-[spin_40s_linear_infinite]" : ""}`}
@@ -60,7 +60,7 @@ const LegalStructureSection = memo(() => {
           </div>
 
           {/* Right Column: Narrative */}
-          <div className="flex-1 space-y-12 z-10 order-1 lg:order-2">
+          <div className="flex-1 space-y-12 relative z-20 order-1 lg:order-2">
             <div>
               <h2 className="text-section font-bold text-depth-gray tracking-[0.2em] uppercase mb-4">
                 STRUCTURE & COMPLIANCE

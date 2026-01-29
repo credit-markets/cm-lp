@@ -2,7 +2,6 @@ import { memo, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar, FileText } from "lucide-react";
 import { Button } from "./ui/button";
-import { createParagraphAPI } from "@paragraph-com/sdk";
 
 interface BlogPost {
   id: string;
@@ -13,6 +12,11 @@ interface BlogPost {
   subtitle?: string;
 }
 
+interface ParagraphPublication {
+  id: string;
+  slug: string;
+}
+
 interface ParagraphPost {
   id: string;
   title: string;
@@ -21,6 +25,17 @@ interface ParagraphPost {
   publishedAt?: string;
   subtitle?: string;
 }
+
+interface ParagraphAPIResponse<T> {
+  items?: T[];
+  pagination?: {
+    hasMore: boolean;
+    cursor?: string;
+  };
+}
+
+// Paragraph API base URL - directly extracted from SDK
+const PARAGRAPH_API_BASE = "https://public.api.paragraph.com/api";
 
 function formatDate(timestamp?: string): string {
   try {
@@ -47,25 +62,47 @@ const BlogInsightsSection = memo(() => {
     async function fetchPosts(): Promise<void> {
       try {
         setIsLoading(true);
-        const paragraph = createParagraphAPI();
 
-        const pubResult = await paragraph.publications.get({
-          slug: "creditmarkets"
-        });
+        // Step 1: Get publication by slug
+        const publicationResponse = await fetch(
+          `${PARAGRAPH_API_BASE}/v1/publications/slug/creditmarkets`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-        const publication = pubResult.items?.[0];
+        if (!publicationResponse.ok) {
+          throw new Error(`Publication fetch failed: ${publicationResponse.status}`);
+        }
 
-        if (!publication) {
+        const publicationData = await publicationResponse.json() as ParagraphPublication;
+
+        if (!publicationData?.id) {
           throw new Error("Publication not found");
         }
 
-        const postsResult = await paragraph.posts.get(
-          { publicationId: publication.id },
-          { limit: 3 }
+        // Step 2: Get posts for the publication
+        const postsResponse = await fetch(
+          `${PARAGRAPH_API_BASE}/v1/publications/${publicationData.id}/posts?limit=3`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
 
-        if (postsResult.items) {
-          setPosts(postsResult.items.map((post: ParagraphPost) => ({
+        if (!postsResponse.ok) {
+          throw new Error(`Posts fetch failed: ${postsResponse.status}`);
+        }
+
+        const postsData = await postsResponse.json() as ParagraphAPIResponse<ParagraphPost>;
+
+        if (postsData.items && postsData.items.length > 0) {
+          setPosts(postsData.items.map((post: ParagraphPost) => ({
             id: post.id,
             title: post.title,
             slug: post.slug,
@@ -216,7 +253,13 @@ const BlogInsightsSection = memo(() => {
           {/* Posts Grid with enhanced cards */}
           {!isLoading && !error && posts.length > 0 && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              {/* Mobile swipe indicator */}
+              <div className="md:hidden flex items-center justify-center gap-2 mb-6 text-strategic-blue/60 text-xs font-mono uppercase tracking-wider animate-pulse">
+                <span>Swipe to see more</span>
+                <ArrowRight className="w-3 h-3" />
+              </div>
+
+              <div className="flex md:grid md:grid-cols-3 gap-8 mb-16 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none pb-4 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 scrollbar-hide">
                 {posts.map((post, index) => (
                   <motion.div
                     key={post.id}
@@ -226,7 +269,7 @@ const BlogInsightsSection = memo(() => {
                     transition={{ duration: 0.6, delay: index * 0.15 }}
                     onMouseEnter={() => handleMouseEnter(index)}
                     onMouseLeave={handleMouseLeave}
-                    className="relative group"
+                    className="relative group flex-shrink-0 w-[85vw] md:w-auto snap-center"
                   >
                     {/* Card glow effect on hover */}
                     <div
@@ -255,13 +298,6 @@ const BlogInsightsSection = memo(() => {
                           {/* Gradient overlays for depth */}
                           <div className="absolute inset-0 bg-gradient-to-t from-deep-black via-deep-black/60 to-transparent"></div>
                           <div className="absolute inset-0 bg-gradient-to-br from-strategic-blue/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                          {/* Floating index number */}
-                          <div className="absolute top-4 right-4 w-10 h-10 bg-deep-black/80 backdrop-blur-sm border border-strategic-blue/20 rounded-sm flex items-center justify-center">
-                            <span className="text-strategic-blue/90 font-bold text-sm font-mono">
-                              {String(index + 1).padStart(2, "0")}
-                            </span>
-                          </div>
                         </div>
                       )}
 

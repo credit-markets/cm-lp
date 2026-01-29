@@ -155,8 +155,23 @@
   .constellation-container,
   .hero-spline-container {
     will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+
+  /* GPU acceleration for rotating elements */
+  .animate-spin,
+  [class*="animate-[spin"] {
+    will-change: transform;
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+
+  /* GPU acceleration for pulsing elements */
+  .animate-pulse,
+  .animate-ping {
+    will-change: opacity, transform;
+    transform: translateZ(0);
   }
 
   /* Typography System */
@@ -265,15 +280,15 @@
 
     0%,
     100% {
-      transform: translate(-50%, -50%) translate(0, 0);
+      transform: translate(-50%, -50%) translate3d(0, 0, 0);
     }
 
     33% {
-      transform: translate(-50%, -50%) translate(3px, 4px);
+      transform: translate(-50%, -50%) translate3d(3px, 4px, 0);
     }
 
     66% {
-      transform: translate(-50%, -50%) translate(-3px, -4px);
+      transform: translate(-50%, -50%) translate3d(-3px, -4px, 0);
     }
   }
 
@@ -291,7 +306,7 @@
 
   @keyframes pulse-ring {
     0% {
-      transform: scale(0.8);
+      transform: scale3d(0.8, 0.8, 1);
       opacity: 0;
     }
 
@@ -300,7 +315,7 @@
     }
 
     100% {
-      transform: scale(1.3);
+      transform: scale3d(1.3, 1.3, 1);
       opacity: 0;
     }
   }
@@ -323,10 +338,13 @@
 
   .animate-float-star {
     animation: float-star-basic 12s ease-in-out infinite;
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   .animate-twinkle {
     animation: twinkle-basic 4s ease-in-out infinite;
+    will-change: opacity;
   }
 
   /* Premium Constellation Effects */
@@ -349,18 +367,20 @@
 
     0%,
     100% {
-      transform: scale(0.8);
+      transform: scale3d(0.8, 0.8, 1);
       opacity: 0.3;
     }
 
     50% {
-      transform: scale(1.2);
+      transform: scale3d(1.2, 1.2, 1);
       opacity: 1;
     }
   }
 
   .animate-star-cross {
     animation: star-cross-expand 2s ease-in-out infinite;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
 
   @keyframes hub-pulse-glow {
@@ -377,6 +397,34 @@
 
   .animate-hub-glow {
     animation: hub-pulse-glow 4s ease-in-out infinite;
+    will-change: box-shadow;
+  }
+
+  @keyframes spline-gradient-pulse {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale3d(1, 1, 1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale3d(1.05, 1.05, 1);
+    }
+  }
+
+  .animate-spline-gradient {
+    animation: spline-gradient-pulse 4s ease-in-out infinite;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+
+  /* Shimmer loading effect */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
 
   /* Isometric Grid Background */
@@ -404,5 +452,14 @@
   .below-fold-section {
     content-visibility: auto;
     contain-intrinsic-size: 0 600px;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
   }
 }
