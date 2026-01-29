@@ -1,19 +1,5 @@
 import { Button } from "./ui/button";
-import { lazy, Suspense, memo, useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-
-const Spline = lazy(() => import("@splinetool/react-spline"));
-
-// Type definitions for Network Information API
-interface NetworkInformation extends EventTarget {
-  effectiveType?: 'slow-2g' | '2g' | '3g' | '4g';
-  addEventListener(type: string, listener: EventListener): void;
-  removeEventListener(type: string, listener: EventListener): void;
-}
-
-interface NavigatorWithConnection extends Navigator {
-  connection?: NetworkInformation;
-}
+import { memo, useRef } from "react";
 
 // Extracted orbital fallback component to avoid duplication
 const OrbitalFallback = memo(function OrbitalFallback() {
@@ -63,85 +49,19 @@ const OrbitalFallback = memo(function OrbitalFallback() {
 });
 
 const HeroSection = memo(function HeroSection() {
-  const [sceneLoaded, setSceneLoaded] = useState(false);
-  const [shouldLoadSpline, setShouldLoadSpline] = useState(false);
-  const [isSlowConnection, setIsSlowConnection] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoadSpline(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const nav = navigator as NavigatorWithConnection;
-    if (nav.connection) {
-      const connection = nav.connection;
-      const checkConnection = (): void => {
-        setIsSlowConnection(
-          connection.effectiveType === 'slow-2g' ||
-          connection.effectiveType === '2g'
-        );
-      };
-
-      checkConnection();
-      connection.addEventListener('change', checkConnection);
-
-      return () => connection.removeEventListener('change', checkConnection);
-    }
-  }, []);
 
   return (
     <section id="hero" ref={sectionRef} className="relative min-h-screen flex items-center justify-center bg-deep-black overflow-hidden">
-      {/* Background Visualization */}
+      {/* Background Visualization - CSS-only for performance */}
       <div className="absolute inset-0 flex items-center justify-center transform -translate-y-8 sm:-translate-y-10 lg:-translate-y-14">
         <div className="w-full h-full max-w-6xl max-h-screen flex items-center justify-center">
           <div className="w-full h-[80vh] bg-gradient-to-br from-dimensional-gray/20 to-strategic-blue/5 rounded-lg border border-strategic-blue/10 relative overflow-hidden hero-spline-container">
             <div className="absolute inset-0">
               <div className="w-full h-full scale-[1.3] origin-center opacity-80">
-                {shouldLoadSpline ? (
-                  <Suspense fallback={
-                    <div className="w-full h-full bg-deep-black flex items-center justify-center relative overflow-hidden">
-                      <OrbitalFallback />
-                      {isSlowConnection && (
-                        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-                          <p className="text-strategic-blue/70 text-xs font-mono tracking-wider animate-pulse">
-                            Loading 3D experience...
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  }>
-                    <motion.div
-                      className="w-full h-full"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: sceneLoaded ? 1 : 0 }}
-                      transition={{ duration: 2, ease: "easeOut" }}
-                    >
-                      <Spline
-                        className="w-full h-full"
-                        scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"
-                        onLoad={() => setSceneLoaded(true)}
-                      />
-                    </motion.div>
-                  </Suspense>
-                ) : (
-                  <div className="w-full h-full bg-deep-black flex items-center justify-center relative overflow-hidden">
-                    <OrbitalFallback />
-                  </div>
-                )}
+                <div className="w-full h-full bg-deep-black flex items-center justify-center relative overflow-hidden">
+                  <OrbitalFallback />
+                </div>
               </div>
             </div>
           </div>
