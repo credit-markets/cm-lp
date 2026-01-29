@@ -3,136 +3,105 @@ import cmLogoSvg from "@/assets/cm-logo.svg";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-// Cache for color luminance calculations
-const colorCache = new Map<string, boolean>();
-
-// Optimized luminance calculation
-const calculateLuminance = (color: string): number => {
-  let match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
-
-  if (!match) {
-    console.warn('Unexpected color format for luminance calculation', {
-      color,
-      format: 'expected rgb/rgba',
-    });
-
-    if (color.startsWith('#')) {
-      const hex = color.replace('#', '');
-      if (hex.length === 6) {
-        const r = parseInt(hex.substr(0, 2), 16);
-        const g = parseInt(hex.substr(2, 2), 16);
-        const b = parseInt(hex.substr(4, 2), 16);
-        match = ['', String(r), String(g), String(b)];
-      }
-    }
-
-    if (!match) {
-      return 0;
-    }
-  }
-
-  const r = Number(match[1]);
-  const g = Number(match[2]);
-  const b = Number(match[3]);
-
-  if (isNaN(r) || isNaN(g) || isNaN(b)) {
-    console.error('Invalid RGB values in color', { color, r, g, b });
-    return 0;
-  }
-
-  // Convert to sRGB and calculate luminance
-  const srgb = [r, g, b]
-    .map((v) => v / 255)
-    .map((c) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
-
-  return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
-};
 
 const Navigation = () => {
-  const navRef = useRef<HTMLElement | null>(null);
   const logoWrapperRef = useRef<HTMLDivElement | null>(null);
   const [useDarkLogo, setUseDarkLogo] = useState(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const location = useLocation();
   const isMainPage = location.pathname === '/';
 
   useEffect(() => {
-    const navEl = navRef.current;
+    // Skip on mobile
+    if (window.innerWidth < 768) {
+      setUseDarkLogo(false);
+      return;
+    }
 
-    const getEffectiveBg = (el: HTMLElement | null): string => {
-      let current: HTMLElement | null = el;
-      let depth = 0;
+    // Map section backgrounds to logo color
+    // Light backgrounds (dimensional-gray, clean-white) need dark logo
+    // Dark backgrounds (deep-black, gradient-depth) need light logo
+    const sectionBackgrounds: Record<string, boolean> = {
+      'hero': false,           // bg-deep-black
+      'principles': false,     // bg-deep-black
+      'opportunity': true,     // bg-dimensional-gray (light)
+      'solution': false,       // bg-deep-black
+      'value': true,           // bg-dimensional-gray (light)
+      'structure': false,      // bg-deep-black
+      'team': true,            // bg-clean-white (light)
+      'research': false,       // bg-deep-black
+      'access': false,         // bg-gradient-depth
+    };
 
-      while (current && depth < 20) {
-        const style = window.getComputedStyle(current);
-        const bg = style.backgroundColor;
-        if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
-          return bg;
+    // Track which section is currently visible at logo position
+    let currentSection: string | null = null;
+
+    const updateLogoColor = (sectionId: string) => {
+      if (currentSection === sectionId) return;
+      currentSection = sectionId;
+      const useDark = sectionBackgrounds[sectionId] ?? false;
+      setUseDarkLogo(useDark);
+    };
+
+    // Create observer with optimized options
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Find the section with highest intersection at the top of viewport
+        let topSection: { id: string; top: number; ratio: number } | null = null;
+
+        entries.forEach((entry) => {
+          const sectionId = entry.target.id;
+          if (!sectionId) return;
+
+          const rect = entry.target.getBoundingClientRect();
+          const logoBottom = logoWrapperRef.current?.getBoundingClientRect().bottom ?? 80;
+
+          // Check if section overlaps with logo area
+          if (rect.top <= logoBottom && rect.bottom >= logoBottom) {
+            if (!topSection || rect.top < topSection.top) {
+              topSection = {
+                id: sectionId,
+                top: rect.top,
+                ratio: entry.intersectionRatio,
+              };
+            }
+          }
+        });
+
+        if (topSection) {
+          updateLogoColor(topSection.id);
         }
-        current = current.parentElement as HTMLElement | null;
-        depth++;
+      },
+      {
+        // Check when sections cross the top 120px (logo area)
+        rootMargin: '-80px 0px -80% 0px',
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
       }
+    );
 
-      const bodyBg = window.getComputedStyle(document.body).backgroundColor;
-      console.warn('Logo background detection fell back to document.body', {
-        sampledElement: el?.tagName,
-        sampledElementClasses: el?.className,
-        depthSearched: depth,
-        bodyBackground: bodyBg,
-      });
+    // Observe all main sections
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => {
+      observer.observe(section);
+    });
 
-      return bodyBg;
-    };
+    // Initial check
+    const initialSection = Array.from(sections).find((section) => {
+      const rect = section.getBoundingClientRect();
+      const logoBottom = logoWrapperRef.current?.getBoundingClientRect().bottom ?? 80;
+      return rect.top <= logoBottom && rect.bottom >= logoBottom;
+    });
 
-    const checkBackground = () => {
-      if (!navEl || !logoWrapperRef.current) return;
-
-      const rect = logoWrapperRef.current.getBoundingClientRect();
-      const sampleX = Math.round(rect.left + rect.width / 2);
-      const sampleY = Math.round(rect.bottom + 2);
-
-      const previousPointer = navEl.style.pointerEvents;
-      navEl.style.pointerEvents = "none";
-      const target = document.elementFromPoint(sampleX, sampleY) as HTMLElement | null;
-      navEl.style.pointerEvents = previousPointer;
-
-      const bg = getEffectiveBg(target);
-
-      if (colorCache.has(bg)) {
-        setUseDarkLogo(colorCache.get(bg)!);
-        return;
-      }
-
-      const luminance = calculateLuminance(bg);
-      const isDark = luminance > 0.6;
-      colorCache.set(bg, isDark);
-      setUseDarkLogo(isDark);
-    };
-
-    const onScroll = () => {
-      if (window.innerWidth < 768 || scrollTimeoutRef.current) return;
-
-      scrollTimeoutRef.current = setTimeout(() => {
-        requestAnimationFrame(checkBackground);
-        scrollTimeoutRef.current = null;
-      }, 100);
-    };
-
-    checkBackground();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", checkBackground);
+    if (initialSection?.id) {
+      updateLogoColor(initialSection.id);
+    }
 
     return () => {
-      window.removeEventListener("scroll", onScroll as EventListener);
-      window.removeEventListener("resize", checkBackground);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
+      observer.disconnect();
     };
   }, []);
 
   return (
-    <nav ref={navRef} className="sticky top-0 z-50 bg-transparent">
+    <nav className="sticky top-0 z-50 bg-transparent">
       <div className="container mx-auto px-6 py-4 md:py-8">
         <div className="flex items-center justify-between">
           <div ref={logoWrapperRef} className="h-10 w-10 md:h-8 md:w-8">

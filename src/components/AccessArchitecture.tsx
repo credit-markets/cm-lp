@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -13,7 +13,7 @@ interface WaitlistData {
   type: string | null;
 }
 
-const AccessArchitecture = () => {
+const AccessArchitecture = memo(() => {
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
 
@@ -276,6 +276,8 @@ const AccessArchitecture = () => {
       </div>
     </section>
   );
-};
+});
+
+AccessArchitecture.displayName = 'AccessArchitecture';
 
 export default AccessArchitecture;
