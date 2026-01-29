@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const MarketArchitecture = () => {
+const MarketArchitecture = memo(() => {
   const isMobile = useIsMobile();
 
   return (
@@ -40,7 +41,8 @@ const MarketArchitecture = () => {
 
               <div className="space-y-4">
                 <div className="flex items-start space-x-4 p-4 rounded-sm bg-deep-black/50 border border-depth-gray/10">
-                   <div className="w-2 h-2 mt-2 bg-strategic-blue rounded-full shrink-0 animate-pulse"></div>
+                   <div className="w-2 h-2 mt-2 bg-strategic-blue rounded-full shrink-0 animate-pulse"
+                        style={{ willChange: 'opacity', transform: 'translateZ(0)' }}></div>
                    <p className="text-clean-white text-md">
                      <span className="text-strategic-blue font-bold">Brazil ($593B)</span> represents the largest and most mature credit market in the region.
                    </p>
@@ -71,29 +73,36 @@ const MarketArchitecture = () => {
 
              <div className="relative w-full max-w-[500px] h-[500px]">
                {/* Orbital Rings */}
-               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-depth-gray/20 rounded-full ${isMobile ? '' : 'animate-[spin_60s_linear_infinite]'}`}></div>
-               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] border border-depth-gray/10 rounded-full ${isMobile ? '' : 'animate-[spin_40s_linear_infinite_reverse]'}`}></div>
-               
+               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-depth-gray/20 rounded-full ${isMobile ? '' : 'animate-[spin_60s_linear_infinite]'}`}
+                    style={{ willChange: 'transform', transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}></div>
+               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] border border-depth-gray/10 rounded-full ${isMobile ? '' : 'animate-[spin_40s_linear_infinite_reverse]'}`}
+                    style={{ willChange: 'transform', transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}></div>
+
                {/* Central Hub (Brazil) */}
                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                  <div className="relative">
-                   <div className="w-24 h-24 bg-deep-black border-2 border-strategic-blue rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.2)] z-10">
+                   <div className="w-24 h-24 bg-deep-black border-2 border-strategic-blue rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.2)] z-10"
+                        style={{ willChange: 'box-shadow' }}>
                       <div className="text-center">
                         <div className="text-xs text-depth-gray font-mono">LATAM</div>
                         <div className="text-xl font-bold text-clean-white">BRAZIL</div>
                       </div>
                    </div>
                    {/* Pulsing rings */}
-                   <div className={`absolute inset-0 border border-strategic-blue rounded-full opacity-20 ${isMobile ? '' : 'animate-ping'}`}></div>
-                   <div className={`absolute -inset-4 border border-strategic-blue/30 rounded-full opacity-20 ${isMobile ? '' : 'animate-pulse'}`}></div>
+                   <div className={`absolute inset-0 border border-strategic-blue rounded-full opacity-20 ${isMobile ? '' : 'animate-ping'}`}
+                        style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}></div>
+                   <div className={`absolute -inset-4 border border-strategic-blue/30 rounded-full opacity-20 ${isMobile ? '' : 'animate-pulse'}`}
+                        style={{ willChange: 'opacity', transform: 'translateZ(0)' }}></div>
                  </div>
                </div>
 
                {/* Satellite Nodes (Global Investors) */}
                {/* Node 1: Top Right */}
-               <div className={`absolute top-[20%] right-[20%] ${isMobile ? '' : 'animate-pulse'}`}>
+               <div className={`absolute top-[20%] right-[20%] ${isMobile ? '' : 'animate-pulse'}`}
+                    style={{ willChange: 'opacity' }}>
                   <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-clean-white rounded-full"></div>
+                    <div className="w-3 h-3 bg-clean-white rounded-full"
+                         style={{ transform: 'translateZ(0)' }}></div>
                     <div className="text-xs font-mono text-depth-gray">GLOBAL CAPITAL</div>
                   </div>
                   {/* Connection Line */}
@@ -103,10 +112,12 @@ const MarketArchitecture = () => {
                </div>
 
                {/* Node 2: Bottom Left */}
-               <div className={`absolute bottom-[25%] left-[15%] ${isMobile ? '' : 'animate-pulse delay-700'}`}>
+               <div className={`absolute bottom-[25%] left-[15%] ${isMobile ? '' : 'animate-pulse delay-700'}`}
+                    style={{ willChange: 'opacity' }}>
                   <div className="flex items-center space-x-2">
                     <div className="text-xs font-mono text-depth-gray text-right">LIQUIDITY</div>
-                    <div className="w-3 h-3 bg-clean-white rounded-full"></div>
+                    <div className="w-3 h-3 bg-clean-white rounded-full"
+                         style={{ transform: 'translateZ(0)' }}></div>
                   </div>
                   {/* Connection Line */}
                   <svg className="absolute bottom-3 left-3 w-32 h-32 -z-10 text-strategic-blue/30 overflow-visible">
@@ -137,6 +148,8 @@ const MarketArchitecture = () => {
       </div>
     </section>
   );
-};
+});
+
+MarketArchitecture.displayName = 'MarketArchitecture';
 
 export default MarketArchitecture;

@@ -1,6 +1,7 @@
+import { memo } from "react";
 import cmLogoWhite from "@/assets/cm-logo-white.png";
 
-const TerminalFooter = () => {
+const TerminalFooter = memo(() => {
   return (
     <footer className="bg-deep-black border-t border-strategic-blue/30 py-8">
       <div className="container mx-auto px-6">
@@ -53,6 +54,8 @@ const TerminalFooter = () => {
       </div>
     </footer>
   );
-};
+});
+
+TerminalFooter.displayName = 'TerminalFooter';
 
 export default TerminalFooter;

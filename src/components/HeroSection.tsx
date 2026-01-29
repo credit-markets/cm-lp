@@ -4,9 +4,68 @@ import { motion } from "framer-motion";
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
-const HeroSection = memo(() => {
+// Type definitions for Network Information API
+interface NetworkInformation extends EventTarget {
+  effectiveType?: 'slow-2g' | '2g' | '3g' | '4g';
+  addEventListener(type: string, listener: EventListener): void;
+  removeEventListener(type: string, listener: EventListener): void;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkInformation;
+}
+
+// Extracted orbital fallback component to avoid duplication
+const OrbitalFallback = memo(function OrbitalFallback() {
+  return (
+    <div className="absolute inset-0">
+      {/* Animated gradient base */}
+      <div className="absolute inset-0 animate-spline-gradient"
+           style={{
+             background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 30%, rgba(79, 70, 229, 0.05) 60%, transparent 100%)'
+           }}></div>
+
+      {/* Central core with glow */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-strategic-blue/20 animate-pulse backdrop-blur-sm relative">
+          <div className="absolute inset-0 rounded-full bg-strategic-blue/10 animate-ping"></div>
+          <div className="absolute inset-2 rounded-full bg-gradient-to-br from-strategic-blue/30 to-navy-accent/20 animate-spline-gradient"></div>
+        </div>
+      </div>
+
+      {/* Orbital rings */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64 rounded-full border border-strategic-blue/20 animate-[spin_20s_linear_infinite]" style={{ willChange: 'transform', transform: 'translateZ(0)' }}></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 rounded-full border border-strategic-blue/10 animate-[spin_30s_linear_infinite_reverse]" style={{ willChange: 'transform', transform: 'translateZ(0)' }}></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 md:w-[32rem] md:h-[32rem] rounded-full border border-navy-accent/5 animate-[spin_40s_linear_infinite]" style={{ willChange: 'transform', transform: 'translateZ(0)' }}></div>
+
+      {/* Orbiting particles */}
+      <div className="absolute top-1/2 left-1/2 w-48 h-48 md:w-64 md:h-64 animate-[spin_20s_linear_infinite]" style={{ willChange: 'transform', transform: 'translateZ(0)' }}>
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-strategic-blue rounded-full shadow-lg shadow-strategic-blue/50"></div>
+      </div>
+      <div className="absolute top-1/2 left-1/2 w-72 h-72 md:w-96 md:h-96 animate-[spin_25s_linear_infinite_reverse]" style={{ willChange: 'transform', transform: 'translateZ(0)' }}>
+        <div className="absolute top-1/4 right-0 transform -translate-y-1/2 w-1.5 h-1.5 bg-navy-accent rounded-full shadow-md shadow-navy-accent/50 animate-pulse"></div>
+      </div>
+      <div className="absolute top-1/2 left-1/2 w-96 h-96 md:w-[32rem] md:h-[32rem] animate-[spin_35s_linear_infinite]" style={{ willChange: 'transform', transform: 'translateZ(0)' }}>
+        <div className="absolute bottom-1/4 left-0 transform translate-y-1/2 w-1.5 h-1.5 bg-strategic-blue/70 rounded-full shadow-md shadow-strategic-blue/30"></div>
+      </div>
+
+      {/* Energy pulses */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-strategic-blue/30 animate-ping opacity-20"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 md:w-52 md:h-52 rounded-full border border-navy-accent/20 animate-pulse"></div>
+
+      {/* Floating data points */}
+      <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-strategic-blue/60 rounded-full animate-pulse" style={{ animationDelay: '0s' }}></div>
+      <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-navy-accent/60 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+      <div className="absolute bottom-1/4 right-1/4 w-1 h-1 bg-strategic-blue/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+      <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-navy-accent/40 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+    </div>
+  );
+});
+
+const HeroSection = memo(function HeroSection() {
   const [sceneLoaded, setSceneLoaded] = useState(false);
   const [shouldLoadSpline, setShouldLoadSpline] = useState(false);
+  const [isSlowConnection, setIsSlowConnection] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -26,8 +85,26 @@ const HeroSection = memo(() => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const nav = navigator as NavigatorWithConnection;
+    if (nav.connection) {
+      const connection = nav.connection;
+      const checkConnection = (): void => {
+        setIsSlowConnection(
+          connection.effectiveType === 'slow-2g' ||
+          connection.effectiveType === '2g'
+        );
+      };
+
+      checkConnection();
+      connection.addEventListener('change', checkConnection);
+
+      return () => connection.removeEventListener('change', checkConnection);
+    }
+  }, []);
+
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center bg-deep-black overflow-hidden">
+    <section id="hero" ref={sectionRef} className="relative min-h-screen flex items-center justify-center bg-deep-black overflow-hidden">
       {/* Background Visualization */}
       <div className="absolute inset-0 flex items-center justify-center transform -translate-y-8 sm:-translate-y-10 lg:-translate-y-14">
         <div className="w-full h-full max-w-6xl max-h-screen flex items-center justify-center">
@@ -36,31 +113,33 @@ const HeroSection = memo(() => {
               <div className="w-full h-full scale-[1.3] origin-center opacity-80">
                 {shouldLoadSpline ? (
                   <Suspense fallback={
-                    <div className="w-full h-full bg-deep-black flex items-center justify-center relative">
-                      <div className="absolute inset-0 opacity-20"
-                           style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 75%)' }}></div>
+                    <div className="w-full h-full bg-deep-black flex items-center justify-center relative overflow-hidden">
+                      <OrbitalFallback />
+                      {isSlowConnection && (
+                        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+                          <p className="text-strategic-blue/70 text-xs font-mono tracking-wider animate-pulse">
+                            Loading 3D experience...
+                          </p>
+                        </div>
+                      )}
                     </div>
                   }>
                     <motion.div
                       className="w-full h-full"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: sceneLoaded ? 1 : 0 }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
+                      transition={{ duration: 2, ease: "easeOut" }}
                     >
                       <Spline
                         className="w-full h-full"
                         scene="https://prod.spline.design/UHRQrA4wRGuld-d5/scene.splinecode"
-                        onLoad={() => {
-                          setSceneLoaded(true);
-                          console.log('Spline scene loaded successfully');
-                        }}
+                        onLoad={() => setSceneLoaded(true)}
                       />
                     </motion.div>
                   </Suspense>
                 ) : (
-                  <div className="w-full h-full bg-deep-black flex items-center justify-center relative">
-                    <div className="absolute inset-0 opacity-20"
-                         style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 75%)' }}></div>
+                  <div className="w-full h-full bg-deep-black flex items-center justify-center relative overflow-hidden">
+                    <OrbitalFallback />
                   </div>
                 )}
               </div>
@@ -103,7 +182,5 @@ const HeroSection = memo(() => {
     </section>
   );
 });
-
-HeroSection.displayName = 'HeroSection';
 
 export default HeroSection;

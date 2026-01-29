@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import teamLucas from "@/assets/team-lucas.jpg";
@@ -39,7 +40,7 @@ const teamMembers = [
   }
 ];
 
-const GeometricTeam = () => {
+const GeometricTeam = memo(() => {
   const isMobile = useIsMobile();
 
   return (
@@ -108,6 +109,8 @@ const GeometricTeam = () => {
       </div>
     </section>
   );
-};
+});
+
+GeometricTeam.displayName = 'GeometricTeam';
 
 export default GeometricTeam;
