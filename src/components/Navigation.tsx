@@ -79,13 +79,28 @@ const Navigation = () => {
     );
 
     // Observe all main sections
-    const sections = document.querySelectorAll('section[id]');
-    sections.forEach((section) => {
-      observer.observe(section);
+    const observedSections = new Set<Element>();
+
+    const observeSections = () => {
+      const sections = document.querySelectorAll('section[id]');
+      sections.forEach((section) => {
+        if (!observedSections.has(section)) {
+          observedSections.add(section);
+          observer.observe(section);
+        }
+      });
+    };
+
+    observeSections();
+
+    // Watch for lazy-loaded sections appearing in the DOM
+    const mutationObserver = new MutationObserver(() => {
+      observeSections();
     });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
 
     // Initial check
-    const initialSection = Array.from(sections).find((section) => {
+    const initialSection = Array.from(document.querySelectorAll('section[id]')).find((section) => {
       const rect = section.getBoundingClientRect();
       const logoBottom = logoWrapperRef.current?.getBoundingClientRect().bottom ?? 80;
       return rect.top <= logoBottom && rect.bottom >= logoBottom;
@@ -97,6 +112,7 @@ const Navigation = () => {
 
     return () => {
       observer.disconnect();
+      mutationObserver.disconnect();
     };
   }, []);
 
