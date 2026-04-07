@@ -18,14 +18,14 @@ const Navigation = () => {
     }
 
     // Map section backgrounds to logo color
-    // Light backgrounds (dimensional-gray, clean-white) need dark logo
-    // Dark backgrounds (deep-black, gradient-depth) need light logo
+    // Light backgrounds (clean-white) need dark logo
+    // Dark backgrounds (deep-black, dimensional-gray, gradient-depth) need light logo
     const sectionBackgrounds: Record<string, boolean> = {
       'hero': false,           // bg-deep-black
       'principles': false,     // bg-deep-black
-      'opportunity': true,     // bg-dimensional-gray (light)
+      'opportunity': false,    // bg-dimensional-gray (dark)
       'solution': false,       // bg-deep-black
-      'value': true,           // bg-dimensional-gray (light)
+      'value': false,          // bg-dimensional-gray (dark)
       'structure': false,      // bg-deep-black
       'team': true,            // bg-clean-white (light)
       'research': false,       // bg-deep-black
