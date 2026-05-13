@@ -110,8 +110,8 @@ const Terms = () => {
                 6. As-Is; Limitation of Liability
               </h2>
               <div className="text-depth-gray leading-relaxed space-y-4">
-                <div className="bg-yellow-900/20 border border-yellow-500/30 p-4 rounded-lg">
-                  <p className="text-yellow-100 text-sm leading-relaxed">
+                <div className="bg-strategic-blue/10 border border-strategic-blue/30 p-4 rounded-lg">
+                  <p className="text-clean-white/90 text-sm leading-relaxed">
                     THE SITE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, OUR TOTAL LIABILITY FOR ANY CLAIM ARISING OUT OF OR RELATING TO YOUR USE OF THE SITE IS LIMITED TO ONE HUNDRED U.S. DOLLARS (US$100). WE ARE NOT LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES.
                   </p>
                 </div>

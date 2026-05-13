@@ -79,7 +79,7 @@ const ValueFlowSection = memo(() => {
                       <h4 className="text-lg font-bold text-clean-white mb-2 tracking-wide group-hover:text-strategic-blue transition-colors duration-300">
                         {prop.title}
                       </h4>
-                      <p className="text-md text-depth-gray leading-relaxed font-light max-w-md">
+                      <p className="text-base text-depth-gray leading-relaxed font-light max-w-md">
                         {prop.description}
                       </p>
                     </div>

@@ -57,12 +57,12 @@ const PrinciplesSection = memo(() => {
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-xs md:text-sm font-bold text-white/50 tracking-[0.3em] uppercase mb-3 md:mb-4">
+          <p className="text-xs md:text-sm font-bold text-white/50 tracking-[0.3em] uppercase mb-3 md:mb-4">
             OUR PRINCIPLES
-          </h2>
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-light text-white leading-tight max-w-3xl mx-auto px-4">
+          </p>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-light text-white leading-tight max-w-3xl mx-auto px-4">
             Non-negotiable standards that secure capital and align incentives.
-          </h3>
+          </h2>
         </div>
 
         <div className="relative w-full max-w-[400px] md:max-w-[850px] h-[480px] md:h-[580px] mx-auto flex items-center justify-center constellation-container transition-all duration-500">
@@ -191,7 +191,7 @@ const PrinciplesSection = memo(() => {
           {/* Principle Nodes */}
           {principles.map((principle, i) => (
             <PrincipleNode
-              key={i}
+              key={principle.code}
               index={i}
               principle={principle}
               position={nodePositions[i]}
@@ -210,13 +210,13 @@ const PrinciplesSection = memo(() => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
+                  transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.2 }}
                 >
                   <div className="bg-deep-black/95 backdrop-blur-md border border-strategic-blue/30 p-5 md:p-6 rounded-sm shadow-[0_0_30px_rgba(59,130,246,0.15)] pointer-events-auto">
                     <span className="text-[10px] font-mono text-strategic-blue/80 block mb-2 md:mb-3 uppercase tracking-widest">{principles[activePrinciple].code}</span>
-                    <h4 className="text-clean-white font-bold uppercase text-xs md:text-sm mb-1 md:mb-2 tracking-wide">
+                    <h3 className="text-clean-white font-bold uppercase text-xs md:text-sm mb-1 md:mb-2 tracking-wide">
                       {principles[activePrinciple].title}
-                    </h4>
+                    </h3>
                     <p className="text-clean-white/95 text-[12px] md:text-sm font-light leading-relaxed">
                       {principles[activePrinciple].desc}
                     </p>
@@ -305,9 +305,8 @@ const PrincipleNode = memo<PrincipleNodeProps>(({ index, principle, position, is
       </div>
     </div>
   );
-}, (prevProps, nextProps) =>
-  prevProps.isActive === nextProps.isActive &&
-  prevProps.isMobile === nextProps.isMobile
-);
+});
+
+PrincipleNode.displayName = 'PrincipleNode';
 
 export default PrinciplesSection;

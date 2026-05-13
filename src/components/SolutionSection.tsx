@@ -173,10 +173,13 @@ const SolutionSection = memo(() => {
                 institution-first approach to private credit distribution.
               </p>
               <div className="mt-8">
-                <a href="https://docs.credit.markets/" target="_blank" rel="noopener noreferrer">
-                  <button className="px-6 py-3 bg-strategic-blue/10 border border-strategic-blue/50 text-strategic-blue text-sm font-bold uppercase tracking-wider rounded-sm hover:bg-strategic-blue hover:text-white transition-all duration-300">
-                    View Documentation
-                  </button>
+                <a
+                  href="https://docs.credit.markets/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-6 py-3 bg-strategic-blue/10 border border-strategic-blue/50 text-strategic-blue text-sm font-bold uppercase tracking-wider rounded-sm hover:bg-strategic-blue hover:text-white transition-all duration-300"
+                >
+                  View Documentation
                 </a>
               </div>
             </div>

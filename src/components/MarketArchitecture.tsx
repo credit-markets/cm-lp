@@ -43,7 +43,7 @@ const MarketArchitecture = memo(() => {
                 <div className="flex items-start space-x-4 p-4 rounded-sm bg-deep-black/50 border border-depth-gray/10">
                    <div className="w-2 h-2 mt-2 bg-strategic-blue rounded-full shrink-0 animate-pulse"
                         style={{ willChange: 'opacity', transform: 'translateZ(0)' }}></div>
-                   <p className="text-clean-white text-md">
+                   <p className="text-clean-white text-base">
                      <span className="text-strategic-blue font-bold">Brazil ($593B)</span> represents the largest and most mature credit market in the region.
                    </p>
                 </div>
