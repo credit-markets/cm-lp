@@ -1,4 +1,5 @@
 import { useState, memo } from "react";
+import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -252,7 +253,21 @@ const AccessArchitecture = memo(() => {
                   </Button>
                   <div className="text-center mt-4">
                     <p className="text-xs text-depth-gray/50 font-mono">
-                      By submitting, you agree to our Privacy Policy.
+                      By submitting, you agree to our{" "}
+                      <Link
+                        to="/terms"
+                        className="text-strategic-blue hover:text-strategic-blue/80 underline underline-offset-2 transition-colors"
+                      >
+                        Terms of Service
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        to="/privacy"
+                        className="text-strategic-blue hover:text-strategic-blue/80 underline underline-offset-2 transition-colors"
+                      >
+                        Privacy Policy
+                      </Link>
+                      .
                     </p>
                   </div>
                 </div>
