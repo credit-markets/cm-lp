@@ -100,9 +100,9 @@ const GeometricTeam = memo(() => {
                       />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-deep-black mb-1 md:group-hover:text-strategic-blue transition-colors duration-300">
+                      <h3 className="text-lg font-bold text-deep-black mb-1 md:group-hover:text-strategic-blue transition-colors duration-300">
                         {member.name}
-                      </h4>
+                      </h3>
                       <div className="text-xs font-mono text-strategic-blue mb-2 uppercase tracking-wider bg-strategic-blue/10 inline-block px-2 py-0.5 rounded-sm">
                         {member.role}
                       </div>

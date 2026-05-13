@@ -93,15 +93,12 @@ const LegalStructureSection = memo(() => {
                     OFFSHORE
                   </h4>
                 </div>
-                <ul className="space-y-4 text-depth-gray font-mono text-sm ml-14">
-                  <li className="flex items-start gap-3">
-                    <div className="w-1.5 h-1.5 mt-1.5 bg-strategic-blue rounded-full shrink-0"></div>
-                    <span>
-                      Investor onboarding through comprehensive KYC and AML
-                      procedures
-                    </span>
-                  </li>
-                </ul>
+                <div className="flex items-start gap-3 text-depth-gray font-mono text-sm ml-14">
+                  <div aria-hidden="true" className="w-1.5 h-1.5 mt-1.5 bg-strategic-blue rounded-full shrink-0"></div>
+                  <p>
+                    Investor onboarding through comprehensive KYC and AML procedures
+                  </p>
+                </div>
               </motion.div>
 
               {/* Onshore Block */}
@@ -121,15 +118,12 @@ const LegalStructureSection = memo(() => {
                     ONSHORE
                   </h4>
                 </div>
-                <ul className="space-y-4 text-depth-gray font-mono text-sm ml-14">
-                  <li className="flex items-start gap-3">
-                    <div className="w-1.5 h-1.5 mt-1.5 bg-strategic-blue rounded-full shrink-0"></div>
-                    <span>
-                      Onshore allocation into regulated local credit funds and
-                      originators, operating under regulators oversight
-                    </span>
-                  </li>
-                </ul>
+                <div className="flex items-start gap-3 text-depth-gray font-mono text-sm ml-14">
+                  <div aria-hidden="true" className="w-1.5 h-1.5 mt-1.5 bg-strategic-blue rounded-full shrink-0"></div>
+                  <p>
+                    Onshore allocation into regulated local credit funds and originators, operating under regulators oversight
+                  </p>
+                </div>
               </motion.div>
             </div>
           </div>

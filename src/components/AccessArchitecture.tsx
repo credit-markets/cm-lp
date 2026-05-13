@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useId, useState, memo } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "./ui/button";
@@ -14,12 +14,21 @@ interface WaitlistData {
   type: string | null;
 }
 
+interface SubmitResponse {
+  status?: 'success' | 'duplicate';
+  message?: string;
+}
+
+const BG_PATTERN_CELLS = Array.from({ length: 32 }, (_, i) => i);
+
 const AccessArchitecture = memo(() => {
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
+  const emailErrorId = useId();
+  const formErrorId = useId();
 
-  const submitMutation = useMutation({
-    mutationFn: async (data: WaitlistData) => {
+  const submitMutation = useMutation<SubmitResponse, Error, WaitlistData>({
+    mutationFn: async (data: WaitlistData): Promise<SubmitResponse> => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
@@ -38,21 +47,14 @@ const AccessArchitecture = memo(() => {
           try {
             const errorData = await response.json();
             errorMessage = errorData.error || errorMessage;
-          } catch (e) {
+          } catch {
             errorMessage = response.statusText || errorMessage;
           }
-
-          console.error('Form submission failed', {
-            status: response.status,
-            statusText: response.statusText,
-            errorMessage,
-            url: response.url,
-          });
 
           throw new Error(errorMessage);
         }
 
-        return response.json();
+        return (await response.json()) as SubmitResponse;
       } catch (error) {
         clearTimeout(timeoutId);
 
@@ -67,21 +69,23 @@ const AccessArchitecture = memo(() => {
         throw error;
       }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setIsSuccess(true);
+      const isDuplicate = data?.status === 'duplicate';
       toast({
-        title: "Request Received",
-        description: "We'll be in touch shortly.",
+        title: isDuplicate ? "Already Registered" : "Request Received",
+        description: isDuplicate
+          ? "You're already on our waitlist."
+          : "We'll be in touch shortly.",
         variant: "default",
       });
     },
     onError: (error) => {
-      console.error("Form submission error", {
-        error: error instanceof Error ? error.message : String(error),
-        timestamp: new Date().toISOString(),
-      });
-
       const message = error instanceof Error ? error.message : "Error submitting form. Please try again.";
+      console.error('Waitlist submission failed', {
+        name: error instanceof Error ? error.name : 'unknown',
+        message,
+      });
       toast({
         title: "Submission Failed",
         description: message,
@@ -103,6 +107,9 @@ const AccessArchitecture = memo(() => {
 
     submitMutation.mutate(data);
   };
+
+  const hasError = submitMutation.isError;
+  const errorMessage = submitMutation.error instanceof Error ? submitMutation.error.message : null;
 
   return (
     <section
@@ -127,9 +134,15 @@ const AccessArchitecture = memo(() => {
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-strategic-blue to-transparent opacity-50"></div>
 
             {isSuccess ? (
-              <div className="text-center py-16 animate-in fade-in zoom-in duration-500">
+              <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="text-center py-16 animate-in fade-in zoom-in duration-500"
+              >
                 <div className="w-16 h-16 bg-strategic-blue/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="32"
                     height="32"
@@ -151,7 +164,7 @@ const AccessArchitecture = memo(() => {
                 <p className="text-depth-gray">We'll be in touch shortly.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6" noValidate aria-describedby={hasError ? formErrorId : undefined}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label
@@ -162,9 +175,14 @@ const AccessArchitecture = memo(() => {
                     </Label>
                     <Input
                       required
+                      aria-required="true"
+                      aria-invalid={hasError || undefined}
+                      aria-describedby={hasError ? emailErrorId : undefined}
                       name="email"
                       id="email"
                       type="email"
+                      maxLength={254}
+                      autoComplete="email"
                       placeholder="name@institution.com"
                       className="bg-deep-black/50 border-depth-gray/50 text-clean-white focus:border-strategic-blue/50 focus:ring-strategic-blue/20 placeholder:text-depth-gray/30"
                     />
@@ -180,6 +198,7 @@ const AccessArchitecture = memo(() => {
                       name="telegram"
                       id="telegram"
                       type="text"
+                      maxLength={64}
                       placeholder="@username"
                       className="bg-deep-black/50 border-depth-gray/50 text-clean-white focus:border-strategic-blue/50 focus:ring-strategic-blue/20 placeholder:text-depth-gray/30"
                     />
@@ -197,6 +216,7 @@ const AccessArchitecture = memo(() => {
                     name="investment"
                     id="investment"
                     type="text"
+                    maxLength={64}
                     placeholder="$100k - $5M+"
                     className="bg-deep-black/50 border-depth-gray/50 text-clean-white focus:border-strategic-blue/50 focus:ring-strategic-blue/20 placeholder:text-depth-gray/30"
                   />
@@ -209,6 +229,7 @@ const AccessArchitecture = memo(() => {
                   <RadioGroup
                     name="type"
                     defaultValue="institutional"
+                    aria-label="Investor type"
                     className="grid grid-cols-1 md:grid-cols-2 gap-4"
                   >
                     <div className="flex items-center space-x-3 border border-depth-gray/30 p-4 rounded-sm hover:border-strategic-blue/30 transition-colors bg-deep-black/30">
@@ -240,6 +261,17 @@ const AccessArchitecture = memo(() => {
                   </RadioGroup>
                 </div>
 
+                {hasError && (
+                  <div
+                    id={formErrorId}
+                    role="alert"
+                    aria-live="assertive"
+                    className="text-sm text-red-400 bg-red-950/30 border border-red-900/50 px-4 py-3 rounded-sm"
+                  >
+                    <span id={emailErrorId}>{errorMessage}</span>
+                  </div>
+                )}
+
                 <div className="pt-6">
                   <Button
                     type="submit"
@@ -249,7 +281,7 @@ const AccessArchitecture = memo(() => {
                     <span className="relative z-10">
                       {submitMutation.isPending ? "SUBMITTING..." : "SUBMIT REQUEST"}
                     </span>
-                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <div aria-hidden="true" className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                   </Button>
                   <div className="text-center mt-4">
                     <p className="text-xs text-depth-gray/50 font-mono">
@@ -277,13 +309,13 @@ const AccessArchitecture = memo(() => {
         </div>
 
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5 -z-10">
+        <div aria-hidden="true" className="absolute inset-0 opacity-5 -z-10">
           <div className="grid grid-cols-8 gap-8 h-full">
-            {[...Array(32)].map((_, i) => (
+            {BG_PATTERN_CELLS.map((cell) => (
               <div
-                key={i}
+                key={`bg-cell-${cell}`}
                 className="border border-strategic-blue transform rotate-45"
-                style={{ animationDelay: `${i * 0.1}s` }}
+                style={{ animationDelay: `${cell * 0.1}s` }}
               ></div>
             ))}
           </div>

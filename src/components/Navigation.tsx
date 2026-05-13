@@ -1,10 +1,8 @@
-import { Button } from "./ui/button";
 import cmLogoSvg from "@/assets/cm-logo.svg";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-
-const Navigation = () => {
+const Navigation = memo(() => {
   const logoWrapperRef = useRef<HTMLDivElement | null>(null);
   const [useDarkLogo, setUseDarkLogo] = useState(false);
   const location = useLocation();
@@ -32,7 +30,6 @@ const Navigation = () => {
       'access': false,         // bg-gradient-depth
     };
 
-    // Track which section is currently visible at logo position
     let currentSection: string | null = null;
 
     const updateLogoColor = (sectionId: string) => {
@@ -42,43 +39,36 @@ const Navigation = () => {
       setUseDarkLogo(useDark);
     };
 
-    // Create observer with optimized options
+    type TopSection = { id: string; top: number; ratio: number };
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find the section with highest intersection at the top of viewport
-        let topSection: { id: string; top: number; ratio: number } | null = null;
+        const logoBottom = logoWrapperRef.current?.getBoundingClientRect().bottom ?? 80;
+        const candidates: TopSection[] = [];
 
-        entries.forEach((entry) => {
+        for (const entry of entries) {
           const sectionId = entry.target.id;
-          if (!sectionId) return;
-
+          if (!sectionId) continue;
           const rect = entry.target.getBoundingClientRect();
-          const logoBottom = logoWrapperRef.current?.getBoundingClientRect().bottom ?? 80;
-
-          // Check if section overlaps with logo area
           if (rect.top <= logoBottom && rect.bottom >= logoBottom) {
-            if (!topSection || rect.top < topSection.top) {
-              topSection = {
-                id: sectionId,
-                top: rect.top,
-                ratio: entry.intersectionRatio,
-              };
-            }
+            candidates.push({ id: sectionId, top: rect.top, ratio: entry.intersectionRatio });
           }
-        });
+        }
 
-        if (topSection) {
-          updateLogoColor(topSection.id);
+        const top = candidates.reduce<TopSection | null>(
+          (best, cur) => (best === null || cur.top < best.top ? cur : best),
+          null
+        );
+
+        if (top) {
+          updateLogoColor(top.id);
         }
       },
       {
-        // Check when sections cross the top 120px (logo area)
         rootMargin: '-80px 0px -80% 0px',
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
       }
     );
 
-    // Observe all main sections
     const observedSections = new Set<Element>();
 
     const observeSections = () => {
@@ -93,13 +83,11 @@ const Navigation = () => {
 
     observeSections();
 
-    // Watch for lazy-loaded sections appearing in the DOM
     const mutationObserver = new MutationObserver(() => {
       observeSections();
     });
     mutationObserver.observe(document.body, { childList: true, subtree: true });
 
-    // Initial check
     const initialSection = Array.from(document.querySelectorAll('section[id]')).find((section) => {
       const rect = section.getBoundingClientRect();
       const logoBottom = logoWrapperRef.current?.getBoundingClientRect().bottom ?? 80;
@@ -118,13 +106,19 @@ const Navigation = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-transparent">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-strategic-blue focus:text-deep-black focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:tracking-wider focus:uppercase"
+      >
+        Skip to main content
+      </a>
       <div className="container mx-auto px-6 py-4 md:py-8">
         <div className="flex items-center justify-between">
           <div ref={logoWrapperRef} className="h-10 w-10 md:h-8 md:w-8">
-            <Link to="/" aria-label="Home">
+            <Link to="/" aria-label="Credit Markets — Home">
               <img
                 src={cmLogoSvg}
-                alt="Credit Markets"
+                alt=""
                 className={`h-full w-full object-contain transition-all duration-150 ${useDarkLogo ? "brightness-0" : "brightness-0 invert"}`}
               />
             </Link>
@@ -160,6 +154,8 @@ const Navigation = () => {
       </div>
     </nav>
   );
-};
+});
+
+Navigation.displayName = 'Navigation';
 
 export default Navigation;

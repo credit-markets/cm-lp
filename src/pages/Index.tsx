@@ -3,6 +3,9 @@ import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import PrinciplesSection from "@/components/PrinciplesSection";
+// TerminalFooter is also statically imported by Privacy.tsx/Terms.tsx, so
+// lazy-loading it here gives no payload benefit and shows an empty placeholder.
+import TerminalFooter from "@/components/TerminalFooter";
 
 // Lazy load below-the-fold components
 const MarketArchitecture = lazy(() => import("@/components/MarketArchitecture"));
@@ -12,7 +15,6 @@ const LegalStructureSection = lazy(() => import("@/components/LegalStructureSect
 const GeometricTeam = lazy(() => import("@/components/GeometricTeam"));
 const BlogInsightsSection = lazy(() => import("@/components/BlogInsightsSection"));
 const AccessArchitecture = lazy(() => import("@/components/AccessArchitecture"));
-const TerminalFooter = lazy(() => import("@/components/TerminalFooter"));
 
 const Index = () => {
   const location = useLocation();
@@ -75,10 +77,10 @@ const Index = () => {
   }, []);
 
   return (
-    <main className="min-h-screen bg-deep-black">
+    <main id="main-content" className="min-h-screen bg-deep-black">
       {/* Navigation */}
       <Navigation />
-      
+
       {/* 1. Hero Section */}
       <HeroSection />
 
@@ -114,9 +116,7 @@ const Index = () => {
         <AccessArchitecture />
       </Suspense>
 
-      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
-        <TerminalFooter />
-      </Suspense>
+      <TerminalFooter />
     </main>
   );
 };
