@@ -98,7 +98,7 @@ const HeroSection = memo(function HeroSection() {
             SHORT-DURATION EMERGING MARKET CREDIT
           </h1>
           <h2 className="text-sm sm:text-lg md:text-xl text-clean-white/70 font-light tracking-[0.15em] md:tracking-[0.2em] max-w-2xl mx-auto">
-            Institutional access to tokenized asset-backed private credit in LATAM
+            Institutional access to collateralized private credit in LATAM
           </h2>
         </div>
 
