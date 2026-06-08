@@ -103,9 +103,9 @@ const HeroSection = memo(function HeroSection() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto px-4 sm:px-0">
-          <a href="#access" className="w-full sm:w-auto">
+          <a href="https://staging.creditmarkets.lat/" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
             <Button variant="hero" size="hero" className="w-full sm:w-auto min-w-[200px]">
-              Request Access
+              Launch App
             </Button>
           </a>
           <a href={CONTACT_MAILTO} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
