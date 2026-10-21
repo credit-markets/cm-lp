@@ -98,6 +98,10 @@ const en = {
     error: "Research posts could not be loaded.",
     empty: "New research is on the way.",
     dateLocale: "en-US",
+    score: {
+      title: "FIDC market data",
+      body: "Brazil's FIDC market from CVM monthly filings, with a market overview and a page for every fund.",
+    },
   },
   team: {
     label: "Team",
@@ -267,6 +271,10 @@ const pt: Copy = {
     error: "Não foi possível carregar as publicações.",
     empty: "Novas publicações em breve.",
     dateLocale: "pt-BR",
+    score: {
+      title: "Dados do mercado de FIDCs",
+      body: "O mercado brasileiro de FIDCs a partir dos informes mensais da CVM, com visão geral e uma página para cada fundo.",
+    },
   },
   team: {
     label: "Equipe",

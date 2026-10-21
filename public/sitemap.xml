@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://credit.markets/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://credit.markets/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://credit.markets/pt" />
+  </url>
+  <url>
+    <loc>https://credit.markets/pt</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://credit.markets/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://credit.markets/pt" />
+  </url>
+  <url>
+    <loc>https://credit.markets/terms</loc>
+  </url>
+  <url>
+    <loc>https://credit.markets/privacy</loc>
+  </url>
+</urlset>

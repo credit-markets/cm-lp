@@ -6,7 +6,9 @@ import TerminalFooter from "@/components/TerminalFooter";
 const Privacy = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "Privacy Policy — Credit Markets";
+    document.title = "Privacy Policy | Credit Markets";
+    document.documentElement.lang = "en";
+    document.querySelector('link[rel="canonical"]')?.setAttribute("href", "https://credit.markets/privacy");
   }, []);
 
   return (
