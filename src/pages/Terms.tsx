@@ -6,7 +6,9 @@ import TerminalFooter from "@/components/TerminalFooter";
 const Terms = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "Terms of Service — Credit Markets";
+    document.title = "Terms of Service | Credit Markets";
+    document.documentElement.lang = "en";
+    document.querySelector('link[rel="canonical"]')?.setAttribute("href", "https://credit.markets/terms");
   }, []);
 
   return (

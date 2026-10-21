@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { cm } from "@/lib/cm";
 import { useLang } from "@/i18n/useLang";
+import { SCORE_URL } from "@/lib/constants";
 
 interface BlogPost {
   id: string;
@@ -174,6 +175,22 @@ const BlogInsightsSection = memo(() => {
             {allLink}
           </div>
         )}
+
+        <a
+          href={SCORE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-lg border border-cm-border bg-cm-raised p-6 md:p-8 hover:border-cm-accent/40 transition-colors duration-200"
+        >
+          <span>
+            <span className="block text-lg font-display font-semibold tracking-[-0.015em]">{r.score.title}</span>
+            <span className="block mt-1.5 text-[15px] text-cm-text-2 leading-relaxed max-w-xl">{r.score.body}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 shrink-0 cm-num text-sm text-cm-accent group-hover:underline underline-offset-4">
+            score.credit.markets
+            <ArrowUpRight className="w-4 h-4" strokeWidth={1.5} aria-hidden="true" />
+          </span>
+        </a>
 
         <div className="mt-8 md:hidden">{allLink}</div>
       </div>
