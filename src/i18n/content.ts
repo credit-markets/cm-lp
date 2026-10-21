@@ -168,9 +168,9 @@ export type Copy = typeof en;
 const pt: Copy = {
   meta: {
     htmlLang: "pt-BR",
-    title: "Credit Markets | O protocolo modular de crédito do mundo real",
+    title: "Credit Markets | O protocolo modular de crédito da economia real",
     description:
-      "Vaults de crédito curados e com risco isolado na Solana, alimentados por originadores no Brasil e liquidados em rendimento em dólar.",
+      "Vaults de crédito curados e com risco isolado na Solana, com originação no Brasil e rendimento em dólar.",
   },
   nav: {
     links: { thesis: "Tese", protocol: "Protocolo", investors: "Investidores", originators: "Originadores", research: "Pesquisa" },
@@ -183,14 +183,14 @@ const pt: Copy = {
     switchLabel: "View in English",
   },
   hero: {
-    title: "O protocolo modular de crédito do mundo real.",
-    sub: "Vaults de crédito curados e com risco isolado na Solana, alimentados por originadores locais e liquidados em rendimento em dólar.",
+    title: "O protocolo modular de crédito da economia real.",
+    sub: "Vaults de crédito curados e com risco isolado na Solana, com originação local e rendimento em dólar.",
     cta: "Solicitar acesso",
     app: "Acessar o app",
     stats: [
       { value: "T+0", label: "Liquidação em USDC na Solana" },
-      { value: "30-120 dias", label: "Prazo dos recebíveis com lastro" },
-      { value: "175.789", label: "Fundo-meses de FIDCs no modelo de risco" },
+      { value: "30-120 dias", label: "Prazo das operações com lastro" },
+      { value: "175.789", label: "Informes mensais de FIDCs no modelo de risco" },
     ],
   },
   thesis: {
@@ -199,32 +199,32 @@ const pt: Copy = {
       "Falta: trilhos programáveis entre os dois.",
     ],
     gaps: [
-      { label: "US$ 5,7 tri", caption: "Lacuna global de financiamento a MPMEs" },
+      { label: "US$ 5,7 tri", caption: "Déficit global de crédito para MPMEs" },
       { label: "US$ 1 tri", caption: "América Latina" },
       { label: "US$ 680 bi", caption: "Brasil" },
     ],
-    chartCaption: "O Brasil responde por 68% da lacuna latino-americana. Áreas em escala.",
+    chartCaption: "O Brasil responde por 68% do déficit latino-americano. Áreas proporcionais.",
     barriers: [
       {
         title: "A barreira de acesso",
-        body: "O investidor estrangeiro enfrenta conta local, custódia e estruturas jurídicas sob medida antes de ganhar qualquer coisa.",
-        figure: "~1 em 5",
-        figureLabel: "dólares de crédito privado tokenizado é um ativo verificado e transferível",
+        body: "O investidor estrangeiro enfrenta conta local, custódia e estruturas jurídicas sob medida antes do primeiro retorno.",
+        figure: "~20%",
+        figureLabel: "do crédito privado tokenizado é um ativo verificado e transferível",
       },
       {
         title: "A barreira de risco",
         body: "O dinheiro se move em segundos, mas o investidor só vê o lastro uma vez por mês.",
         figure: "67%",
-        figureLabel: "dos fundo-meses de FIDCs públicos mostram provisão para perdas zerada",
+        figureLabel: "dos informes mensais de FIDCs registram PDD zerada",
       },
     ],
   },
   protocol: {
     title: "Infraestrutura e análise de crédito, desacopladas.",
-    lead: "Cada parte faz o que sabe fazer melhor. A Credit Markets opera os trilhos e nunca empresta do próprio balanço.",
+    lead: "Cada parte faz o que sabe fazer melhor. A Credit Markets opera os trilhos e nunca empresta com capital próprio.",
     aria: "Três camadas empilhadas: curadores na base, os trilhos do protocolo Credit Markets no meio e alocadores no topo",
     layers: [
-      { role: "Curadores", who: "Originadores locais", body: "Analisam o crédito, fazem a cobrança e colocam o próprio capital na primeira perda." },
+      { role: "Curadores", who: "Originadores locais", body: "Analisam o crédito, fazem a cobrança e assumem a primeira perda com capital próprio." },
       {
         role: "Credit Markets",
         who: "Os trilhos do protocolo",
@@ -232,7 +232,7 @@ const pt: Copy = {
       },
       {
         role: "Alocadores",
-        who: "LPs institucionais",
+        who: "Investidores institucionais",
         body: "Escolhem o vault de um curador ou uma carteira diversificada. Entra USDC, sai rendimento em dólar.",
       },
     ],
@@ -240,22 +240,22 @@ const pt: Copy = {
   investors: {
     eyebrow: "Para investidores",
     title: "Rendimento em dólar com lastro e prova de cada operação.",
-    lead: "Escolha um vault curado e aloque em USDC. Cada vault é isolado: um default em um não contamina os outros.",
+    lead: "Escolha um vault curado e aloque em USDC. Cada vault é isolado: a inadimplência de um não contamina os outros.",
     points: [
-      { title: "Rendimento em dólar", body: "Deposite USDC e receba retorno em dólar, com hedge, vindo do crédito brasileiro." },
+      { title: "Rendimento em dólar", body: "Deposite USDC e receba retorno em dólar, com hedge cambial, a partir de crédito brasileiro." },
       { title: "Lastro em recebíveis", body: "Crédito de curto prazo para empresas brasileiras, com garantias registradas localmente." },
-      { title: "Risco visível", body: "Cada pagamento é registrado on-chain, não num PDF mensal." },
+      { title: "Risco visível", body: "Cada pagamento é registrado on-chain, não em um relatório mensal em PDF." },
     ],
     cta: "Solicitar acesso como investidor",
   },
   originators: {
     eyebrow: "Para originadores",
-    title: "Tenha o seu próprio vault de crédito.",
+    title: "Opere o seu próprio vault de crédito.",
     lead: "A Credit Markets permite que originadores locais atuem como curadores institucionais, com prova on-chain.",
     bringLabel: "Você traz",
-    bring: ["Seus tomadores", "Sua análise de crédito", "Sua cobrança", "Capital de primeira perda"],
+    bring: ["Seus tomadores", "Sua análise de crédito", "Sua cobrança", "Cota subordinada (primeira perda)"],
     providesLabel: "O protocolo oferece",
-    provides: ["Investidores globais", "A estrutura jurídica", "Funding em dólar, com hedge para reais", "Relatórios em tempo real"],
+    provides: ["Investidores globais", "A estrutura jurídica", "Funding em dólar, convertido em reais com hedge", "Relatórios em tempo real"],
     closing: "Você mantém a decisão de crédito. A Credit Markets cuida do resto.",
     cta: "Solicitar acesso como originador",
   },
@@ -273,10 +273,10 @@ const pt: Copy = {
     linkedin: "no LinkedIn",
   },
   register: {
-    title: "Alocadores e curadores começam aqui.",
+    title: "Alocadores e curadores: comece por aqui.",
     sub: "Cadastre-se como investidor ou originador. A equipe responde por e-mail.",
     direct: "Contato direto:",
-    registeringAs: "Cadastro como",
+    registeringAs: "Quero me cadastrar como",
     roles: {
       investor: {
         label: "Investidor",
@@ -284,7 +284,7 @@ const pt: Copy = {
       },
       originator: {
         label: "Originador",
-        intro: "Credores, fintechs e gestoras de FIDC no Brasil que querem operar um vault curado.",
+        intro: "Financeiras, fintechs de crédito e gestoras de FIDC no Brasil que querem operar um vault curado.",
       },
     },
     fields: {
@@ -300,7 +300,7 @@ const pt: Copy = {
       selectRange: "Selecione uma faixa",
       telegram: "Telegram",
       telegramPlaceholder: "@usuario",
-      message: "Algo que a equipe deva saber?",
+      message: "Algo que a equipe precisa saber?",
       optional: "(opcional)",
     },
     allocations: [
@@ -315,7 +315,7 @@ const pt: Copy = {
       { value: "R$20M to R$100M / month", label: "R$ 20 a R$ 100 milhões / mês" },
       { value: "Over R$100M / month", label: "Acima de R$ 100 milhões / mês" },
     ],
-    consent: { before: "Ao enviar, você concorda com os nossos", terms: "Termos de Serviço", and: "e a", privacy: "Política de Privacidade" },
+    consent: { before: "Ao enviar, você concorda com os nossos", terms: "Termos de Serviço", and: "e com a nossa", privacy: "Política de Privacidade" },
     submit: "Solicitar acesso",
     sending: "Enviando",
     success: { thanks: "Obrigado", body: "A equipe vai responder por e-mail para marcar uma primeira conversa." },
