@@ -2,21 +2,22 @@ import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
-import PrinciplesSection from "@/components/PrinciplesSection";
 // TerminalFooter is also statically imported by Privacy.tsx/Terms.tsx, so
 // lazy-loading it here gives no payload benefit and shows an empty placeholder.
 import TerminalFooter from "@/components/TerminalFooter";
+import { LangProvider } from "@/i18n/lang";
+import type { Lang } from "@/i18n/content";
 
 // Lazy load below-the-fold components
-const MarketArchitecture = lazy(() => import("@/components/MarketArchitecture"));
-const SolutionSection = lazy(() => import("@/components/SolutionSection"));
-const ValueFlowSection = lazy(() => import("@/components/ValueFlowSection"));
-const LegalStructureSection = lazy(() => import("@/components/LegalStructureSection"));
-const GeometricTeam = lazy(() => import("@/components/GeometricTeam"));
+const ThesisSection = lazy(() => import("@/components/ThesisSection"));
+const ProtocolSection = lazy(() => import("@/components/ProtocolSection"));
+const InvestorsSection = lazy(() => import("@/components/InvestorsSection"));
+const OriginatorsSection = lazy(() => import("@/components/OriginatorsSection"));
+const TeamSection = lazy(() => import("@/components/TeamSection"));
 const BlogInsightsSection = lazy(() => import("@/components/BlogInsightsSection"));
-const AccessArchitecture = lazy(() => import("@/components/AccessArchitecture"));
+const RegisterSection = lazy(() => import("@/components/RegisterSection"));
 
-const Index = () => {
+const Index = ({ lang = "en" }: { lang?: Lang }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -53,11 +54,13 @@ const Index = () => {
   useEffect(() => {
     async function preloadComponents(): Promise<void> {
       const components = [
-        { name: 'MarketArchitecture', load: () => import("@/components/MarketArchitecture") },
-        { name: 'SolutionSection', load: () => import("@/components/SolutionSection") },
-        { name: 'ValueFlowSection', load: () => import("@/components/ValueFlowSection") },
-        { name: 'LegalStructureSection', load: () => import("@/components/LegalStructureSection") },
+        { name: 'ThesisSection', load: () => import("@/components/ThesisSection") },
+        { name: 'ProtocolSection', load: () => import("@/components/ProtocolSection") },
+        { name: 'InvestorsSection', load: () => import("@/components/InvestorsSection") },
+        { name: 'OriginatorsSection', load: () => import("@/components/OriginatorsSection") },
+        { name: 'TeamSection', load: () => import("@/components/TeamSection") },
         { name: 'BlogInsightsSection', load: () => import("@/components/BlogInsightsSection") },
+        { name: 'RegisterSection', load: () => import("@/components/RegisterSection") },
       ];
 
       for (const component of components) {
@@ -77,47 +80,45 @@ const Index = () => {
   }, []);
 
   return (
-    <main id="main-content" className="min-h-screen bg-deep-black">
+    <LangProvider lang={lang}>
+    <main id="main-content" className="min-h-screen bg-cm-bg">
       {/* Navigation */}
       <Navigation />
 
-      {/* 1. Hero Section */}
       <HeroSection />
 
-      {/* 2. Principles Section */}
-      <PrinciplesSection />
-
       {/* Individual Suspense boundaries for parallel loading */}
-      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
-        <MarketArchitecture />
+      <Suspense fallback={<div className="min-h-[40vh] bg-cm-bg" />}>
+        <ThesisSection />
       </Suspense>
 
-      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
-        <SolutionSection />
+      <Suspense fallback={<div className="min-h-[40vh] bg-cm-bg" />}>
+        <ProtocolSection />
       </Suspense>
 
-      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
-        <ValueFlowSection />
+      <Suspense fallback={<div className="min-h-[40vh] bg-cm-bg" />}>
+        <InvestorsSection />
       </Suspense>
 
-      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
-        <LegalStructureSection />
+      <Suspense fallback={<div className="min-h-[40vh] bg-cm-bg" />}>
+        <OriginatorsSection />
       </Suspense>
 
-      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
-        <GeometricTeam />
-      </Suspense>
-
-      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
+      <Suspense fallback={<div className="min-h-[40vh] bg-cm-bg" />}>
         <BlogInsightsSection />
       </Suspense>
 
-      <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
-        <AccessArchitecture />
+      <Suspense fallback={<div className="min-h-[120px] bg-cm-bg" />}>
+        <TeamSection />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[40vh] bg-cm-bg" />}>
+        <RegisterSection />
       </Suspense>
 
       <TerminalFooter />
     </main>
+    </LangProvider>
   );
 };
 

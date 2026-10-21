@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium font-sans uppercase tracking-wider transition-all duration-300 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium font-sans transition-all duration-200 ease-cm active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -15,11 +15,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         
-        // Neo-Geometric Variants
-        hero: "bg-strategic-blue text-deep-black border-0 shadow-isometric hover:shadow-lifted hover:bg-clean-white transform hover:-translate-y-1 active:translate-y-0",
-        outline: "border-2 border-clean-white bg-transparent text-clean-white hover:bg-clean-white hover:text-deep-black shadow-isometric hover:shadow-lifted transform hover:-translate-y-1",
-        terminal: "bg-deep-black text-strategic-blue border border-strategic-blue font-mono hover:bg-strategic-blue hover:text-deep-black shadow-terminal",
-        access: "bg-navy-accent text-clean-white border-0 shadow-isometric hover:shadow-lifted transform hover:-translate-y-1 hover:bg-strategic-blue",
+        // Credit Markets v3: navy on light, sky inside .cm-navy bands
+        outline: "border border-cm-border-strong bg-cm-surface text-cm-text hover:border-cm-accent hover:text-cm-accent",
       },
       size: {
         default: "h-12 px-6 py-3",

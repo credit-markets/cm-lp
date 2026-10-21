@@ -1,161 +1,129 @@
-import cmLogoSvg from "@/assets/cm-logo.svg";
-import { memo, useEffect, useRef, useState } from "react";
+import lockupNavy from "@/assets/cm-lockup-navy.png";
+import lockupWhite from "@/assets/cm-lockup-white.png";
+import { memo, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useMotionValueEvent, useScroll } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { cm } from "@/lib/cm";
+import { useLang } from "@/i18n/useLang";
+import { LANG_HOME } from "@/i18n/content";
+
+const SECTIONS = ["thesis", "protocol", "investors", "originators", "research"] as const;
 
 const Navigation = memo(() => {
-  const logoWrapperRef = useRef<HTMLDivElement | null>(null);
-  const [useDarkLogo, setUseDarkLogo] = useState(false);
   const location = useLocation();
-  const isMainPage = location.pathname === '/';
+  const { lang, t, home } = useLang();
+  const isMainPage = location.pathname === "/" || location.pathname === "/pt";
+  const prefix = isMainPage ? "" : home;
+  const LINKS = SECTIONS.map((id) => ({ id, label: t.nav.links[id] }));
+  const otherHome = LANG_HOME[lang === "en" ? "pt" : "en"];
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  // Only flips state when crossing the threshold, not on every scroll frame.
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const next = y > 24;
+    if (next !== scrolled) setScrolled(next);
+  });
+
+  // Close the menu after navigating to a section
+  useEffect(() => setOpen(false), [location.hash, location.pathname]);
 
   useEffect(() => {
-    // Skip on mobile
-    if (window.innerWidth < 768) {
-      setUseDarkLogo(false);
-      return;
-    }
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
-    // Map section backgrounds to logo color
-    // Light backgrounds (clean-white) need dark logo
-    // Dark backgrounds (deep-black, dimensional-gray, gradient-depth) need light logo
-    const sectionBackgrounds: Record<string, boolean> = {
-      'hero': false,           // bg-deep-black
-      'principles': false,     // bg-deep-black
-      'opportunity': false,    // bg-dimensional-gray (dark)
-      'solution': false,       // bg-deep-black
-      'value': false,          // bg-dimensional-gray (dark)
-      'structure': false,      // bg-deep-black
-      'team': true,            // bg-clean-white (light)
-      'research': false,       // bg-deep-black
-      'access': false,         // bg-gradient-depth
-    };
-
-    let currentSection: string | null = null;
-
-    const updateLogoColor = (sectionId: string) => {
-      if (currentSection === sectionId) return;
-      currentSection = sectionId;
-      const useDark = sectionBackgrounds[sectionId] ?? false;
-      setUseDarkLogo(useDark);
-    };
-
-    type TopSection = { id: string; top: number; ratio: number };
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const logoBottom = logoWrapperRef.current?.getBoundingClientRect().bottom ?? 80;
-        const candidates: TopSection[] = [];
-
-        for (const entry of entries) {
-          const sectionId = entry.target.id;
-          if (!sectionId) continue;
-          const rect = entry.target.getBoundingClientRect();
-          if (rect.top <= logoBottom && rect.bottom >= logoBottom) {
-            candidates.push({ id: sectionId, top: rect.top, ratio: entry.intersectionRatio });
-          }
-        }
-
-        const top = candidates.reduce<TopSection | null>(
-          (best, cur) => (best === null || cur.top < best.top ? cur : best),
-          null
-        );
-
-        if (top) {
-          updateLogoColor(top.id);
-        }
-      },
-      {
-        rootMargin: '-80px 0px -80% 0px',
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-      }
-    );
-
-    const observedSections = new Set<Element>();
-
-    const observeSections = () => {
-      const sections = document.querySelectorAll('section[id]');
-      sections.forEach((section) => {
-        if (!observedSections.has(section)) {
-          observedSections.add(section);
-          observer.observe(section);
-        }
-      });
-    };
-
-    observeSections();
-
-    const mutationObserver = new MutationObserver(() => {
-      observeSections();
-    });
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
-
-    const initialSection = Array.from(document.querySelectorAll('section[id]')).find((section) => {
-      const rect = section.getBoundingClientRect();
-      const logoBottom = logoWrapperRef.current?.getBoundingClientRect().bottom ?? 80;
-      return rect.top <= logoBottom && rect.bottom >= logoBottom;
-    });
-
-    if (initialSection?.id) {
-      updateLogoColor(initialSection.id);
-    }
-
-    return () => {
-      observer.disconnect();
-      mutationObserver.disconnect();
-    };
-  }, []);
+  // Over the navy hero the bar is transparent; everywhere else it is the light frosted bar.
+  const onNavy = isMainPage && !scrolled && !open;
 
   return (
-    <nav className="sticky top-0 z-50 bg-transparent">
+    <nav
+      className={`fixed top-0 inset-x-0 z-50 border-b transition-colors duration-200 ease-cm ${
+        onNavy ? "bg-transparent border-transparent" : "bg-[rgba(250,251,255,0.96)] backdrop-blur-md border-cm-border"
+      }`}
+    >
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-strategic-blue focus:text-deep-black focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:tracking-wider focus:uppercase"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-4 focus:z-50 focus:bg-cm-accent focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm"
       >
-        Skip to main content
+        {t.nav.skip}
       </a>
-      <div className="container mx-auto px-6 py-4 md:py-8">
-        <div className="flex items-center justify-between">
-          <div ref={logoWrapperRef} className="h-10 w-10 md:h-8 md:w-8">
-            <Link to="/" aria-label="Credit Markets — Home">
-              <img
-                src={cmLogoSvg}
-                alt=""
-                className={`h-full w-full object-contain transition-all duration-150 ${useDarkLogo ? "brightness-0" : "brightness-0 invert"}`}
-              />
-            </Link>
-          </div>
+      <div className={`${cm.container} h-16 flex items-center justify-between gap-6`}>
+        <Link to={home} aria-label={t.nav.home} className="shrink-0">
+          <img src={onNavy ? lockupWhite : lockupNavy} alt="Credit Markets" className="h-10 w-auto -ml-2" />
+        </Link>
 
-          <div className="hidden md:flex items-center space-x-12">
+        <div className="hidden lg:flex items-center gap-8">
+          {LINKS.map((link) => (
             <a
-              href={isMainPage ? "#principles" : "/#principles"}
-              className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
+              key={link.id}
+              href={`${prefix}#${link.id}`}
+              className={`text-sm font-medium transition-colors duration-200 ${
+                onNavy ? "text-cm-navy-text-2 hover:text-white" : "text-cm-text-2 hover:text-cm-text"
+              }`}
             >
-              PRINCIPLES
+              {link.label}
             </a>
-            <a
-              href={isMainPage ? "#solution" : "/#solution"}
-              className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
-            >
-              SOLUTION
-            </a>
-            <a
-              href={isMainPage ? "#research" : "/#research"}
-              className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
-            >
-              RESEARCH
-            </a>
-            <a
-              href={isMainPage ? "#access" : "/#access"}
-              className={`${useDarkLogo ? 'text-deep-black' : 'text-clean-white'} hover:text-strategic-blue transition-colors duration-300 font-mono text-sm tracking-wider uppercase`}
-            >
-              ACCESS
-            </a>
-          </div>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Link
+            to={`${otherHome}${location.hash}`}
+            aria-label={t.nav.switchLabel}
+            hrefLang={lang === "en" ? "pt-BR" : "en"}
+            className={`inline-flex items-center justify-center h-10 min-w-10 px-2 rounded-lg text-sm font-medium transition-colors ${
+              onNavy ? "text-cm-navy-text-2 hover:text-white" : "text-cm-text-2 hover:text-cm-text"
+            }`}
+          >
+            {t.nav.switchTo}
+          </Link>
+          <a
+            href={`${prefix}#register`}
+            className={`${onNavy ? cm.btnPrimaryNavy : cm.btnPrimary} !h-10 !px-4 sm:!px-5 !text-sm`}
+          >
+            {t.nav.cta}
+          </a>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
+            className={`lg:hidden w-11 h-11 -mr-2 flex items-center justify-center rounded-lg transition-colors ${
+              onNavy ? "text-white hover:bg-white/10" : "text-cm-text hover:bg-cm-raised"
+            }`}
+          >
+            {open ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
+          </button>
         </div>
       </div>
+
+      {open && (
+        <div id="mobile-menu" className="lg:hidden border-t border-cm-border">
+          <ul className={`${cm.container} py-2`}>
+            {LINKS.map((link) => (
+              <li key={link.id} className="border-b border-cm-border last:border-0">
+                <a
+                  href={`${prefix}#${link.id}`}
+                  onClick={() => setOpen(false)}
+                  className="block py-3.5 text-lg font-display font-semibold tracking-[-0.015em]"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 });
 
-Navigation.displayName = 'Navigation';
+Navigation.displayName = "Navigation";
 
 export default Navigation;

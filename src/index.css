@@ -2,68 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Credit Markets Neo-Geometric Design System */
+/* Credit Markets design system v3. Values come from ../brand-guide/system/tokens;
+   see ../brand-guide/mappings/shadcn.md. Light is the standard register, Navy
+   (.cm-navy) is reserved for the hero and the register band. */
 
 @layer base {
   :root {
-    /* Foundation Colors */
-    --deep-black: 0 0% 4%;
-    /* #090909 */
-    --dimensional-gray: 0 0% 22%;
-    /* #393939 */
-    --clean-white: 0 0% 97%;
-    /* #f8f8f8 */
-    --depth-gray: 0 0% 71%;
-    /* #b4b4b4 */
+    --background: 228 100% 99%; /* #FAFBFF */
+    --foreground: 222 97% 15%; /* #01184E */
+    --card: 0 0% 100%;
+    --card-foreground: 222 97% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 97% 15%;
+    --primary: 224 64% 33%; /* #1E3A8A interactive navy */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 100% 97%;
+    --secondary-foreground: 222 97% 15%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 19% 35%; /* #475569 */
+    --accent: 224 64% 33%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%; /* #E2E8F0 */
+    --input: 214 32% 91%;
+    --ring: 224 64% 33%;
+    --radius: 0.375rem; /* 6px; md = 4px inputs, sm = 2px badges */
+  }
 
-    /* Strategic Colors */
-    --strategic-blue: 204 100% 74%;
-    /* #79c2ff */
-    --navy-accent: 215 96% 15%;
-    /* #01184e */
-
-    /* Terminal Colors */
-    --terminal-green: 120 100% 50%;
-    --terminal-amber: 45 100% 50%;
-
-    /* Isometric System */
-    --isometric-angle: 30deg;
-    --depth-offset: 8px;
-    --shadow-color: 0 0% 0% / 0.15;
-    --grid-color: 0 0% 0% / 0.05;
-
-    /* Gradients */
-    --gradient-depth: linear-gradient(135deg, hsl(var(--dimensional-gray)), hsl(var(--deep-black)));
-    --gradient-terminal: linear-gradient(180deg, hsl(var(--deep-black)), hsl(0 0% 2%));
-    --gradient-data: linear-gradient(90deg, hsl(var(--strategic-blue) / 0.1), hsl(var(--strategic-blue) / 0));
-
-    /* Shadows */
-    --shadow-isometric: var(--depth-offset) var(--depth-offset) 0 hsl(var(--shadow-color));
-    --shadow-lifted: calc(var(--depth-offset) * 1.5) calc(var(--depth-offset) * 1.5) 0 hsl(var(--shadow-color));
-    --shadow-terminal: 0 0 20px hsl(var(--strategic-blue) / 0.3);
-
-    /* Typography Scale */
-    --font-size-hero: clamp(3rem, 8vw, 6rem);
-    --font-size-section: clamp(2rem, 5vw, 3.5rem);
-    --font-size-data: clamp(1.5rem, 3vw, 2.5rem);
-    --font-size-terminal: clamp(0.875rem, 2vw, 1rem);
-
-    /* Standard Semantic Tokens */
-    --background: var(--deep-black);
-    --foreground: var(--clean-white);
-    --card: var(--dimensional-gray);
-    --card-foreground: var(--clean-white);
-    --primary: var(--strategic-blue);
-    --primary-foreground: var(--deep-black);
-    --secondary: var(--dimensional-gray);
-    --secondary-foreground: var(--clean-white);
-    --muted: var(--depth-gray);
-    --muted-foreground: var(--depth-gray);
-    --accent: var(--navy-accent);
-    --accent-foreground: var(--clean-white);
-    --border: var(--depth-gray);
-    --ring: var(--strategic-blue);
-    --radius: 0;
+  .cm-navy {
+    --background: 222 97% 15%; /* #01184E */
+    --foreground: 224 100% 97%; /* #F0F4FF */
+    --card: 221 41% 15%; /* #162035 */
+    --card-foreground: 224 100% 97%;
+    --primary: 200 60% 60%; /* #5BAED6 sky */
+    --primary-foreground: 222 97% 15%;
+    --muted-foreground: 218 24% 63%; /* #8A9BB8 */
+    --border: 0 0% 100% / 0.08;
+    --ring: 200 60% 60%;
+    color-scheme: dark;
   }
 }
 
@@ -77,17 +54,30 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-cm-bg text-cm-text font-sans;
     overflow-x: hidden;
-    /* Enable font smoothing for better mobile performance */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Performance optimizations for animations */
-  @media (prefers-reduced-motion: reduce) {
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
 
+  /* Anchored sections clear the fixed 64px nav */
+  section[id],
+  span[id] {
+    scroll-margin-top: 64px;
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
@@ -96,316 +86,44 @@
       transition-duration: 0.01ms !important;
     }
   }
+}
 
-  /* Hardware acceleration for select heavy elements only */
-  .constellation-container,
-  .hero-spline-container {
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
+@layer components {
+  /* Section tag above headlines, as on the deck slides */
+  .cm-eyebrow {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.12em];
   }
 
-  /* GPU acceleration for rotating elements */
-  .animate-spin,
-  [class*="animate-[spin"] {
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+  .cm-num {
+    @apply font-mono tabular-nums;
+  }
+}
+
+@layer utilities {
+  /* Fade the hero block field into the navy band on its left and bottom edges */
+  .iso-mask {
+    mask-image:
+      linear-gradient(to right, transparent 0%, black 30%),
+      linear-gradient(to bottom, black 70%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, black 30%),
+      linear-gradient(to bottom, black 70%, transparent 100%);
+    -webkit-mask-composite: source-in;
   }
 
-  /* GPU acceleration for pulsing elements */
-  .animate-pulse,
-  .animate-ping {
-    will-change: opacity, transform;
-    transform: translateZ(0);
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  /* Typography System */
-  .font-mono {
-    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 
-  /* Isometric Components */
-  .isometric-card {
-    box-shadow: var(--shadow-isometric);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Apply isometric effect only on medium screens and up */
-  @media (min-width: 768px) {
-    .isometric-card {
-      transform: perspective(1000px) rotateX(10deg) rotateY(-10deg);
-    }
-
-    .isometric-card:hover {
-      transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) translateZ(20px);
-      box-shadow: var(--shadow-lifted);
-    }
-  }
-
-  /* Subtle isometric variant for improved readability */
-  .isometric-card--subtle {
-    box-shadow: var(--shadow-isometric);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Only apply isometric effect on medium screens and up */
-  @media (min-width: 768px) {
-    .isometric-card--subtle {
-      transform: perspective(10000px) rotateX(1deg) rotateY(-1deg);
-    }
-
-    .isometric-card--subtle:hover {
-      transform: perspective(7000px) rotateX(1deg) rotateY(-1deg) translateZ(3px);
-      box-shadow: var(--shadow-lifted);
-    }
-  }
-
-  .terminal-scanlines {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .terminal-scanlines::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg,
-        transparent 98%,
-        hsl(var(--strategic-blue) / 0.03) 100%);
-    background-size: 3px 100%;
-    pointer-events: none;
-    animation: scanlines 2s linear infinite;
-  }
-
-  @keyframes scanlines {
-    0% {
-      transform: translateX(0);
-    }
-
-    100% {
-      transform: translateX(3px);
-    }
-  }
-
-  /* Terminal Cursor */
-  .terminal-cursor::after {
-    content: '_';
-    animation: cursor-blink 1s infinite;
-    color: hsl(var(--strategic-blue));
-  }
-
-  @keyframes cursor-blink {
-
-    0%,
-    50% {
-      opacity: 1;
-    }
-
-    51%,
-    100% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes orbit {
-    0% {
-      transform: rotate(0deg) translateX(160px) rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg) translateX(160px) rotate(-360deg);
-    }
-  }
-
-  /* Consolidated high-performance constellation animations */
-  @keyframes float-star-basic {
-
-    0%,
-    100% {
-      transform: translate(-50%, -50%) translate3d(0, 0, 0);
-    }
-
-    33% {
-      transform: translate(-50%, -50%) translate3d(3px, 4px, 0);
-    }
-
-    66% {
-      transform: translate(-50%, -50%) translate3d(-3px, -4px, 0);
-    }
-  }
-
-  @keyframes twinkle-basic {
-
-    0%,
-    100% {
-      opacity: 0.6;
-    }
-
-    50% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes pulse-ring {
-    0% {
-      transform: scale3d(0.8, 0.8, 1);
-      opacity: 0;
-    }
-
-    50% {
-      opacity: 0.5;
-    }
-
-    100% {
-      transform: scale3d(1.3, 1.3, 1);
-      opacity: 0;
-    }
-  }
-
-  @keyframes svg-pulse-flow {
-    0% {
-      stroke-dashoffset: 100%;
-      opacity: 0;
-    }
-
-    50% {
-      opacity: 1;
-    }
-
-    100% {
-      stroke-dashoffset: 0%;
-      opacity: 0;
-    }
-  }
-
-  .animate-float-star {
-    animation: float-star-basic 12s ease-in-out infinite;
-    will-change: transform;
-    backface-visibility: hidden;
-  }
-
-  .animate-twinkle {
-    animation: twinkle-basic 4s ease-in-out infinite;
-    will-change: opacity;
-  }
-
-  /* Premium Constellation Effects */
-  @keyframes energy-flow {
-    0% {
-      stroke-dashoffset: 100%;
-    }
-
-    100% {
-      stroke-dashoffset: -100%;
-    }
-  }
-
-  .animate-energy-flow {
-    stroke-dasharray: 50 150;
-    animation: energy-flow 3s linear infinite;
-  }
-
-  @keyframes star-cross-expand {
-
-    0%,
-    100% {
-      transform: scale3d(0.8, 0.8, 1);
-      opacity: 0.3;
-    }
-
-    50% {
-      transform: scale3d(1.2, 1.2, 1);
-      opacity: 1;
-    }
-  }
-
-  .animate-star-cross {
-    animation: star-cross-expand 2s ease-in-out infinite;
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-  }
-
-  @keyframes hub-pulse-glow {
-
-    0%,
-    100% {
-      box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-    }
-
-    50% {
-      box-shadow: 0 0 70px rgba(59, 130, 246, 0.5);
-    }
-  }
-
-  .animate-hub-glow {
-    animation: hub-pulse-glow 4s ease-in-out infinite;
-    will-change: box-shadow;
-  }
-
-  @keyframes spline-gradient-pulse {
-    0%, 100% {
-      opacity: 0.3;
-      transform: scale3d(1, 1, 1);
-    }
-    50% {
-      opacity: 0.5;
-      transform: scale3d(1.05, 1.05, 1);
-    }
-  }
-
-  .animate-spline-gradient {
-    animation: spline-gradient-pulse 4s ease-in-out infinite;
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-  }
-
-  /* Shimmer loading effect */
   @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
     100% {
       transform: translateX(100%);
     }
-  }
-
-  /* Isometric Grid Background */
-  .isometric-grid {
-    background-image:
-      linear-gradient(30deg, hsl(var(--grid-color)) 12%, transparent 12.5%, transparent 87%, hsl(var(--grid-color)) 87.5%, hsl(var(--grid-color))),
-      linear-gradient(150deg, hsl(var(--grid-color)) 12%, transparent 12.5%, transparent 87%, hsl(var(--grid-color)) 87.5%, hsl(var(--grid-color))),
-      linear-gradient(30deg, hsl(var(--grid-color)) 12%, transparent 12.5%, transparent 87%, hsl(var(--grid-color)) 87.5%, hsl(var(--grid-color))),
-      linear-gradient(150deg, hsl(var(--grid-color)) 12%, transparent 12.5%, transparent 87%, hsl(var(--grid-color)) 87.5%, hsl(var(--grid-color)));
-    background-size: 80px 140px;
-    background-position: 0 0, 0 0, 40px 70px, 40px 70px;
-  }
-
-  /* 3D Layer Perspective */
-  .protocol-layer {
-    transform: perspective(1000px) rotateX(5deg);
-    transform-style: preserve-3d;
-  }
-
-  .protocol-layer+.protocol-layer {
-    transform: perspective(1000px) rotateX(5deg) translateZ(20px);
-  }
-
-  /* Performance optimization for below-fold content */
-  .below-fold-section {
-    content-visibility: auto;
-    contain-intrinsic-size: 0 600px;
-  }
-
-  /* Hide scrollbar but keep functionality */
-  .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari, Opera */
   }
 }

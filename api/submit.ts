@@ -1,5 +1,5 @@
 import { neon } from '@neondatabase/serverless';
-import { z } from 'zod';
+import { LeadSchema } from './_lead-schema';
 
 export const config = {
     runtime: 'edge',
@@ -18,30 +18,6 @@ const baseAllowedOrigins = [
 const allowedOrigins = isProduction
     ? baseAllowedOrigins
     : [...baseAllowedOrigins, 'http://localhost:8080', 'http://localhost:3000'];
-
-const emptyToUndefined = (val: unknown) =>
-    typeof val === 'string' && val.trim() === '' ? undefined : val;
-
-const WaitlistSchema = z.object({
-    email: z.string().trim().toLowerCase().email().max(254),
-    telegram: z.preprocess(
-        emptyToUndefined,
-        z
-            .string()
-            .trim()
-            .max(64)
-            .regex(/^@?[A-Za-z0-9_]{3,32}$/, 'Invalid Telegram handle')
-            .optional()
-    ),
-    investment: z.preprocess(
-        emptyToUndefined,
-        z.string().trim().max(64).optional()
-    ),
-    type: z.preprocess(
-        emptyToUndefined,
-        z.enum(['institutional', 'individual']).optional()
-    ),
-});
 
 // In-memory rate limit. Per-edge-instance only — for production-grade,
 // swap for Upstash/Vercel KV. Still useful as a first line of defense.
@@ -132,7 +108,7 @@ export default async function handler(request: Request) {
             return new Response(JSON.stringify({ error: 'Invalid request format.' }), { status: 400, headers });
         }
 
-        const parsed = WaitlistSchema.safeParse(requestData);
+        const parsed = LeadSchema.safeParse(requestData);
         if (!parsed.success) {
             return new Response(
                 JSON.stringify({
@@ -142,7 +118,7 @@ export default async function handler(request: Request) {
                 { status: 400, headers }
             );
         }
-        const { email, telegram, investment, type } = parsed.data;
+        const { email, role, name, company, country, telegram, investment, type, message, locale } = parsed.data;
 
         const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
         if (!databaseUrl) {
@@ -183,19 +159,46 @@ export default async function handler(request: Request) {
                     END IF;
                 END $$;
             `;
+            // Columns added for the investor / originator registration form.
+            await sql`
+                ALTER TABLE waitlist
+                    ADD COLUMN IF NOT EXISTS role TEXT,
+                    ADD COLUMN IF NOT EXISTS name TEXT,
+                    ADD COLUMN IF NOT EXISTS company TEXT,
+                    ADD COLUMN IF NOT EXISTS country TEXT,
+                    ADD COLUMN IF NOT EXISTS message TEXT,
+                    ADD COLUMN IF NOT EXISTS locale TEXT,
+                    ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE
+            `;
             tableInitialized = true;
         }
 
+        // A repeat email only fills fields the earlier signup left empty, so an
+        // old waitlist entry gains the new details but nobody can overwrite an
+        // existing lead by submitting its email.
         const result = await sql`
-            INSERT INTO waitlist (email, telegram, investment, type)
-            VALUES (${email}, ${telegram ?? null}, ${investment ?? null}, ${type ?? null})
-            ON CONFLICT (email) DO NOTHING
-            RETURNING id
+            INSERT INTO waitlist (email, role, name, company, country, telegram, investment, type, message, locale)
+            VALUES (
+                ${email}, ${role}, ${name ?? null}, ${company ?? null}, ${country ?? null},
+                ${telegram ?? null}, ${investment ?? null}, ${type ?? null}, ${message ?? null}, ${locale ?? null}
+            )
+            ON CONFLICT (email) DO UPDATE SET
+                role = COALESCE(waitlist.role, EXCLUDED.role),
+                name = COALESCE(waitlist.name, EXCLUDED.name),
+                company = COALESCE(waitlist.company, EXCLUDED.company),
+                country = COALESCE(waitlist.country, EXCLUDED.country),
+                telegram = COALESCE(waitlist.telegram, EXCLUDED.telegram),
+                investment = COALESCE(waitlist.investment, EXCLUDED.investment),
+                type = COALESCE(waitlist.type, EXCLUDED.type),
+                message = COALESCE(waitlist.message, EXCLUDED.message),
+                locale = COALESCE(waitlist.locale, EXCLUDED.locale),
+                updated_at = CURRENT_TIMESTAMP
+            RETURNING (xmax = 0) AS inserted
         `;
 
-        if (result.length === 0) {
+        if (!result[0]?.inserted) {
             return new Response(
-                JSON.stringify({ status: 'duplicate', message: 'Already on the waitlist.' }),
+                JSON.stringify({ status: 'duplicate', message: 'Already registered.' }),
                 { status: 200, headers }
             );
         }
