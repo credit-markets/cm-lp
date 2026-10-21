@@ -15,16 +15,31 @@ export default {
     },
     extend: {
       colors: {
-        // Foundation System
-        'deep-black': "hsl(var(--deep-black))",
-        'dimensional-gray': "hsl(var(--dimensional-gray))",
-        'clean-white': "hsl(var(--clean-white))",
-        'depth-gray': "hsl(var(--depth-gray))",
-        'strategic-blue': "hsl(var(--strategic-blue))",
-        'navy-accent': "hsl(var(--navy-accent))",
-        'terminal-green': "hsl(var(--terminal-green))",
-        'terminal-amber': "hsl(var(--terminal-amber))",
-        
+        // Credit Markets design system v3 (../brand-guide/system/tokens/colors.css)
+        cm: {
+          bg: "#FAFBFF",
+          surface: "#FFFFFF",
+          raised: "#F4F7FF",
+          text: "#01184E",
+          "text-2": "#475569",
+          muted: "#94A3B8",
+          border: "#E2E8F0",
+          "border-strong": "#CBD5E1",
+          accent: "#1E3A8A",
+          "accent-hover": "#2547A8",
+          navy: "#01184E",
+          "navy-card": "#162035",
+          "navy-raised": "#1E2D50",
+          "navy-text": "#F0F4FF",
+          "navy-text-2": "#8A9BB8",
+          sky: "#5BAED6",
+          "sky-hover": "#7FC4E4",
+          amber: "#D4A847",
+          teal: "#2DD4BF",
+          "teal-700": "#008070",
+          stress: "#EF4444",
+        },
+
         // Standard Semantic Tokens
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -65,25 +80,18 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      fontSize: {
-        'hero': 'var(--font-size-hero)',
-        'section': 'var(--font-size-section)',
-        'data': 'var(--font-size-data)',
-        'terminal': 'var(--font-size-terminal)',
-      },
       fontFamily: {
-        'mono': ['IBM Plex Mono', 'Courier New', 'monospace'],
-        'sans': ['Inter', 'system-ui', 'sans-serif'],
-      },
-      backgroundImage: {
-        'gradient-depth': 'var(--gradient-depth)',
-        'gradient-terminal': 'var(--gradient-terminal)',
-        'gradient-data': 'var(--gradient-data)',
+        display: ['Archivo', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       boxShadow: {
-        'isometric': 'var(--shadow-isometric)',
-        'lifted': 'var(--shadow-lifted)',
-        'terminal': 'var(--shadow-terminal)',
+        card: '0 1px 2px rgba(1,24,78,0.04), 0 0 0 1px rgba(1,24,78,0.06)',
+        'card-hover': '0 8px 28px rgba(1,24,78,0.10), 0 0 0 1px rgba(1,24,78,0.08)',
+        'navy-card': '0 1px 2px rgba(0,0,0,0.30), 0 0 0 1px rgba(255,255,255,0.05)',
+      },
+      transitionTimingFunction: {
+        cm: 'cubic-bezier(0.16, 1, 0.3, 1)',
       },
       keyframes: {
         "accordion-down": {

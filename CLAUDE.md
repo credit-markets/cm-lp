@@ -21,7 +21,7 @@ This document provides context for AI assistants working on the Credit Markets L
 - shadcn/ui + Radix UI (component library)
 - Tailwind CSS 3.4 (styling)
 - Framer Motion 12 (animations)
-- Spline (3D visualizations)
+- Hand-written canvas renderer for the hero block field (`IsoField.tsx`, no 3D library)
 
 **State Management:**
 - TanStack React Query 5 (server state)
@@ -46,8 +46,7 @@ This application is **heavily optimized** following Vercel React Best Practices.
 **Key Performance Files:**
 - [src/App.tsx](src/App.tsx) - Analytics lazy-loaded
 - [src/pages/Index.tsx](src/pages/Index.tsx) - Individual Suspense boundaries + preloading
-- [src/components/HeroSection.tsx](src/components/HeroSection.tsx) - Conditional Spline loading
-- [src/components/PrinciplesSection.tsx](src/components/PrinciplesSection.tsx) - Memoized nodes with AnimatePresence
+- [src/components/IsoField.tsx](src/components/IsoField.tsx) - Canvas 2D block field; pauses off-screen and when the tab is hidden, static under reduced motion
 - [src/components/Navigation.tsx](src/components/Navigation.tsx) - Throttled scroll with color cache
 - [src/hooks/use-mobile.tsx](src/hooks/use-mobile.tsx) - matchMedia API for efficiency
 - [api/submit.ts](api/submit.ts) - Cached table initialization
@@ -57,7 +56,7 @@ This application is **heavily optimized** following Vercel React Best Practices.
 ### Component Patterns
 
 **File naming:**
-- PascalCase for components: `HeroSection.tsx`, `PrinciplesSection.tsx`
+- PascalCase for components: `HeroSection.tsx`, `ProtocolSection.tsx`
 - kebab-case for hooks: `use-mobile.tsx`
 - kebab-case for utilities: `utils.ts`
 
@@ -103,16 +102,16 @@ export default Component;
 - Custom design tokens defined in `index.css` using CSS variables
 - Conditional classes: Use `clsx` or template literals
 
-**Design system (Neo-Geometric):**
-- Colors: `deep-black`, `dimensional-gray`, `clean-white`, `strategic-blue`, `navy-accent`
-- Typography: IBM Plex Mono (monospace), Inter (sans-serif)
-- Spacing: Use Tailwind spacing scale
-- Animations: Defined in `index.css` with `@keyframes`
+**Design system (Credit Markets v3, source of truth in `../brand-guide/system/tokens`):**
+- Light register by default (`cm-bg #FAFBFF`, `cm-text #01184E`, accent `cm-accent #1E3A8A`); navy bands (`.cm-navy`, `cm-navy #01184E`, sky accent) only for the hero and the register band
+- Typography: Archivo (`font-display`, headlines), Inter (body), JetBrains Mono (`cm-num`, all figures)
+- Radius 6px default, 4px inputs; motion is expo-out `cubic-bezier(0.16,1,0.3,1)`, no springs
+- Shared button/card classes live in `src/lib/cm.ts`
 
 **Class naming:**
 ```tsx
 // Good
-<div className="py-24 bg-deep-black relative overflow-hidden below-fold-section">
+<section id="protocol" className="relative py-24 md:py-32 bg-cm-raised border-y border-cm-border">
 
 // Avoid inline styles unless absolutely necessary (e.g., dynamic transforms)
 <div style={{ transform: `translate(${x}px, ${y}px)` }}>
@@ -187,16 +186,18 @@ const handleChange = useCallback((value: string) => {
 
 ### Main Sections (in order)
 
-1. **Navigation** - Sticky nav with adaptive logo coloring based on background
-2. **HeroSection** - 3D Spline visualization with CTA buttons
-3. **PrinciplesSection** - Interactive constellation with 7 principles
-4. **MarketArchitecture** - Market opportunity ($1T LATAM credit)
-5. **SolutionSection** - 5 solution pillars with icons
-6. **ValueFlowSection** - 3-sided value proposition
-7. **LegalStructureSection** - Regulatory compliance information
-8. **GeometricTeam** - 5 team members with credentials
-9. **AccessArchitecture** - Waitlist form (email, telegram, investment size, type)
-10. **TerminalFooter** - Terminal-styled footer
+1. **Navigation** - Fixed nav, transparent over the navy hero, menu below `lg`, EN/PT switch
+2. **HeroSection** - Navy band with the `IsoField` canvas and three headline figures
+3. **ThesisSection** - Scroll-lit thesis, area-true gap chart, access and risk barriers
+4. **ProtocolSection** - Curators / Credit Markets rails / allocators as an isometric SVG stack
+5. **InvestorsSection** - Three plain points for allocators
+6. **OriginatorsSection** - What curators bring vs what the protocol provides
+7. **BlogInsightsSection** - Paragraph posts; list below `lg`, cards above
+8. **TeamSection** - One-line team strip
+9. **RegisterSection** - Investor/originator form posting to `/api/submit`
+10. **TerminalFooter** - Footer
+
+**Copy and languages:** every visible string lives in `src/i18n/content.ts` (`en` and `pt`, typed against each other). `/` renders English, `/pt` Portuguese; components read copy through `useLang()`. Add a string to both languages or the build fails.
 
 ### shadcn/ui Components
 
@@ -326,12 +327,12 @@ Defined in [src/index.css](src/index.css):
    ```
 3. Add Suspense boundary:
    ```tsx
-   <Suspense fallback={<div className="min-h-[40vh] bg-deep-black" />}>
+   <Suspense fallback={<div className="min-h-[40vh] bg-cm-bg" />}>
      <NewSection />
    </Suspense>
    ```
 4. Add to preload list if below-fold
-5. Apply `below-fold-section` class to section element
+5. Put its copy in `src/i18n/content.ts` under both `en` and `pt`
 
 ### Modifying Forms
 
@@ -402,11 +403,11 @@ npm run lint
 ```
 
 **Test checklist:**
-- [ ] Forms submit successfully (requires DATABASE_URL)
+- [ ] Forms submit successfully (`vite dev` answers `/api/submit` with a stub that validates but stores nothing; production needs DATABASE_URL)
 - [ ] Mobile responsive (check at 375px, 768px, 1024px, 1440px)
 - [ ] Animations run smoothly (60fps target)
-- [ ] 3D Spline scene loads without blocking
-- [ ] Navigation logo adapts to background color
+- [ ] Hero block field animates and pauses when scrolled away
+- [ ] `/pt` renders fully in Portuguese and the EN/PT switch keeps the section hash
 - [ ] All links work (internal and external)
 - [ ] Lazy loading works (check Network tab)
 
