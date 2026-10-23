@@ -4,7 +4,7 @@ import type { Lead } from './_lead-schema';
 // Uses the same Google service account as score.credit.markets (credit-model/dashboard/sheets.py):
 //   GOOGLE_SHEETS_CREDENTIALS  service-account JSON
 //   GOOGLE_SHEET_ID            spreadsheet id
-// Never throws: the database row is the source of truth, the sheet is a convenience copy.
+// The sheet is the only store for website leads. Never throws; returns false when the row was not written.
 
 const TAB = 'Website';
 const HEADER = [
@@ -22,7 +22,11 @@ const HEADER = [
     'Source',
 ];
 const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
-const TIMEOUT_MS = 4000;
+const TIMEOUT_MS = 8000;
+
+// Reused across warm invocations of the same instance
+let cachedToken: { value: string; expires: number } | null = null;
+let tabReady = false;
 
 interface ServiceAccount {
     client_email: string;
@@ -38,6 +42,7 @@ const b64url = (data: ArrayBuffer | string) => {
 };
 
 async function accessToken(sa: ServiceAccount, signal: AbortSignal): Promise<string> {
+    if (cachedToken && cachedToken.expires > Date.now() + 60_000) return cachedToken.value;
     const pem = sa.private_key.replace(/-----[^-]+-----/g, '').replace(/\s+/g, '');
     const der = Uint8Array.from(atob(pem), (c) => c.charCodeAt(0));
     const key = await crypto.subtle.importKey(
@@ -64,10 +69,13 @@ async function accessToken(sa: ServiceAccount, signal: AbortSignal): Promise<str
         signal,
     });
     if (!res.ok) throw new Error(`token request failed: ${res.status}`);
-    return ((await res.json()) as { access_token: string }).access_token;
+    const { access_token, expires_in } = (await res.json()) as { access_token: string; expires_in?: number };
+    cachedToken = { value: access_token, expires: Date.now() + (expires_in ?? 3600) * 1000 };
+    return access_token;
 }
 
 async function ensureTab(sheetId: string, token: string, signal: AbortSignal) {
+    if (tabReady) return;
     const auth = { Authorization: `Bearer ${token}` };
     const meta = await fetch(
         `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets.properties.title`,
@@ -75,7 +83,10 @@ async function ensureTab(sheetId: string, token: string, signal: AbortSignal) {
     );
     if (!meta.ok) throw new Error(`spreadsheet lookup failed: ${meta.status}`);
     const { sheets = [] } = (await meta.json()) as { sheets?: { properties: { title: string } }[] };
-    if (sheets.some((s) => s.properties.title === TAB)) return;
+    if (sheets.some((s) => s.properties.title === TAB)) {
+        tabReady = true;
+        return;
+    }
 
     const add = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}:batchUpdate`, {
         method: 'POST',
@@ -85,6 +96,7 @@ async function ensureTab(sheetId: string, token: string, signal: AbortSignal) {
     });
     if (!add.ok) throw new Error(`creating tab failed: ${add.status}`);
     await append(sheetId, token, [HEADER], signal);
+    tabReady = true;
 }
 
 async function append(sheetId: string, token: string, rows: string[][], signal: AbortSignal) {
@@ -101,10 +113,13 @@ async function append(sheetId: string, token: string, rows: string[][], signal: 
     if (!res.ok) throw new Error(`append failed: ${res.status}`);
 }
 
-export async function appendLeadToSheet(lead: Lead): Promise<void> {
+export async function appendLeadToSheet(lead: Lead): Promise<boolean> {
     const creds = process.env.GOOGLE_SHEETS_CREDENTIALS;
     const sheetId = process.env.GOOGLE_SHEET_ID;
-    if (!creds || !sheetId) return;
+    if (!creds || !sheetId) {
+        console.error('Lead sheet not configured: GOOGLE_SHEETS_CREDENTIALS or GOOGLE_SHEET_ID missing');
+        return false;
+    }
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -133,11 +148,15 @@ export async function appendLeadToSheet(lead: Lead): Promise<void> {
             ],
             controller.signal
         );
+        return true;
     } catch (error) {
         // Log only the reason; never the lead's details or the credentials.
         console.error('Lead sheet append failed', {
             message: error instanceof Error ? error.message : String(error),
         });
+        cachedToken = null;
+        tabReady = false;
+        return false;
     } finally {
         clearTimeout(timer);
     }
