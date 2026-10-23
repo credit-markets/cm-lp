@@ -30,7 +30,7 @@ This document provides context for AI assistants working on the Credit Markets L
 
 **Backend:**
 - Vercel Edge Functions (serverless API)
-- Neon Database (serverless Postgres)
+- Google Sheets (leads land in the "Website" tab of the FIDC Dashboard Signups sheet)
 - Vercel Analytics
 
 ### Performance Philosophy
@@ -49,7 +49,7 @@ This application is **heavily optimized** following Vercel React Best Practices.
 - [src/components/IsoField.tsx](src/components/IsoField.tsx) - Canvas 2D block field; pauses off-screen and when the tab is hidden, static under reduced motion
 - [src/components/Navigation.tsx](src/components/Navigation.tsx) - Throttled scroll with color cache
 - [src/hooks/use-mobile.tsx](src/hooks/use-mobile.tsx) - matchMedia API for efficiency
-- [api/submit.ts](api/submit.ts) - Cached table initialization
+- [api/_sheets.ts](api/_sheets.ts) - Reuses the Google access token and tab check across warm invocations
 
 ## Code Style & Conventions
 
@@ -252,20 +252,10 @@ Handles waitlist form submissions.
 **Implementation notes:**
 - Uses Vercel Edge Runtime for speed
 - CORS configured for production domains
-- Table creation cached to avoid sequential queries on every request
-- Connects to Neon serverless Postgres
+- Appends each lead to the signups sheet via the Sheets API (service account, token signed with WebCrypto)
+- The sheet is the only store: a failed write returns 500 so the visitor can retry
 
-**Database Schema:**
-```sql
-CREATE TABLE waitlist (
-  id SERIAL PRIMARY KEY,
-  email TEXT NOT NULL,
-  telegram TEXT,
-  investment TEXT,
-  type TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-```
+**Sheet columns (Website tab):** submitted at (UTC), role, name, email, company, country, investor type, allocation / monthly volume, Telegram, message, language, source. The tab and header row are created on the first write.
 
 ## Animation Patterns
 
@@ -365,17 +355,14 @@ When adding new components:
 Required for deployment:
 
 ```env
-# Neon Database
-DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
-POSTGRES_URL=postgresql://user:pass@host/db?sslmode=require
+# Leads go to the "Website" tab of the FIDC Dashboard Signups sheet
+# (same service account as score.credit.markets; see api/_sheets.ts)
+GOOGLE_SHEETS_CREDENTIALS={"client_email": "...", "private_key": "..."}
+GOOGLE_SHEET_ID=1QGomJ4bvO8LFFTwz7BcIJFjpg7lHxR_hdlvZKYtX4kg
 ```
 
 Optional:
 ```env
-# Copy of each new lead to the "Website" tab of the FIDC Dashboard Signups sheet
-# (same service account as score.credit.markets; see api/_sheets.ts)
-GOOGLE_SHEETS_CREDENTIALS={"client_email": "...", "private_key": "..."}
-GOOGLE_SHEET_ID=1QGomJ4bvO8LFFTwz7BcIJFjpg7lHxR_hdlvZKYtX4kg
 # Vercel Analytics (auto-configured on Vercel)
 VERCEL_ANALYTICS_ID=auto
 ```
@@ -407,7 +394,7 @@ npm run lint
 ```
 
 **Test checklist:**
-- [ ] Forms submit successfully (`vite dev` answers `/api/submit` with a stub that validates but stores nothing; production needs DATABASE_URL)
+- [ ] Forms submit successfully (`vite dev` answers `/api/submit` with a stub that validates but stores nothing; production needs the two Google Sheets variables)
 - [ ] Mobile responsive (check at 375px, 768px, 1024px, 1440px)
 - [ ] Animations run smoothly (60fps target)
 - [ ] Hero block field animates and pauses when scrolled away
@@ -419,9 +406,9 @@ npm run lint
 
 ### Common Issues
 
-**"DATABASE_URL is not defined"**
-- Add `.env` file with Neon connection string
-- Restart dev server after adding env vars
+**Registrations fail with 500 in production**
+- Check the Vercel logs for "Lead sheet append failed" or "Lead sheet not configured"
+- The service account must have edit access to the sheet
 
 **Hydration mismatch errors**
 - Usually from client-only state (e.g., window.innerWidth)
