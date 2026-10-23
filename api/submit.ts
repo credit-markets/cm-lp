@@ -1,5 +1,6 @@
 import { neon } from '@neondatabase/serverless';
 import { LeadSchema } from './_lead-schema';
+import { appendLeadToSheet } from './_sheets';
 
 export const config = {
     runtime: 'edge',
@@ -202,6 +203,9 @@ export default async function handler(request: Request) {
                 { status: 200, headers }
             );
         }
+
+        // Copy new leads to the team's signups sheet; a sheet failure never fails the request.
+        await appendLeadToSheet(parsed.data);
 
         return new Response(JSON.stringify({ status: 'success', message: 'Success' }), {
             status: 200,

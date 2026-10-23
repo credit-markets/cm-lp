@@ -372,6 +372,10 @@ POSTGRES_URL=postgresql://user:pass@host/db?sslmode=require
 
 Optional:
 ```env
+# Copy of each new lead to the "Website" tab of the FIDC Dashboard Signups sheet
+# (same service account as score.credit.markets; see api/_sheets.ts)
+GOOGLE_SHEETS_CREDENTIALS={"client_email": "...", "private_key": "..."}
+GOOGLE_SHEET_ID=1QGomJ4bvO8LFFTwz7BcIJFjpg7lHxR_hdlvZKYtX4kg
 # Vercel Analytics (auto-configured on Vercel)
 VERCEL_ANALYTICS_ID=auto
 ```
