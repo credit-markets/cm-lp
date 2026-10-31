@@ -188,11 +188,11 @@ const handleChange = useCallback((value: string) => {
 
 1. **Navigation** - Fixed nav, transparent over the navy hero, menu below `lg`, EN/PT switch
 2. **HeroSection** - Navy band with the `IsoField` canvas and three headline figures
-3. **ThesisSection** - Scroll-lit thesis, area-true gap chart, access and risk barriers
-4. **ProtocolSection** - Curators / Credit Markets rails / allocators as an isometric SVG stack
+3. **ThesisSection** - Scroll-lit thesis, three-bar financing gap chart, access and risk barriers with the Credit Markets answer
+4. **ProtocolSection** - Originators / Credit Markets rails / investors as an isometric SVG stack
 5. **InvestorsSection** - Three plain points for allocators
-6. **OriginatorsSection** - What curators bring vs what the protocol provides
-7. **BlogInsightsSection** - Paragraph posts; list below `lg`, cards above
+6. **OriginatorsSection** - What originators bring vs what the protocol provides, one panel split by the CM slash
+7. **BlogInsightsSection** - Market data block linking to the FIDC dashboard (score.credit.markets/#/dashboard), plus a link to the Paragraph research notes
 8. **TeamSection** - One-line team strip
 9. **RegisterSection** - Investor/originator form posting to `/api/submit`
 10. **TerminalFooter** - Footer
